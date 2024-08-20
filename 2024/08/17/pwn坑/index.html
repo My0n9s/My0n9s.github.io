@@ -27,7 +27,7 @@
 <meta property="og:description" content="想了下，还是专门开个文章记录一下学PWN遇到的一些坑(对我自己来说)，好比大一那会儿刚接触C语言的时候，各种小问题导致在学校OJ网站上面做题时，一直AC不了。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-08-17T15:50:30.000Z">
-<meta property="article:modified_time" content="2024-08-17T15:57:02.389Z">
+<meta property="article:modified_time" content="2024-08-20T13:55:40.683Z">
 <meta property="article:author" content="My0n9s">
 <meta name="twitter:card" content="summary">
 
@@ -125,7 +125,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -191,9 +191,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2024-08-17 23:50:30 / Modified: 23:57:02" itemprop="dateCreated datePublished" datetime="2024-08-17T23:50:30+08:00">2024-08-17</time>
+      <time title="Created: 2024-08-17 23:50:30" itemprop="dateCreated datePublished" datetime="2024-08-17T23:50:30+08:00">2024-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-08-20 21:55:40" itemprop="dateModified" datetime="2024-08-20T21:55:40+08:00">2024-08-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -219,6 +225,11 @@
 
 <p>1.使用<code>asm(shellcraft.sh())</code> 生成<code>shellcode</code>时，默认生成32位的。如果是64位<code>context(arch=&quot;amd64&quot;,os=&quot;linux&quot;,log_level=&quot;debug&quot;)</code></p>
 <p>2.64位注意堆栈平衡，16字节对齐，可能需要<code>ret</code> 一下，32位函数形参放在上一个函数栈帧上面。64位函数形参放在寄存器里面，读汇编代码时，返回地址可以看到放在<code>rax</code>里面。</p>
+<ol start="3">
+<li></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ROPgadget //can find the address of ret </span><br><span class="line">eg: ROPgadget --binary ./pwn38 --only &quot;pop|ret&quot; | grep &quot;ret&quot;</span><br><span class="line">    ROPgadget –binary pwn38 –string “cat /ctfshow_flag”</span><br><span class="line">    </span><br><span class="line">ropper can also find the address</span><br><span class="line">eg: ropper --file pwn72 --search &quot;int 0x80&quot;</span><br><span class="line"></span><br><span class="line">ELF //can find the address of some func and args correctly</span><br><span class="line">eg: elf=ELF(&quot;./pwn&quot;)</span><br><span class="line">systemaddress=elf.sym[&#x27;system&#x27;]</span><br><span class="line">backdoor_func_address=elf.sym[&quot;backdoor&quot;]</span><br><span class="line">bin_sh_arg_address=next(elf.search(&quot;/bin/sh&quot;))</span><br><span class="line"></span><br><span class="line">something about IDA</span><br><span class="line">ctrl + s 可以看到各段的一些信息</span><br><span class="line">shift+f12 可以查看参数值</span><br><span class="line">Alt+T 可以根据关键参数去找相应函数</span><br><span class="line">ctrl + f 在函数搜索框里可以看到相应函数</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -237,6 +248,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2024/08/20/ctfshow-pwn72/" rel="next" title="ctfshow pwn72">
+                  ctfshow pwn72 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
