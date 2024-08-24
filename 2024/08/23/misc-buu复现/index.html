@@ -19,23 +19,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="My0n9s&#39;blog">
-<meta property="og:url" content="http://example.com/index.html">
+    <meta name="description" content="BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。 金三胖打开是动图gif ，用stegsolve打开 ，选择 analyse  -&gt; frame brower ，逐帧分析就可以找到flag 你竟然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="misc buu复现">
+<meta property="og:url" content="http://example.com/2024/08/23/misc-buu%E5%A4%8D%E7%8E%B0/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。 金三胖打开是动图gif ，用stegsolve打开 ，选择 analyse  -&gt; frame brower ，逐帧分析就可以找到flag 你竟然">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-08-23T14:54:35.000Z">
+<meta property="article:modified_time" content="2024-08-24T09:24:54.896Z">
 <meta property="article:author" content="My0n9s">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2024/08/23/misc-buu%E5%A4%8D%E7%8E%B0/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/08/23/misc-buu%E5%A4%8D%E7%8E%B0/","path":"2024/08/23/misc-buu复现/","title":"misc buu复现"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>My0n9s'blog</title>
+<title>misc buu复现 | My0n9s'blog</title>
   
 
 
@@ -68,7 +72,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">My0n9s'blog</h1>
+      <p class="site-title">My0n9s'blog</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -94,7 +98,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -107,6 +111,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%91%E4%B8%89%E8%83%96"><span class="nav-number">1.</span> <span class="nav-text">金三胖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%A0%E7%AB%9F%E7%84%B6%E8%B5%B6%E6%88%91%E8%B5%B0"><span class="nav-number">2.</span> <span class="nav-text">你竟然赶我走</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">二维码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E7%99%BD"><span class="nav-number">4.</span> <span class="nav-text">大白</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B9%8C%E5%B3%B0%E9%95%87%E4%BC%9A%E7%A7%8D%E5%9B%BE"><span class="nav-number">5.</span> <span class="nav-text">乌峰镇会种图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wireshark"><span class="nav-number">6.</span> <span class="nav-text">wireshark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#N%E7%A7%8D%E6%96%B9%E6%B3%95%E8%A7%A3%E5%86%B3"><span class="nav-number">7.</span> <span class="nav-text">N种方法解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%A0%B4%E8%A7%A3"><span class="nav-number">8.</span> <span class="nav-text">基础破解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E7%A7%98%E5%AF%86"><span class="nav-number">9.</span> <span class="nav-text">文件中的秘密</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LSB"><span class="nav-number">10.</span> <span class="nav-text">LSB</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ZIP%E4%BC%AA%E5%8A%A0%E5%AF%86"><span class="nav-number">11.</span> <span class="nav-text">ZIP伪加密</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A2%AB%E5%97%85%E6%8E%A2%E7%9A%84%E6%B5%81%E9%87%8F"><span class="nav-number">12.</span> <span class="nav-text">被嗅探的流量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rar"><span class="nav-number">13.</span> <span class="nav-text">rar</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#qr"><span class="nav-number">14.</span> <span class="nav-text">qr</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%9C%E5%AD%90%E9%87%8C%E9%9D%A2%E7%9A%84%E4%B8%96%E7%95%8C"><span class="nav-number">15.</span> <span class="nav-text">镜子里面的世界</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ningen"><span class="nav-number">16.</span> <span class="nav-text">ningen</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6"><span class="nav-number">17.</span> <span class="nav-text">爱因斯坦</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E6%98%8E%E7%9A%84%E4%BF%9D%E9%99%A9%E7%AE%B1"><span class="nav-number">18.</span> <span class="nav-text">小明的保险箱</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#easycap"><span class="nav-number">19.</span> <span class="nav-text">easycap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E7%9A%84%E9%92%A5%E5%8C%99"><span class="nav-number">20.</span> <span class="nav-text">隐藏的钥匙</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%A6%E5%A4%96%E4%B8%80%E4%B8%AA%E4%B8%96%E7%95%8C"><span class="nav-number">21.</span> <span class="nav-text">另外一个世界</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A5%9E%E7%A7%98%E9%BE%99%E5%8D%B7%E9%A3%8E"><span class="nav-number">22.</span> <span class="nav-text">神秘龙卷风</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%85%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%B4%A2"><span class="nav-number">23.</span> <span class="nav-text">数据包中的线索</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FLAG"><span class="nav-number">24.</span> <span class="nav-text">FLAG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%81%87%E5%A6%82%E7%BB%99%E6%88%91%E4%B8%89%E5%A4%A9%E5%85%89%E6%98%8E"><span class="nav-number">25.</span> <span class="nav-text">假如给我三天光明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E9%97%A8%E6%9F%A5%E6%9D%80"><span class="nav-number">26.</span> <span class="nav-text">后门查杀</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Webshell%E5%90%8E%E9%97%A8"><span class="nav-number">27.</span> <span class="nav-text">Webshell后门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A5%E9%A6%96%E5%93%A5%E5%90%A7"><span class="nav-number">28.</span> <span class="nav-text">来首哥吧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%A2%E5%85%B7%E4%B8%8B%E7%9A%84flag"><span class="nav-number">29.</span> <span class="nav-text">面具下的flag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8D%B7%E5%85%B0%E5%AE%BD%E5%B8%A6%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2"><span class="nav-number">30.</span> <span class="nav-text">荷兰宽带数据泄露</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B9%9D%E8%BF%9E%E7%8E%AF"><span class="nav-number">31.</span> <span class="nav-text">九连环</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -148,16 +153,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/23/misc-buu%E5%A4%8D%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -171,13 +177,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
+      <meta itemprop="name" content="misc buu复现 | My0n9s'blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/08/23/misc-buu%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">misc buu复现</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          misc buu复现
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -215,8 +221,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-          <p>BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。</p>
+    <div class="post-body" itemprop="articleBody"><p>BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。</p>
 <h1 id="金三胖"><a href="#金三胖" class="headerlink" title="金三胖"></a>金三胖</h1><p>打开是动图<code>gif</code> ，用<code>stegsolve</code>打开 ，选择 <code>analyse</code>  -&gt; <code>frame brower</code> ，逐帧分析就可以找到flag</p>
 <h1 id="你竟然赶我走"><a href="#你竟然赶我走" class="headerlink" title="你竟然赶我走"></a>你竟然赶我走</h1><p>用010打开，拖到最后，可以看到flag。</p>
 <h1 id="二维码"><a href="#二维码" class="headerlink" title="二维码"></a>二维码</h1><p>打开是一个二维码，用<code>QR_Research</code> 分析，发现<code>secret is here</code> 这个信息，怀疑是某个隐写的密码？好像也只能这样猜想下，拖到<code>010</code>分析下，发现有PK，所以是多个文件。拖到kali里面，foremost分离一下，发现zip，不过加密了。可以试下伪加密。发现不行，又看到文件名是4number，其实就是一个hint了，猜想密码可能是4位数字，用<code>ARCHPR</code>爆破一下，打开就是flag。</p>
@@ -259,7 +264,6 @@
 <h1 id="九连环"><a href="#九连环" class="headerlink" title="九连环"></a>九连环</h1><p>这个题目需要用到<code>steghide</code> 来提取图片的隐写信息。</p>
 <p>拖到010去看，发现有pk, foremost一下，可以分离出来zip文件。zip文件存在伪加密，因为里面的PK有点多，可以直接全局搜索<code>504B0102</code>。去定位到相应位置。改完才可以解压图片，得到good.jpg。然后再<code>steghide extract -sf good.jpg</code> ，然后提示输入密码，直接空密码(回车)，发现提取出txt文件，也就是另外一个压缩包的密码。解压缩就行了。</p>
 
-      
     </div>
 
     
@@ -267,546 +271,22 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/22/%E4%B8%80%E9%81%93%E9%80%9A%E4%BF%A1%E8%A1%8C%E4%B8%9Amisc%E5%A4%8D%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/08/22/%E4%B8%80%E9%81%93%E9%80%9A%E4%BF%A1%E8%A1%8C%E4%B8%9Amisc%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">一道通信行业misc</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-08-22 20:16:13 / Modified: 20:39:11" itemprop="dateCreated datePublished" datetime="2024-08-22T20:16:13+08:00">2024-08-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/misc/" itemprop="url" rel="index"><span itemprop="name">misc</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>通行行业的一道misc，复现一下。感谢大佬学弟的WP</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/22/%E4%B8%80%E9%81%93%E9%80%9A%E4%BF%A1%E8%A1%8C%E4%B8%9Amisc%E5%A4%8D%E7%8E%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/20/ctfshow-pwn72/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/08/20/ctfshow-pwn72/" class="post-title-link" itemprop="url">ctfshow pwn72</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-08-20 21:23:38 / Modified: 21:57:50" itemprop="dateCreated datePublished" datetime="2024-08-20T21:23:38+08:00">2024-08-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本题主要考察的<code>ret2syscall</code> 此前已经接触到了<code>ret2text</code> 、<code>ret2shellcode</code>、<code>ret2libc</code></p>
-<p>简单说一下这几个的区别：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/20/ctfshow-pwn72/#more" rel="contents">
-                Read more &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/22/%E4%B8%80%E9%81%93%E9%80%9A%E4%BF%A1%E8%A1%8C%E4%B8%9Amisc%E5%A4%8D%E7%8E%B0/" rel="prev" title="一道通信行业misc">
+                  <i class="fa fa-angle-left"></i> 一道通信行业misc
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/17/pwn%E5%9D%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/08/17/pwn%E5%9D%91/" class="post-title-link" itemprop="url">pwn坑</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-08-17 23:50:30" itemprop="dateCreated datePublished" datetime="2024-08-17T23:50:30+08:00">2024-08-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-08-20 21:55:40" itemprop="dateModified" datetime="2024-08-20T21:55:40+08:00">2024-08-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>想了下，还是专门开个文章记录一下学PWN遇到的一些坑(对我自己来说)，好比大一那会儿刚接触C语言的时候，各种小问题导致在学校OJ网站上面做题时，一直AC不了。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/17/pwn%E5%9D%91/#more" rel="contents">
-                Read more &raquo;
-              </a>
+            <div class="post-nav-item">
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          </div>
     </footer>
   </article>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/17/ctfshow-pwn67/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/08/17/ctfshow-pwn67/" class="post-title-link" itemprop="url">ctfshow pwn67</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-08-17 16:55:11 / Modified: 23:38:04" itemprop="dateCreated datePublished" datetime="2024-08-17T16:55:11+08:00">2024-08-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这个题加深了对栈结构的理解，具体题解如下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/17/ctfshow-pwn67/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/17/ctfshowpwn69/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/08/17/ctfshowpwn69/" class="post-title-link" itemprop="url">ctfshowpwn69</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-08-17 10:29:53" itemprop="dateCreated datePublished" datetime="2024-08-17T10:29:53+08:00">2024-08-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-08-20 21:22:27" itemprop="dateModified" datetime="2024-08-20T21:22:27+08:00">2024-08-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>CTFshow pwn69的题解，网上有很多类似的WP，这里把当时看的时候几个疑惑的地方解释下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/17/ctfshowpwn69/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/14/%E5%89%8D%E8%A8%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/08/14/%E5%89%8D%E8%A8%80/" class="post-title-link" itemprop="url">前言</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-08-14 23:00:56" itemprop="dateCreated datePublished" datetime="2024-08-14T23:00:56+08:00">2024-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-08-16 19:58:11" itemprop="dateModified" datetime="2024-08-16T19:58:11+08:00">2024-08-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>种种原因加上机缘巧合，又重新回到了网安行业。希望这次能把其当作一生的兴趣爱好而不仅仅是工作。想了下，还是开个博客记录下。一个是针对线下断网，好记性不如烂笔头。另外，也希望博客能成为一个综合性记录，不单单只是计算机知识的地方。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/14/%E5%89%8D%E8%A8%80/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
 
 
