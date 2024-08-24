@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。 金三胖打开是动图gif ，用stegsolve打开 ，选择 analyse  -&gt; frame brower ，逐帧分析就可以找到flag 你竟然">
+    <meta name="description" content="BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="misc buu复现">
 <meta property="og:url" content="http://example.com/2024/08/23/misc-buu%E5%A4%8D%E7%8E%B0/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
-<meta property="og:description" content="BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。 金三胖打开是动图gif ，用stegsolve打开 ，选择 analyse  -&gt; frame brower ，逐帧分析就可以找到flag 你竟然">
+<meta property="og:description" content="BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-08-23T14:54:35.000Z">
-<meta property="article:modified_time" content="2024-08-24T09:24:54.896Z">
+<meta property="article:modified_time" content="2024-08-24T09:27:10.542Z">
 <meta property="article:author" content="My0n9s">
 <meta name="twitter:card" content="summary">
 
@@ -200,7 +200,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-08-24 17:24:54" itemprop="dateModified" datetime="2024-08-24T17:24:54+08:00">2024-08-24</time>
+      <time title="Modified: 2024-08-24 17:27:10" itemprop="dateModified" datetime="2024-08-24T17:27:10+08:00">2024-08-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -222,6 +222,8 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。</p>
+<span id="more"></span>
+
 <h1 id="金三胖"><a href="#金三胖" class="headerlink" title="金三胖"></a>金三胖</h1><p>打开是动图<code>gif</code> ，用<code>stegsolve</code>打开 ，选择 <code>analyse</code>  -&gt; <code>frame brower</code> ，逐帧分析就可以找到flag</p>
 <h1 id="你竟然赶我走"><a href="#你竟然赶我走" class="headerlink" title="你竟然赶我走"></a>你竟然赶我走</h1><p>用010打开，拖到最后，可以看到flag。</p>
 <h1 id="二维码"><a href="#二维码" class="headerlink" title="二维码"></a>二维码</h1><p>打开是一个二维码，用<code>QR_Research</code> 分析，发现<code>secret is here</code> 这个信息，怀疑是某个隐写的密码？好像也只能这样猜想下，拖到<code>010</code>分析下，发现有PK，所以是多个文件。拖到kali里面，foremost分离一下，发现zip，不过加密了。可以试下伪加密。发现不行，又看到文件名是4number，其实就是一个hint了，猜想密码可能是4位数字，用<code>ARCHPR</code>爆破一下，打开就是flag。</p>

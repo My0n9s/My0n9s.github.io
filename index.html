@@ -194,7 +194,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-08-24 17:24:54" itemprop="dateModified" datetime="2024-08-24T17:24:54+08:00">2024-08-24</time>
+      <time title="Modified: 2024-08-24 17:27:10" itemprop="dateModified" datetime="2024-08-24T17:27:10+08:00">2024-08-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -217,48 +217,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>BUU上的题目，重新开始刷一下，前100道就当是复习一下基础了。顺便熟悉一下工具的使用。20年那会儿为了打校赛，除了PWN和RE，其他几个方向都刷了下。主要还是web为主。这次重新刷，主要是解题思路加一些细节坑记录下吧，充当线下断网环境下的资料。</p>
-<h1 id="金三胖"><a href="#金三胖" class="headerlink" title="金三胖"></a>金三胖</h1><p>打开是动图<code>gif</code> ，用<code>stegsolve</code>打开 ，选择 <code>analyse</code>  -&gt; <code>frame brower</code> ，逐帧分析就可以找到flag</p>
-<h1 id="你竟然赶我走"><a href="#你竟然赶我走" class="headerlink" title="你竟然赶我走"></a>你竟然赶我走</h1><p>用010打开，拖到最后，可以看到flag。</p>
-<h1 id="二维码"><a href="#二维码" class="headerlink" title="二维码"></a>二维码</h1><p>打开是一个二维码，用<code>QR_Research</code> 分析，发现<code>secret is here</code> 这个信息，怀疑是某个隐写的密码？好像也只能这样猜想下，拖到<code>010</code>分析下，发现有PK，所以是多个文件。拖到kali里面，foremost分离一下，发现zip，不过加密了。可以试下伪加密。发现不行，又看到文件名是4number，其实就是一个hint了，猜想密码可能是4位数字，用<code>ARCHPR</code>爆破一下，打开就是flag。</p>
-<h1 id="大白"><a href="#大白" class="headerlink" title="大白"></a>大白</h1><p>这个题目很明显是要改高度。所以拖到010去改jpg的高度就行了，重点是找到位置，这里其实010工具很方便分析，可以清楚的找到height的位置，就不用刻意去记了。20年那会儿用的winhex还得自己去找高的位置，感觉过时了哈哈哈。</p>
-<h1 id="乌峰镇会种图"><a href="#乌峰镇会种图" class="headerlink" title="乌峰镇会种图"></a>乌峰镇会种图</h1><p>和前面的题一样，010打开，拖到后面就有flag</p>
-<h1 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h1><p>提示了找管理员登陆界面。所以wireshark打开流量包，找http数据包里面的数据，可以找到<code>login.php</code> ，发现数据包里面带password信息，提交即可。</p>
-<h1 id="N种方法解决"><a href="#N种方法解决" class="headerlink" title="N种方法解决"></a>N种方法解决</h1><p>这个题目下载下来是个exe文件，第一反应就是运行，发现报错，该系统下无法运行。所以就切换到kali去看看，因为做PWN题的原因，习惯于先<code>chmod 777 </code> 改一下文件权限。然后再去运行，发现出现了一段base64编码。正常逻辑肯定会拿过去解码。但是终端还显示了一条：<code>./KEY.exe: 1: data:image/jpg: not found</code>   所以就想着往图片方向试试了，即<code>base64转图片</code> 。用<code>cyberchef可以轻松实现</code> 。<code>recipe</code>选择<code>from base64</code> ，然后input输入我们的base64字符串。输出成文件保存就行了。然后发现是个二维码。QR_Searcher弄一下就出现flag了。</p>
-<h1 id="基础破解"><a href="#基础破解" class="headerlink" title="基础破解"></a>基础破解</h1><p>这个题目是压缩包里面套了压缩包，所以我一开始还没有解压缩一层，直接丢进去<code>ARCHPR</code> 爆破的时候发现报错。所以要先解压一层，然后再丢进去，接下来就是base64解码，找个解密软件就OK了。</p>
-<h1 id="文件中的秘密"><a href="#文件中的秘密" class="headerlink" title="文件中的秘密"></a>文件中的秘密</h1><p>图片用010打开，发现有exif ，然后去右键查看属性，发现flag</p>
-<h1 id="LSB"><a href="#LSB" class="headerlink" title="LSB"></a>LSB</h1><p>标题就是一个提示LSB，考虑隐写，拖到<code>stegsolve</code>去分析 。 用<code>data extract</code>  ，RGB都选择0号位，然后<code>preview</code>一下，可以发现png信息，保存是个二维码，QR读取下就行。这里之前有个思维误区，LSB隐写的信息可以是图片，而不是仅限于字符串信息啥的。</p>
-<h1 id="ZIP伪加密"><a href="#ZIP伪加密" class="headerlink" title="ZIP伪加密"></a>ZIP伪加密</h1><p>这个点记录一下，就是两个块。一个是压缩源文件数据区<code>504B0302</code> 再过两个字节，就是<code>全局方式标记位</code>。另外一个就是压缩文件源目录区<code>504B0102</code> 再过四个字节，就是<code>全局方式标记位</code></p>
-<p>根据全局方式标记位来判断：</p>
-<p>压缩源文件：00  00 压缩源目录 00 00  代表无加密</p>
-<p>压缩源文件：00  00 压缩源目录 09 00  代表伪加密 （此时可以修改成00 00来实现免密码）</p>
-<p>压缩源文件：09  00 压缩源目录 09 00  代表真实加密</p>
-<p>这题坑的地方就在于，你拖到010去看，对应的位置就是09 00 09 00，按照惯性思维你就判断为真实加密，可能就不会往伪加密去想了。但真实情况是全部改成 00 00 ，就发现可以直接免密码读取文件了。所以碰到这种还是都试试，万一呢？</p>
-<h1 id="被嗅探的流量"><a href="#被嗅探的流量" class="headerlink" title="被嗅探的流量"></a>被嗅探的流量</h1><p>题干提示了文件传输的数据，文件拖到wireshark里面。导出http对象，发现有个upload。估计是在上传文件，然后一个一个http包去翻，可以翻到flag。</p>
-<p>还有就是<code>ctrl f</code> 选择分组字节流去搜索字符串flag。可以筛选掉一些。然后再去找。</p>
-<h1 id="rar"><a href="#rar" class="headerlink" title="rar"></a>rar</h1><p>提示了4位数，扔到<code>ARCHPR</code> 爆破下即可。</p>
-<h1 id="qr"><a href="#qr" class="headerlink" title="qr"></a>qr</h1><p>二维码，扫了就有flag</p>
-<h1 id="镜子里面的世界"><a href="#镜子里面的世界" class="headerlink" title="镜子里面的世界"></a>镜子里面的世界</h1><p>打开图片，提示steg。所以拿到<code>stegsolve</code>去分析。LSB隐写，放到<code>data extract</code> 分析就出来了。</p>
-<h1 id="ningen"><a href="#ningen" class="headerlink" title="ningen"></a>ningen</h1><p>给了一张图片，其实题干提示了4位数，后面可能涉及到密码。先拖到010分析，发现有pk。foremost分离下，压缩包爆破，最后拿到flag.</p>
-<h1 id="爱因斯坦"><a href="#爱因斯坦" class="headerlink" title="爱因斯坦"></a>爱因斯坦</h1><p>拖到010去扫了一眼，发现有exif，还有flag.txt，应该是有多个文件，拖到kali，foremost一下看看。分离出flag.txt，打开发现需要密码。</p>
-<p>然后想到exif文件嘛，就去属性看下，结果备注那里有个<code>this_is_not_password</code> ，也许就是密码？试试发现真是，打开就有flag。</p>
-<h1 id="小明的保险箱"><a href="#小明的保险箱" class="headerlink" title="小明的保险箱"></a>小明的保险箱</h1><p>类似的就不重复了。简单写下，提取出压缩文件，然后爆破。</p>
-<h1 id="easycap"><a href="#easycap" class="headerlink" title="easycap"></a>easycap</h1><p>拖到wireshark，追踪TCP流，就看到flag了</p>
-<h1 id="隐藏的钥匙"><a href="#隐藏的钥匙" class="headerlink" title="隐藏的钥匙"></a>隐藏的钥匙</h1><p>010打开，搜索一下关键词flag，可以看到base64字符，然后解密就行。这里我感觉就是经验，010一打开一大段，翻的话不一定能发现。</p>
-<h1 id="另外一个世界"><a href="#另外一个世界" class="headerlink" title="另外一个世界"></a>另外一个世界</h1><p>把文件拖到010，发现末端有个01字符串合集，放到<code>cyberchef</code> ，recipe选择<code>from binary</code> 转换一下即可。</p>
-<h1 id="神秘龙卷风"><a href="#神秘龙卷风" class="headerlink" title="神秘龙卷风"></a>神秘龙卷风</h1><p>打开之后发现压缩包加密了，这里根据题干提示，可能是4位数字加密，<code>ARCHPR</code>爆破一下，打开txt，由<code>+ &gt; .</code> 构成编码，这种编码为<code>brainfuck</code> 放到Toolsfk去跑一下即可。</p>
-<h1 id="数据包中的线索"><a href="#数据包中的线索" class="headerlink" title="数据包中的线索"></a>数据包中的线索</h1><p>拖到wireshark，导出http对象，发现<code>fenxi.php</code> ，然后找到这个数据包，跟踪一下HTTP，发现有一大段疑似base64编码，这里直接base64解码解不出来，base64转图片可以。用<code>toolsfx</code>或者<code>cyberchef</code>都可以。</p>
-<h1 id="FLAG"><a href="#FLAG" class="headerlink" title="FLAG"></a>FLAG</h1><p>放到010里面没看出什么信息来，然后放到stegsolve尝试一下lsb隐写，发现有PK,save保存出来，解压缩，发现点不开，那就放到linux系统下去试试，和前面的一个题类似。file一下，发现是可执行文件，改完权限之后，运行即可。</p>
-<h1 id="假如给我三天光明"><a href="#假如给我三天光明" class="headerlink" title="假如给我三天光明"></a>假如给我三天光明</h1><p>一开始是盲文加密，好像工具里面没有直接解密的，把映射表记录一下。输入密码打开是个音频文件。听声音就是摩斯密码。</p>
-<p>把长的翻译成<code>-</code>，短的翻译成<code>.</code> ，然后去摩斯解密即可。</p>
-<h1 id="后门查杀"><a href="#后门查杀" class="headerlink" title="后门查杀"></a>后门查杀</h1><p>放到D盾里面扫一下，发现危险文件，然后看md5就行了。</p>
-<h1 id="Webshell后门"><a href="#Webshell后门" class="headerlink" title="Webshell后门"></a>Webshell后门</h1><p>这个题目和上面一样，但是不知道是不是附件的原因，下载下来的附件并没有后门。。。</p>
-<h1 id="来首哥吧"><a href="#来首哥吧" class="headerlink" title="来首哥吧"></a>来首哥吧</h1><p>摩斯密码</p>
-<h1 id="面具下的flag"><a href="#面具下的flag" class="headerlink" title="面具下的flag"></a>面具下的flag</h1><p>foremost分离一下，可以分离出<code>flag.vmdk</code> ，windows下直接解压缩拿不到<code>part2</code>的数据。所以要放到linux下去用7z解压。</p>
-<p>丢kali里面，<code>7z -x flag.vmdk </code> 可以解压出几个文件，一个是<code>brainfuck</code>，一个是<code>Ook</code>然后逐一解密，最后拼接起来就行了。</p>
-<h1 id="荷兰宽带数据泄露"><a href="#荷兰宽带数据泄露" class="headerlink" title="荷兰宽带数据泄露"></a>荷兰宽带数据泄露</h1><p>要用<code>Routerpassview</code>打开</p>
-<h1 id="九连环"><a href="#九连环" class="headerlink" title="九连环"></a>九连环</h1><p>这个题目需要用到<code>steghide</code> 来提取图片的隐写信息。</p>
-<p>拖到010去看，发现有pk, foremost一下，可以分离出来zip文件。zip文件存在伪加密，因为里面的PK有点多，可以直接全局搜索<code>504B0102</code>。去定位到相应位置。改完才可以解压图片，得到good.jpg。然后再<code>steghide extract -sf good.jpg</code> ，然后提示输入密码，直接空密码(回车)，发现提取出txt文件，也就是另外一个压缩包的密码。解压缩就行了。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/08/23/misc-buu%E5%A4%8D%E7%8E%B0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
