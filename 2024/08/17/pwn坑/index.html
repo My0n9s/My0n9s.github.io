@@ -27,7 +27,7 @@
 <meta property="og:description" content="想了下，还是专门开个文章记录一下学PWN遇到的一些坑(对我自己来说)，好比大一那会儿刚接触C语言的时候，各种小问题导致在学校OJ网站上面做题时，一直AC不了。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-08-17T15:50:30.000Z">
-<meta property="article:modified_time" content="2024-08-20T13:55:40.683Z">
+<meta property="article:modified_time" content="2024-08-25T04:33:26.205Z">
 <meta property="article:author" content="My0n9s">
 <meta name="twitter:card" content="summary">
 
@@ -125,7 +125,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -199,7 +199,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-08-20 21:55:40" itemprop="dateModified" datetime="2024-08-20T21:55:40+08:00">2024-08-20</time>
+      <time title="Modified: 2024-08-25 12:33:26" itemprop="dateModified" datetime="2024-08-25T12:33:26+08:00">2024-08-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -230,6 +230,10 @@
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ROPgadget //can find the address of ret </span><br><span class="line">eg: ROPgadget --binary ./pwn38 --only &quot;pop|ret&quot; | grep &quot;ret&quot;</span><br><span class="line">    ROPgadget –binary pwn38 –string “cat /ctfshow_flag”</span><br><span class="line">    </span><br><span class="line">ropper can also find the address</span><br><span class="line">eg: ropper --file pwn72 --search &quot;int 0x80&quot;</span><br><span class="line"></span><br><span class="line">ELF //can find the address of some func and args correctly</span><br><span class="line">eg: elf=ELF(&quot;./pwn&quot;)</span><br><span class="line">systemaddress=elf.sym[&#x27;system&#x27;]</span><br><span class="line">backdoor_func_address=elf.sym[&quot;backdoor&quot;]</span><br><span class="line">bin_sh_arg_address=next(elf.search(&quot;/bin/sh&quot;))</span><br><span class="line"></span><br><span class="line">something about IDA</span><br><span class="line">ctrl + s 可以看到各段的一些信息</span><br><span class="line">shift+f12 可以查看参数值</span><br><span class="line">Alt+T 可以根据关键参数去找相应函数</span><br><span class="line">ctrl + f 在函数搜索框里可以看到相应函数</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<ol start="4">
+<li>python对导入包的顺序非常敏感，比如PWN73题，我先导入from struct import pack，再去导入from pwn import * 就会出错。得交换一下顺序。</li>
+<li></li>
+</ol>
 
     </div>
 
