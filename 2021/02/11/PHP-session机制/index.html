@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言之前接触Session的时候，没有仔细去了解，最近又接触到了php的session反序列化，于是再拿出来梳理一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHPSESSION机制以及反序列化">
+<meta property="og:url" content="http://example.com/2021/02/11/PHP-session%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言之前接触Session的时候，没有仔细去了解，最近又接触到了php的session反序列化，于是再拿出来梳理一下。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/11/nMYzcfH1ZRrNsTB.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/11/Z2eDSoCUVA7qTgH.png">
+<meta property="og:image" content="https://i.loli.net/2021/02/11/czoV9aOsJmk8jTE.png">
+<meta property="article:published_time" content="2021-02-11T01:59:47.000Z">
+<meta property="article:modified_time" content="2024-09-08T04:00:12.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="反序列化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/11/nMYzcfH1ZRrNsTB.png">
+
+
+<link rel="canonical" href="http://example.com/2021/02/11/PHP-session%E6%9C%BA%E5%88%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/02/11/PHP-session%E6%9C%BA%E5%88%B6/","path":"2021/02/11/PHP-session机制/","title":"PHPSESSION机制以及反序列化"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PHPSESSION机制以及反序列化 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#session%E6%98%AF%E5%B9%B2%E5%98%9B%E7%9A%84"><span class="nav-number">1.1.</span> <span class="nav-text">session是干嘛的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session%E5%92%8B%E8%B5%B7%E4%BD%9C%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">session咋起作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">session相关配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">session反序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo"><span class="nav-number">1.5.</span> <span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%87%E5%9D%91"><span class="nav-number">1.6.</span> <span class="nav-text">采坑</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/11/PHP-session%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PHPSESSION机制以及反序列化 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PHPSESSION机制以及反序列化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-02-11 09:59:47" itemprop="dateCreated datePublished" datetime="2021-02-11T09:59:47+08:00">2021-02-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 12:00:12" itemprop="dateModified" datetime="2024-09-08T12:00:12+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前接触Session的时候，没有仔细去了解，最近又接触到了php的session反序列化，于是再拿出来梳理一下。</p>
+<span id="more"></span>
+
+<h2 id="session是干嘛的"><a href="#session是干嘛的" class="headerlink" title="session是干嘛的"></a>session是干嘛的</h2><p>设想一个场景，开启一个会话，怎么让会话持续呢？比如一个用户登录一个网站去买一本书，你怎么知道是这个用户要买书而不是另外一个用户呢？而session会存储特定对象的信息，session 其实也是一个身份验证机制。</p>
+<h2 id="session咋起作用"><a href="#session咋起作用" class="headerlink" title="session咋起作用"></a>session咋起作用</h2><p>在PHP中得调用<code>session_start()</code> 函数来手动开启session机制，当第一次去访问网站时，第一次的响应包里面会携带set-cookie字段，返回一个<code>sessionid</code>，然后服务器会创建与<code>sessionid</code>同名的文件，里面储存了该用户的会话信息。以此来维持会话，且同一个用户访问这个服务器上任何一个页面的时候都会使用同一个<code>sessionid</code>  。如果觉得每一个页面使用<code>session_start</code>比较麻烦，可以在 <code>php.ini</code>配置里将 <code>session.auto_start=1</code> 来开启</p>
+<h2 id="session相关配置"><a href="#session相关配置" class="headerlink" title="session相关配置"></a>session相关配置</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">session.save_handler        --- session的保存形式，默认为files，以文件形式保存</span><br><span class="line">session.save_path           --- session的保存路径</span><br><span class="line">session.serialize_handler   --- session序列化存储所用的处理器，默认为php</span><br></pre></td></tr></table></figure>
+
+<h2 id="session反序列化"><a href="#session反序列化" class="headerlink" title="session反序列化"></a>session反序列化</h2><p>session序列化存储所用的处理器有三种:</p>
+<ul>
+<li>php                   —存储格式：键名+竖线+经过serialize()函数序列化后的值</li>
+<li>php_binary       —存储格式：键名长度对应的ASCII字符+键名+经过serialize()函数序列处理的值</li>
+<li>php_serialize    —存储格式：经过serialize()函数序列化处理的值</li>
+</ul>
+<p>存储和取出用的是同一个处理器，不会造成安全问题，而使用不同的处理器就会引发一些安全问题了，下面通过一个典型的demo来解释上面提到的几点</p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//demo.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&quot;session.serialize_handler&quot;</span>,<span class="string">&quot;php&quot;</span>);</span><br><span class="line"><span class="comment">//ini_set(&quot;session.serialize_handler&quot;,&quot;php_serialize&quot;);</span></span><br><span class="line"><span class="comment">//ini_set(&quot;session.serialize_handler&quot;,&quot;php_binary&quot;);</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;My0n9s&#x27;</span>]=<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/02/11/nMYzcfH1ZRrNsTB.png" alt="1.png"></p>
+<p>当我传入<code>?My0n9s=xs</code>时，可以看到本地生成了一个与sessionid同名的sess_xxx文件，我使用的是phpstudy集成环境，默认路径在 <code>D:\phpStudy\PHPTutorial\tmp\tmp</code>上</p>
+<p><img src="https://i.loli.net/2021/02/11/Z2eDSoCUVA7qTgH.png" alt="2.png"></p>
+<p>可以看到php处理器 序列化存储的结果为 <code>My0n9s|s:2:&quot;xs&quot;;</code> 换一下处理器可以看到，php_serialize处理器对应的序列化结果为<code>a:1:&#123;s:6:&quot;My0n9s&quot;;s:2:&quot;xs&quot;;&#125;</code> ，php_binary处理器对应的序列化结果为：<code>My0n9ss:2:&quot;xs&quot;;</code>  因为ASCII 值6 对应的是ACK这里没显示出来。</p>
+<p>我们再来看看由于不同处理器造成的反序列化问题</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//demo1.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&quot;session.serialize_handler&quot;</span>,<span class="string">&quot;php_serialize&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;My0n9s&#x27;</span>]=<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$_SESSION</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>demo1.php 我们使用 php_serialize来进行序列化存储</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//demo2.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&quot;session.serialize_handler&quot;</span>,<span class="string">&quot;php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class"></span>&#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$age</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">         <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;name.<span class="string">&quot;is&quot;</span>.<span class="variable language_">$this</span>-&gt;age.<span class="string">&quot;years old&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>demo2.php 我们使用php处理器</p>
+<p>然后我们本地构造一个payload：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>=<span class="string">&#x27;xiaoming&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$age</span>=<span class="number">8</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title class_">Student</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;|&#x27;</span>.<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>将生成的传入到demo1.php，查看本地的sess_xxxx文件得到值：</p>
+<p><code>a:1:&#123;s:6:&quot;My0n9s&quot;;s:59:&quot;|O:7:&quot;Student&quot;:2:&#123;s:4:&quot;name&quot;;s:8:&quot;xiaoming&quot;;s:3:&quot;age&quot;;i:8;&#125;&quot;;&#125;</code>  </p>
+<p>我们再去访问 demo2.php 可以看到：</p>
+<p><img src="https://i.loli.net/2021/02/11/czoV9aOsJmk8jTE.png" alt="3.png"></p>
+<p>成功反序列化。原因在于 php处理器在遇到<code>|</code> 时，会直接把它后面的字符串进行反序列化处理。</p>
+<p>造成session反序列化的原因是因为序列化存储时用到的处理器和取出时反序列化的处理器不一致导致的。</p>
+<h2 id="采坑"><a href="#采坑" class="headerlink" title="采坑"></a>采坑</h2><p>我之前一直在想，序列化和反序列化是什么来触动他们发生的，后来才知道是 <code>session_start</code> 函数来触发的。</p>
+<p>官方文档关于session_start的解释：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session_start() 会创建新会话或者重用现有会话。 如果通过 GET 或者 POST 方式，或者使用 cookie 提交了会话 ID， 则会重用现有会话。</span><br><span class="line">当会话自动开始或者通过 session_start() 手动开始的时候， PHP 内部会调用会话管理器的 open 和 read 回调函数。 会话管理器可能是 PHP 默认的， 也可能是扩展提供的（SQLite 或者 Memcached 扩展）， 也可能是通过 session_set_save_handler() 设定的用户自定义会话管理器。 通过 read 回调函数返回的现有会话数据（使用特殊的序列化格式存储）， PHP 会自动反序列化数据并且填充 $_SESSION 超级全局变量</span><br></pre></td></tr></table></figure>
+
+<p>重点在最后一句：</p>
+<p><strong>PHP 会自动反序列化数据并且填充 $_SESSION 超级全局变量</strong></p>
+<p>要开始肝课设了，老拖延症了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag"># 反序列化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/03/SSRF%E6%89%93redis%E7%95%AA%E5%A4%96/" rel="prev" title="SSRF打redis番外">
+                  <i class="fa fa-angle-left"></i> SSRF打redis番外
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/18/PDO%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8EMVC%E5%88%9D%E6%8E%A2/" rel="next" title="PDO预编译与MVC初探">
+                  PDO预编译与MVC初探 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

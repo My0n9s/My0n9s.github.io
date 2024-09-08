@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言抽空了解了一下PDO预编译和MVC结构基础东西，记录一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PDO预编译与MVC初探">
+<meta property="og:url" content="http://example.com/2021/03/18/PDO%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8EMVC%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言抽空了解了一下PDO预编译和MVC结构基础东西，记录一下。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/03/19/NkBrlSR5Q87HpIL.gif">
+<meta property="article:published_time" content="2021-03-18T12:58:38.000Z">
+<meta property="article:modified_time" content="2024-09-08T03:58:12.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/03/19/NkBrlSR5Q87HpIL.gif">
+
+
+<link rel="canonical" href="http://example.com/2021/03/18/PDO%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8EMVC%E5%88%9D%E6%8E%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/03/18/PDO%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8EMVC%E5%88%9D%E6%8E%A2/","path":"2021/03/18/PDO预编译与MVC初探/","title":"PDO预编译与MVC初探"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PDO预编译与MVC初探 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PDO"><span class="nav-number">1.1.</span> <span class="nav-text">PDO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAPDO%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">创建PDO对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">常用方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E7%BC%96%E8%AF%91"><span class="nav-number">1.1.3.</span> <span class="nav-text">预编译</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%85%E8%B0%88%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">浅谈原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-1"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">语法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC"><span class="nav-number">1.2.</span> <span class="nav-text">MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.2.1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E5%9E%8B%E7%9A%84MVC%E6%A1%86%E6%9E%B6"><span class="nav-number">1.2.3.</span> <span class="nav-text">小型的MVC框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/18/PDO%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8EMVC%E5%88%9D%E6%8E%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PDO预编译与MVC初探 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PDO预编译与MVC初探
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-18 20:58:38" itemprop="dateCreated datePublished" datetime="2021-03-18T20:58:38+08:00">2021-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 11:58:12" itemprop="dateModified" datetime="2024-09-08T11:58:12+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>抽空了解了一下PDO预编译和MVC结构基础东西，记录一下。</p>
+<span id="more"></span>
+
+<h2 id="PDO"><a href="#PDO" class="headerlink" title="PDO"></a>PDO</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>PDO是PHP的一个轻量级的接口，使得访问和操作数据库得以简便。它使得访问多种数据库（除了mysql）可以用相同的方法。</p>
+<p>同时正确使用它的预编译，可以有效防止sql注入。它的基本使用语法也比较简便。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>在使用PDO之前，应该需要做相应的配置（这个配置方法可以自行百度），这里简单对PDO的常见语法做一个梳理。</p>
+<h4 id="创建PDO对象"><a href="#创建PDO对象" class="headerlink" title="创建PDO对象"></a>创建PDO对象</h4><ul>
+<li>创建PDO对象：(这里是以mysql为例子)</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$dsn</span>=<span class="string">&#x27;mysql:dbname=test;host=127.0.0.1;charset=utf-8&#x27;</span>;</span><br><span class="line"><span class="variable">$user</span>=<span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"><span class="variable">$password</span>=<span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="variable">$pdo</span>=<span class="keyword">new</span> <span class="title function_ invoke__">PDO</span>(<span class="variable">$dsn</span>,<span class="variable">$user</span>,<span class="variable">$password</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(PDOException <span class="variable">$e</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Connection failed: &#x27;</span>.<span class="variable">$e</span>-&gt;<span class="title function_ invoke__">getMessage</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><ul>
+<li>exec()方法 –执行sql语句，并返回被修改或者被删除的SQL语句影响的行数(int)</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//接着上面的对象，不重复写</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;INSERT INTO USER (id，name) VALUES (1,&#x27;My0n9s&#x27;)&quot;</span>;</span><br><span class="line"><span class="variable">$rel</span>=<span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">exec</span>(<span class="variable">$sql</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>query()方法 –执行SQL语句，但是返回的是一个结果集对象（PDOstatement）</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM user ORDERY BY id DESC&quot;</span>;</span><br><span class="line"><span class="variable">$rel</span>=<span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fetch()方法 – 从结果集中获取一行，并向下移动指针</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM user ORDER BY id DESC&quot;</span>;</span><br><span class="line"><span class="variable">$stmt</span>=<span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line"><span class="keyword">while</span>(<span class="variable">$rel</span>=<span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">fetch</span>(PDO::<span class="variable constant_">FETCH_ASSOC</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="title function_ invoke__">var_dump</span>(<span class="variable">$rel</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>fetchALL()方法–返回一个结果集的所有数组</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;SELECT * FROM user ORDER BY id DESC&quot;</span>;</span><br><span class="line"><span class="variable">$stmt</span>=<span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line"><span class="variable">$rel</span>=<span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">fetchALL</span>(PDO::<span class="variable constant_">FETCH_ASSOC</span>);</span><br><span class="line"><span class="title function_ invoke__">var_dump</span>(<span class="variable">$rel</span>);   <span class="comment">//直接全部一次性输出</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="预编译"><a href="#预编译" class="headerlink" title="预编译"></a>预编译</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>PDO有两种模式，一种是本地预处理，一种是模拟预处理，模拟预处理用于数据库不支持预编译的情况，其实它并没有做到真正的预编译，其本质也是转义用户输入的数据，如果编码设置不规范，就存在宽字节注入的风险，而本地预处理，只要使用规范，可以从本质上去防止SQL注入。</p>
+<h4 id="浅谈原理"><a href="#浅谈原理" class="headerlink" title="浅谈原理"></a>浅谈原理</h4><p>预编译为什么能做到防注入？</p>
+<p>从预编译的运行机制说起，通常，以Mysql为例，一条SQL语句从传入到执行经历一下几个过程：</p>
+<ul>
+<li>检查缓存</li>
+<li>规则验证</li>
+<li>解析器解析为语法树</li>
+<li>预处理器进一步优化语法树</li>
+<li>优化SQL</li>
+<li>生成执行计划</li>
+<li>执行</li>
+</ul>
+<p><strong>PDO完成预处里需要的步骤</strong></p>
+<ul>
+<li>提取相同结构的sql部分(把数据部分，可变部分进行去除)</li>
+<li>编译相同的结构，并把编译结果保存</li>
+<li>把不同的数据部分进行替换</li>
+<li>执行sql</li>
+<li>提取相同结构的sql语句</li>
+<li>在sql语句中，使用命名参数和问号参数，来代替可变的数据</li>
+<li>使用占位符“:value”和”?”来代替可变的数据</li>
+</ul>
+<p>来看两条语句:</p>
+<p><code>select * from user where id=1</code>  和 <code>select * from users where id=2</code> ，这两条语句语法结构是差不多的，区别只在于后面的id的字段值，预编译就是把相同的语法部分拿过去先编译，构建语法树，最后再去传字段值，做到数据和代码进行了一个分离。 从而有效的防止了SQL注入</p>
+<h4 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h4><p>简单的Demo：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="comment">//创建一个连接mysql数据库的PDO对象</span></span><br><span class="line"> <span class="variable">$dsn</span>=<span class="string">&#x27;mysql:dbname=test;host=127.0.0.1;charset=utf8&#x27;</span>; </span><br><span class="line"> <span class="variable">$user</span>=<span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"> <span class="variable">$password</span>=<span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$pdo</span>=<span class="keyword">new</span> <span class="title function_ invoke__">PDO</span>(<span class="variable">$dsn</span>,<span class="variable">$user</span>,<span class="variable">$password</span>);</span><br><span class="line">    <span class="comment">//使用参数名进行绑定 </span></span><br><span class="line">    <span class="variable">$sql</span>=<span class="string">&quot;INSERT INTO USER(id,name)VALUES(:id,:name)&quot;</span>;</span><br><span class="line">    <span class="comment">//对内容进行预编译</span></span><br><span class="line">    <span class="variable">$stmt</span>=<span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="variable">$sql</span>);</span><br><span class="line">    <span class="comment">//对占位数据进行绑定</span></span><br><span class="line">    <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">bindValue</span>(<span class="string">&#x27;:id&#x27;</span>,<span class="number">1</span>)</span><br><span class="line">    <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">bindValue</span>(<span class="string">&#x27;:name&#x27;</span>,<span class="string">&#x27;My0n9s&#x27;</span>);</span><br><span class="line">    <span class="comment">//执行已预编译的sql</span></span><br><span class="line">    <span class="variable">$rel</span>=<span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">execute</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(PDOException <span class="variable">$e</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Connection faile:&quot;</span>.<span class="variable">$e</span>-&gt;<span class="title function_ invoke__">getMessage</span>();</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;错误行号:&quot;</span>.<span class="variable">$e</span>-&gt;<span class="title function_ invoke__">getCode</span>();</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;错误行号:&quot;</span>.<span class="variable">$e</span>-&gt;<span class="title function_ invoke__">getLine</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//也可以使用问号来绑定参数 eg: $sql=&quot;INSERT INTO user(id,name) VALUES(?,?,?)&quot;;</span></span><br><span class="line"><span class="comment">//同时对应的占位数据绑定也得改 eg:$stmt-&gt;bindValue(1,2021);$stmt-&gt;bindValue(2,&#x27;My0n9s&#x27;);</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h2><h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>很早就听说MVC，并且在AWD中也接触到了MVC结构的框架，然后一直都是一头雾水，好吧，其实包括现在对MVC的理解也没有很透彻，不过大抵是比之前要好些了。这里参考了feng师傅发给我的一篇文章。</p>
+<h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>MVC是编程的一种架构，一种规范，使得业务逻辑、数据、视图三者做到了一个分离，后期也便于扩展。</p>
+<p>M指的是Model（模型），这里主要是对数据进行处理，和数据库进行一个交互。</p>
+<p>V指的是View （视图），最后呈现给用户的界面，一般来说，视图是依据模型数据创立的。</p>
+<p>C指的是Controller（控制器)，处理和用户交互的部分，个人觉得像是一个指挥官的角色。</p>
+<p>关于三者的关系，有一个图很形象的进行了呈现：</p>
+<p><img src="https://i.loli.net/2021/03/19/NkBrlSR5Q87HpIL.gif" alt="web_mvc.gif"></p>
+<h3 id="小型的MVC框架"><a href="#小型的MVC框架" class="headerlink" title="小型的MVC框架"></a>小型的MVC框架</h3><p>然后就是对一个轻便级的MVC框架进行了一个初步的了解：</p>
+<p>框架整个的一个结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">project</span><br><span class="line">--app</span><br><span class="line">  *controllers</span><br><span class="line">   **ItemController.php</span><br><span class="line">  *models</span><br><span class="line">   **ItemModel.php</span><br><span class="line">  *views</span><br><span class="line">   **item</span><br><span class="line">    ***add.php</span><br><span class="line">    ***delete.php</span><br><span class="line">    ***index.php</span><br><span class="line">    ***manage.php</span><br><span class="line">    ***update.php</span><br><span class="line">   **footer.php</span><br><span class="line">   **head.php</span><br><span class="line">--config</span><br><span class="line">  *config.php</span><br><span class="line">--fastphp</span><br><span class="line">  *base</span><br><span class="line">   **Controller.php</span><br><span class="line">   **Model.php</span><br><span class="line">   **View.php</span><br><span class="line">  *db</span><br><span class="line">   **Db.php</span><br><span class="line">   **Sql.php</span><br><span class="line">  *Fastphp.php</span><br><span class="line">--static</span><br><span class="line">--.htaccess</span><br><span class="line">--index.php</span><br></pre></td></tr></table></figure>
+
+<p>分析一个框架找到它的入口是很重要的，这个框架的入口是index.php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//应用目录为当前目录</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;APP_PATH&#x27;</span>,<span class="keyword">__DIR__</span>.<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line"><span class="comment">//开启调试模式</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;APP_DEBUG&#x27;</span>,<span class="literal">true</span>);</span><br><span class="line"><span class="comment">//加载框架文件</span></span><br><span class="line"><span class="keyword">require</span>(APP_PATH.<span class="string">&#x27;fastphp/Fastphp.php&#x27;</span>);</span><br><span class="line"><span class="comment">//加载配置文件</span></span><br><span class="line"><span class="variable">$config</span>=<span class="keyword">require</span>(APP_PATH.<span class="string">&#x27;config/config.php&#x27;</span>);</span><br><span class="line"><span class="comment">//实例化框架类</span></span><br><span class="line">(<span class="keyword">new</span> fastphp\<span class="title function_ invoke__">Fastphp</span>(<span class="variable">$config</span>))-&gt;<span class="title function_ invoke__">run</span>();</span><br></pre></td></tr></table></figure>
+
+<p>可以看到它主要是加载和实例化框架（这里是调用fastphp\Fastphp这个类），这是框架的一个核心类，我们来看看Fastphp的部分内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">run</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">      <span class="title function_ invoke__">spl_autoload_register</span>(<span class="keyword">array</span>(<span class="variable">$this</span>,<span class="string">&#x27;loadClass&#x27;</span>));</span><br><span class="line">      <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">setReporting</span>();</span><br><span class="line">      <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">removeMagicQuotes</span>();</span><br><span class="line">      <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">unregisterGlobals</span>();</span><br><span class="line">      <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">setDbConfig</span>();</span><br><span class="line">      <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">route</span>();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里就是调用各种函数，主要我们来看一下这个route():</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span>  <span class="title">route</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">     <span class="variable">$controllerName</span> = <span class="variable language_">$this</span>-&gt;config[<span class="string">&#x27;defaultController&#x27;</span>];</span><br><span class="line">     <span class="comment">//一开始 Controller和Action都设置为默认的,为Item和Index</span></span><br><span class="line">     <span class="variable">$actionName</span> = <span class="variable language_">$this</span>-&gt;config[<span class="string">&#x27;defaultAction&#x27;</span>];</span><br><span class="line">     <span class="variable">$param</span> = <span class="keyword">array</span>();</span><br><span class="line">     <span class="variable">$url</span> = <span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_URI&#x27;</span>];</span><br><span class="line">     <span class="variable">$position</span> = <span class="title function_ invoke__">strpos</span>(<span class="variable">$url</span>, <span class="string">&#x27;?&#x27;</span>);</span><br><span class="line">     <span class="variable">$url</span> = <span class="variable">$position</span> === <span class="literal">false</span> ? <span class="variable">$url</span> : <span class="title function_ invoke__">substr</span>(<span class="variable">$url</span>, <span class="number">0</span>, <span class="variable">$position</span>);</span><br><span class="line">     <span class="comment">//删除前后的&quot;/&quot;</span></span><br><span class="line">     <span class="variable">$url</span> = <span class="title function_ invoke__">trim</span>(<span class="variable">$url</span>, <span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">     <span class="keyword">if</span> (<span class="variable">$url</span>) &#123;</span><br><span class="line">         <span class="comment">// 使用&quot;/&quot;分隔字符串，并保存在数组中</span></span><br><span class="line">         <span class="variable">$urlArray</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&#x27;/&#x27;</span>, <span class="variable">$url</span>);</span><br><span class="line">         <span class="comment">//删除空的数组元素</span></span><br><span class="line">         <span class="variable">$urlArray</span> = <span class="title function_ invoke__">array_filter</span>(<span class="variable">$urlArray</span>);</span><br><span class="line">         <span class="comment">//获取控制器名,这里ucfirst函数将首写字母变大写了。</span></span><br><span class="line">         <span class="variable">$controllerName</span> = <span class="title function_ invoke__">ucfirst</span>(<span class="variable">$urlArray</span>[<span class="number">0</span>]);</span><br><span class="line">         <span class="comment">//获取动作名</span></span><br><span class="line">         <span class="title function_ invoke__">array_shift</span>(<span class="variable">$urlArray</span>);  <span class="comment">//array_shift函数直接将数组第一个元素移除</span></span><br><span class="line">         <span class="variable">$actionName</span> = <span class="variable">$urlArray</span> ? <span class="variable">$urlArray</span>[<span class="number">0</span>] : <span class="variable">$actionName</span>;</span><br><span class="line">         <span class="comment">//获取url参数</span></span><br><span class="line">         <span class="title function_ invoke__">array_shift</span>(<span class="variable">$urlArray</span>);</span><br><span class="line">         <span class="variable">$param</span> = <span class="variable">$urlArray</span> ? <span class="variable">$urlArray</span> : <span class="keyword">array</span>();</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//判断控制器和操作是否存在</span></span><br><span class="line">     <span class="variable">$controller</span> = <span class="string">&#x27;app\\controllers\\&#x27;</span> . <span class="variable">$controllerName</span> . <span class="string">&#x27;Controller&#x27;</span>;</span><br><span class="line">     <span class="keyword">if</span> (!<span class="title function_ invoke__">class_exists</span>(<span class="variable">$controller</span>)) &#123;</span><br><span class="line">         <span class="keyword">exit</span>(<span class="variable">$controller</span> . <span class="string">&#x27;控制器不存在!&#x27;</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">if</span> (!<span class="title function_ invoke__">method_exists</span>(<span class="variable">$controller</span>, <span class="variable">$actionName</span>)) &#123;</span><br><span class="line">         <span class="keyword">exit</span>(<span class="variable">$actionName</span> . <span class="string">&#x27;方法不存在&#x27;</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//如果控制器和操作名都存在，则实例化控制器，因为控制器对象里面</span></span><br><span class="line">     <span class="comment">//还会用到控制器名和操作名，所以实例化的时候把他们俩的名称也传进去，结合Controller基类一起看</span></span><br><span class="line">     <span class="variable">$dispatch</span> = <span class="keyword">new</span> <span class="variable">$controller</span>(<span class="variable">$controllerName</span>, <span class="variable">$actionName</span>);</span><br><span class="line">     <span class="comment">//dispatch保存控制器实例化后的对象，我们可以调用它的方法</span></span><br><span class="line">     <span class="comment">//也可以像方法中传入参数，以下等同于:$dispatch-&gt;$actionName($param)</span></span><br><span class="line">     <span class="title function_ invoke__">call_user_func_array</span>(<span class="keyword">array</span>(<span class="variable">$dispatch</span>, <span class="variable">$actionName</span>), <span class="variable">$param</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里主要是对URL做一个分隔，然后调用相应的Controller和Actionname，然后传入相应的参数，类似 <code>/controllername/actionname/params </code> 这种形式。</p>
+<p>然后<code>fastphp\base</code>目录下是 控制器，视图，模型的一个基类，后面具体一个类型的控制器只需要继承这个基类就好，这样避免了代码重用，也使得层次很清晰，每一个功能对应一个Controller。比如后面的app文件夹下的ItemController直接继承了base下的Controller基类，然后单独负责一个功能板块。db文件下的Db.php和Sql.php主要是对数据库操作的一个封装。Db.php的内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Db</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">static</span> <span class="variable">$pdo</span> = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">pdo</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">self</span>::<span class="variable">$pdo</span> !== <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">self</span>::<span class="variable">$pdo</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="variable">$dsn</span>    = <span class="title function_ invoke__">sprintf</span>(<span class="string">&#x27;mysql:host=%s;dbname=%s;charset=utf8&#x27;</span>, DB_HOST, DB_NAME);</span><br><span class="line">            <span class="variable">$option</span> = <span class="keyword">array</span>(PDO::<span class="variable constant_">ATTR_DEFAULT_FETCH_MODE</span> =&gt; PDO::<span class="variable constant_">FETCH_ASSOC</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">self</span>::<span class="variable">$pdo</span> = <span class="keyword">new</span> <span class="title function_ invoke__">PDO</span>(<span class="variable">$dsn</span>, DB_USER, DB_PASS, <span class="variable">$option</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (PDOException <span class="variable">$e</span>) &#123;</span><br><span class="line">            <span class="keyword">exit</span>(<span class="variable">$e</span>-&gt;<span class="title function_ invoke__">getMessage</span>());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里是直接返回了一个PDO对象。</p>
+<p>然后就是<code>Sql.php</code>，对数据库进行抽象层的交互。增删改查等操作</p>
+<p>然后Model这个基类继承了Sql，ItemModel则是进一步进行继承，负责搜索功能，（依据keyworld的值）</p>
+<p>config就是一些默认的参数配置，view就主要是进行一个页面的渲染。</p>
+<p>每一个模块各司其职，最后都把力使到app这个目录下的controller , view , model 。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>对PDO的基础概念和使用语法做了一个简单的了解，其具体底层机制还有待挖掘。</p>
+<p>同时对MVC一个执行流程做了一个简单的了解，记录的文字感觉还是不太通俗，也似乎只有我自己知道自己在写些啥。。。</p>
+<p>后面随着对MVC的加深应该会改把。。</p>
+<p>又水完了一篇文章233333</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PHP/" rel="tag"># PHP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/11/PHP-session%E6%9C%BA%E5%88%B6/" rel="prev" title="PHPSESSION机制以及反序列化">
+                  <i class="fa fa-angle-left"></i> PHPSESSION机制以及反序列化
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/22/%E5%92%8C%E9%95%BF%E5%BA%A6%E6%9C%89%E5%85%B3%E7%9A%84%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="next" title="和长度有关的命令执行">
+                  和长度有关的命令执行 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

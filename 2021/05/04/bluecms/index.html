@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言网上找了一些CMS，听说bluecms对新手挺友好的，复现一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bluecms">
+<meta property="og:url" content="http://example.com/2021/05/04/bluecms/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言网上找了一些CMS，听说bluecms对新手挺友好的，复现一下。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/wZKD2Cp6iJgbkRT.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/kP3Hs4oFy8AvqhD.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/FwoU6BDhWeOc7Zq.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/3O1zKGq2JubLBgI.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/6in59QbGEM2s1lZ.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/WeAnsdX5RmqQT47.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/DIkNzESZicYqxFA.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/04/ecOASaTbkJ5CGz8.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/06/Y9k1FnDRqoVUZj7.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/07/rf6e4RObIG8NXPK.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/07/2lzGhOLHuDWxbTn.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/07/GN3h6KIoy5kCl2U.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/07/Bpt2dFZQnSOqwlf.png">
+<meta property="article:published_time" content="2021-05-04T09:02:20.000Z">
+<meta property="article:modified_time" content="2021-05-07T09:49:56.000Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/05/04/wZKD2Cp6iJgbkRT.png">
+
+
+<link rel="canonical" href="http://example.com/2021/05/04/bluecms/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/05/04/bluecms/","path":"2021/05/04/bluecms/","title":"bluecms"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>bluecms | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%8E%A2"><span class="nav-number">1.1.</span> <span class="nav-text">初探</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">漏洞复现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.1.</span> <span class="nav-text">sql注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E5%8F%B0"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">前台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">1.2.1.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">后台</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="nav-number">1.2.2.</span> <span class="nav-text">文件包含</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4"><span class="nav-number">1.2.3.</span> <span class="nav-text">任意文件删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="nav-number">1.2.4.</span> <span class="nav-text">任意文件读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99shell"><span class="nav-number">1.2.5.</span> <span class="nav-text">写shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/04/bluecms/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="bluecms | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          bluecms
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-04 17:02:20" itemprop="dateCreated datePublished" datetime="2021-05-04T17:02:20+08:00">2021-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2021-05-07 17:49:56" itemprop="dateModified" datetime="2021-05-07T17:49:56+08:00">2021-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">代码审计</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>网上找了一些CMS，听说bluecms对新手挺友好的，复现一下。</p>
+<span id="more"></span>
+
+<h2 id="初探"><a href="#初探" class="headerlink" title="初探"></a>初探</h2><p>emmm，这个cms和上一个cms相比有点不太一样，个人感觉上一个CMS的逻辑更好找，直接给 <code>m,c,f</code> 传参，然后去调用相应的类，函数。这个稍微显得有点杂乱。</p>
+<p>目录结构大致长这样：</p>
+<p><img src="https://i.loli.net/2021/05/04/wZKD2Cp6iJgbkRT.png" alt="1.png"></p>
+<p>入口还是<code>index.php</code> 文件 </p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><h3 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h3><h4 id="前台"><a href="#前台" class="headerlink" title="前台"></a>前台</h4><p>这次借助了seay 这个漏扫工具，我们扫一下：</p>
+<p><img src="https://i.loli.net/2021/05/04/kP3Hs4oFy8AvqhD.png" alt="2.png"></p>
+<p>可以看到其实可能漏洞存在，关于seay 这个工具，在一些线下比赛也用过，虽然很多时候都是比较鸡肋的。但是有些时候它能给你一些惊喜。一般我们会通过黑盒找功能点，然后看输入是否可控，然后抓包去看一些参数，然后白盒结合着看源代码。但是有些时候你去黑合测试找功能点，是找不到的，不会很明显的给我们展示出来，就像之前hxb的一次线下，那个任意文件读取，基本上你去黑盒测，很难找到。这里的<code>ad_js.php</code> 也是一样，去黑盒基本上找不到，此时seay的作用就体现出来了。我们看一下<code>ad_js.php</code> 这个文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;IN_BLUE&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">require_once</span> <span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>) . <span class="string">&#x27;/include/common.inc.php&#x27;</span>;</span><br><span class="line"><span class="variable">$ad_id</span> = !<span class="keyword">empty</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;ad_id&#x27;</span>]) ? <span class="title function_ invoke__">trim</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;ad_id&#x27;</span>]) : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$ad_id</span>))</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">echo</span> <span class="string">&#x27;Error!&#x27;</span>;</span><br><span class="line">   <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$ad</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">getone</span>(<span class="string">&quot;SELECT * FROM &quot;</span>.<span class="title function_ invoke__">table</span>(<span class="string">&#x27;ad&#x27;</span>).<span class="string">&quot; WHERE ad_id =&quot;</span>.<span class="variable">$ad_id</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$ad</span>[<span class="string">&#x27;time_set&#x27;</span>] == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="variable">$ad_content</span> = <span class="variable">$ad</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">if</span>(<span class="variable">$ad</span>[<span class="string">&#x27;end_time&#x27;</span>] &lt; <span class="title function_ invoke__">time</span>())</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="variable">$ad_content</span> = <span class="variable">$ad</span>[<span class="string">&#x27;exp_content&#x27;</span>];</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">   &#123;</span><br><span class="line">      <span class="variable">$ad_content</span> = <span class="variable">$ad</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$ad_content</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;&quot;&#x27;</span>, <span class="string">&#x27;\&quot;&#x27;</span>,<span class="variable">$ad_content</span>);</span><br><span class="line"><span class="variable">$ad_content</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;\r&quot;</span>, <span class="string">&quot;\\r&quot;</span>,<span class="variable">$ad_content</span>);</span><br><span class="line"><span class="variable">$ad_content</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;\n&quot;</span>, <span class="string">&quot;\\n&quot;</span>,<span class="variable">$ad_content</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;!--\r\ndocument.write(\&quot;&quot;</span>.<span class="variable">$ad_content</span>.<span class="string">&quot;\&quot;);\r\n--&gt;\r\n&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>重点在<code>$ad = $db-&gt;getone(&quot;SELECT * FROM &quot;.table(&#39;ad&#39;).&quot; WHERE ad_id =&quot;.$ad_id);</code>  这条查询语句上，我们跟进一下 <code>getone()</code> 函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getone</span>(<span class="params"><span class="variable">$sql</span>, <span class="variable">$type</span>=MYSQL_ASSOC</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  	<span class="variable">$query</span> = <span class="variable language_">$this</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>,<span class="variable">$this</span>-&gt;linkid);</span><br><span class="line">  	<span class="variable">$row</span> = <span class="title function_ invoke__">mysql_fetch_array</span>(<span class="variable">$query</span>, <span class="variable">$type</span>);</span><br><span class="line">  	<span class="keyword">return</span> <span class="variable">$row</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行了查询操作，然后返回查询结果，这里可以发现没有过滤，所以这里我们可以SQL注入，一开始我大意了，以为是字符型，还想办法闭合啊注释啥的，其实这里是数字型的，我们不需要闭合注释啥的。所以这里存在SQL注入，然后又看到下面的语句<code>echo &quot;&lt;!--\r\ndocument.write(\&quot;&quot;.$ad_content.&quot;\&quot;);\r\n--&gt;\r\n&quot;;</code>  会把<code>$ad_content</code>内容带出来，有回显我们可以用联合注入。然后这里用时间盲注也可以。用联合注入更快，按照联合注入的流程，我们查列数从1开始，<code>?ad_id=1 order by 8</code>发现 order by 8的时候报错，说明只有7，然后我们去找回显位 <code>?ad_id=-1 union select 1,2,3,4,5,6,7</code>   发现在7的地方有回显：</p>
+<p><img src="https://i.loli.net/2021/05/04/FwoU6BDhWeOc7Zq.png" alt="3.png"></p>
+<p>然后依次就是爆库，爆表，爆字段名了:<code>?ad_id=-1 union select 1,2,3,4,5,6,group_concat(table_name)from information_schema.tables where table_schema=database()</code></p>
+<p><img src="https://i.loli.net/2021/05/04/3O1zKGq2JubLBgI.png" alt="4.png"></p>
+<p>可以看到这里可以注入的。</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><p>同样也是seay爆的可能漏洞，这里<code>getip()</code> 值是可控的，通过伪造<code>Client-ip</code> 或 <code>X-Forwarded-For</code>  我们全局搜素一下<code>getip</code>  看哪里用到了这个：</p>
+<p><img src="https://i.loli.net/2021/05/04/6in59QbGEM2s1lZ.png" alt="5.png"></p>
+<p>我们跟进一下<code>comment.php</code> 代码，关键部分：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;INSERT INTO &quot;</span>.<span class="title function_ invoke__">table</span>(<span class="string">&#x27;comment&#x27;</span>).<span class="string">&quot; (com_id, post_id, user_id, type, mood, content, pub_date, ip, is_check) </span></span><br><span class="line"><span class="string"> 			VALUES (&#x27;&#x27;, &#x27;<span class="subst">$id</span>&#x27;, &#x27;<span class="subst">$user_id</span>&#x27;, &#x27;<span class="subst">$type</span>&#x27;, &#x27;<span class="subst">$mood</span>&#x27;, &#x27;<span class="subst">$content</span>&#x27;, &#x27;<span class="subst">$timestamp</span>&#x27;, &#x27;&quot;</span>.<span class="title function_ invoke__">getip</span>().<span class="string">&quot;&#x27;, &#x27;<span class="subst">$is_check</span>&#x27;)&quot;</span>;</span><br><span class="line"><span class="variable">$db</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>getip()</code> 值可控，很明显又存在着注入。</p>
+<p>我们尝试一下，个人资料 -&gt; 发布新闻 -&gt; 评论 </p>
+<p>其中评论那里的内容是我们可控的：</p>
+<p><img src="https://i.loli.net/2021/05/04/WeAnsdX5RmqQT47.png" alt="6.png"></p>
+<p>insert 语句是可以一次性插入多条语句的。这里我们构造:<code>1&#39;,&#39;2&#39;),(&#39;&#39;,&#39;1&#39;,&#39;0&#39;,&#39;1&#39;,&#39;6&#39;,(select database()),&#39;1&#39;,&#39;99</code></p>
+<p>我们抓个包测试一下：</p>
+<p><img src="https://i.loli.net/2021/05/04/DIkNzESZicYqxFA.png" alt="8.png"></p>
+<p>然后发现注入成功：</p>
+<p><img src="https://i.loli.net/2021/05/04/ecOASaTbkJ5CGz8.png" alt="9.png"></p>
+<p>这里对回显字符长度有限制，不过没关系我们可以用 limit 来截取</p>
+<h4 id="后台"><a href="#后台" class="headerlink" title="后台"></a>后台</h4><p><code>127.0.0.1/admin/login.php</code>  处存在管理员登陆宽字节注入，我们可以用万能密码登入进去，我们结合代码看一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elseif</span>(<span class="variable">$act</span> == <span class="string">&#x27;do_login&#x27;</span>)&#123;</span><br><span class="line"> 	<span class="variable">$admin_name</span> = <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;admin_name&#x27;</span>]) ? <span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;admin_name&#x27;</span>]) : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"> 	<span class="variable">$admin_pwd</span> = <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;admin_pwd&#x27;</span>]) ? <span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;admin_pwd&#x27;</span>]) : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"> 	<span class="variable">$remember</span> = <span class="keyword">isset</span>(<span class="variable">$_POST</span>) ? <span class="title function_ invoke__">intval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;rememberme&#x27;</span>]) : <span class="number">0</span>;</span><br><span class="line"> 	<span class="keyword">if</span>(<span class="variable">$admin_name</span> == <span class="string">&#x27;&#x27;</span>)&#123;</span><br><span class="line"> 		<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;�û�������Ϊ��&#x27;</span>);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">if</span>(<span class="variable">$admin_pwd</span> == <span class="string">&#x27;&#x27;</span>)&#123;</span><br><span class="line"> 		<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;�û����벻��Ϊ��&#x27;</span>);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">if</span>(<span class="title function_ invoke__">check_admin</span>(<span class="variable">$admin_name</span>, <span class="variable">$admin_pwd</span>))&#123;</span><br><span class="line"> 		<span class="title function_ invoke__">update_admin_info</span>(<span class="variable">$admin_name</span>);</span><br><span class="line"> 		<span class="keyword">if</span>(<span class="variable">$remember</span> == <span class="number">1</span>)&#123;</span><br><span class="line"> 			<span class="title function_ invoke__">setcookie</span>(<span class="string">&#x27;Blue[admin_id]&#x27;</span>, <span class="variable">$_SESSION</span>[<span class="string">&#x27;admin_id&#x27;</span>], <span class="title function_ invoke__">time</span>()+<span class="number">86400</span>);</span><br><span class="line"> 			<span class="title function_ invoke__">setcookie</span>(<span class="string">&#x27;Blue[admin_name]&#x27;</span>, <span class="variable">$admin_name</span>, <span class="title function_ invoke__">time</span>()+<span class="number">86400</span>);</span><br><span class="line">			<span class="title function_ invoke__">setcookie</span>(<span class="string">&#x27;Blue[admin_pwd]&#x27;</span>, <span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$admin_pwd</span>).<span class="variable">$_CFG</span>[<span class="string">&#x27;cookie_hash&#x27;</span>]), <span class="title function_ invoke__">time</span>()+<span class="number">86400</span>);</span><br><span class="line"> 		&#125;</span><br><span class="line"> 	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line"> 		<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;��������û�������������&#x27;</span>);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;��ӭ�� &#x27;</span>.<span class="variable">$admin_name</span>.<span class="string">&#x27; ���������ڽ�ת���������...&#x27;</span>, <span class="string">&#x27;index.php&#x27;</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为这里用的是gbk2312编码，所以到这里成了乱码。也正因为这样，我们可以尝试一下宽字节注入，在前面有一个安全函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">get_magic_quotes_gpc</span>())</span><br><span class="line">&#123;</span><br><span class="line">	<span class="variable">$_POST</span> = <span class="title function_ invoke__">deep_addslashes</span>(<span class="variable">$_POST</span>);</span><br><span class="line">	<span class="variable">$_GET</span> = <span class="title function_ invoke__">deep_addslashes</span>(<span class="variable">$_GET</span>);</span><br><span class="line">	<span class="variable">$_COOKIES</span> = <span class="title function_ invoke__">deep_addslashes</span>(<span class="variable">$_COOKIES</span>);</span><br><span class="line">	<span class="variable">$_REQUEST</span> = <span class="title function_ invoke__">deep_addslashes</span>(<span class="variable">$_REQUEST</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里对传入的参数做了过滤，我们跟进一下<code>deep_addslashes()</code> 函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deep_addslashes</span>(<span class="params"><span class="variable">$str</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="title function_ invoke__">is_array</span>(<span class="variable">$str</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">foreach</span>(<span class="variable">$str</span> <span class="keyword">as</span> <span class="variable">$key</span>=&gt;<span class="variable">$val</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="variable">$str</span>[<span class="variable">$key</span>] = <span class="title function_ invoke__">deep_addslashes</span>(<span class="variable">$val</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$str</span> = <span class="title function_ invoke__">addslashes</span>(<span class="variable">$str</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="variable">$str</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是所有传过来的参数经过了 <code>addslashes()</code> 函数 。所以是很可能存在宽字节注入的</p>
+<p>我们再回头来看那个login.php的代码，关键在于：<code>check_admin($admin_name, $admin_pwd)</code>  ，这个函数，我们跟进一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_admin</span>(<span class="params"><span class="variable">$name</span>, <span class="variable">$pwd</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">global</span> <span class="variable">$db</span>;</span><br><span class="line">	<span class="variable">$row</span> = <span class="variable">$db</span>-&gt;<span class="title function_ invoke__">getone</span>(<span class="string">&quot;SELECT COUNT(*) AS num FROM &quot;</span>.<span class="title function_ invoke__">table</span>(<span class="string">&#x27;admin&#x27;</span>).<span class="string">&quot; WHERE admin_name=&#x27;<span class="subst">$name</span>&#x27; and pwd = md5(&#x27;<span class="subst">$pwd</span>&#x27;)&quot;</span>);</span><br><span class="line"> 	<span class="keyword">if</span>(<span class="variable">$row</span>[<span class="string">&#x27;num&#x27;</span>] &gt; <span class="number">0</span>)</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">else</span></span><br><span class="line"> 	&#123;</span><br><span class="line"> 		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的name出了之前的<code>addslashes()</code> 没有其他过滤，很显然可以存在宽字节。</p>
+<p><img src="https://i.loli.net/2021/05/06/Y9k1FnDRqoVUZj7.png" alt="1.png"></p>
+<p>发现成功宽字节注入</p>
+<h3 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h3><p>这个文件包含发生在： <code>user.php</code>  里面，我们直接定位到关键代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elseif</span> (<span class="variable">$act</span> == <span class="string">&#x27;pay&#x27;</span>)</span><br><span class="line">&#123;</span><br><span class="line"> 	<span class="keyword">include</span> <span class="string">&#x27;data/pay.cache.php&#x27;</span>;</span><br><span class="line"> 	<span class="variable">$price</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;price&#x27;</span>];</span><br><span class="line"> 	<span class="variable">$id</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"> 	<span class="variable">$name</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line"> 	<span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;pay&#x27;</span>])) &#123;</span><br><span class="line"> 		<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;�Բ�����û��ѡ��֧����ʽ&#x27;</span>);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">include</span> <span class="string">&#x27;include/payment/&#x27;</span>.<span class="variable">$_POST</span>[<span class="string">&#x27;pay&#x27;</span>].<span class="string">&quot;/index.php&quot;</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>pay参数过滤不完整，我们可以用  <code>../</code>  跳转到上一层，然后后面的我们可以用%00来截断，不过这个对版本有要求</p>
+<p>得保证php版本低于5.3.4 且 php .ini 里面的 <code>magic_quotes_gpc=off</code>   </p>
+<p> 这个地方也可以配合上传点来制造图片🐎</p>
+<p>一开始用%00截断死活复现不成功，后面feng师傅提醒我这里的 <code>deep_addslashes</code> 会对 <code>%00</code>  转义，所以%00这里行不通，但是用<code>.</code>来实现长度限制绕过应该是可以的。这里也要求低版本的PHP，<code>php &lt;5.2.8版本</code>网上也有师傅复现成功了。</p>
+<h3 id="任意文件删除"><a href="#任意文件删除" class="headerlink" title="任意文件删除"></a>任意文件删除</h3><p>先说第一处任意文件删除漏洞，我本地再D盘新建了一个 <code>flag.txt</code>文件，然后seay漏扫了一下发现：</p>
+<p><code>/admin/link.php</code>  里面存在任意文件删除漏洞，我们跟进代码看一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elseif</span>(<span class="variable">$act</span> == <span class="string">&#x27;do_edit&#x27;</span>)&#123;</span><br><span class="line"> 	<span class="variable">$link_name</span> = !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_name&#x27;</span>]) ? <span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_name&#x27;</span>]) : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"> 	<span class="variable">$link_site</span> = !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_site&#x27;</span>]) ? <span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_site&#x27;</span>]) : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"> 	<span class="variable">$show_order</span> = !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;show_order&#x27;</span>]) ? <span class="title function_ invoke__">intval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;show_order&#x27;</span>]) : <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_logo&#x27;</span>]))&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">strpos</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_logo&#x27;</span>], <span class="string">&#x27;http://&#x27;</span>) != <span class="literal">false</span> &amp;&amp; <span class="title function_ invoke__">strpos</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_logo&#x27;</span>], <span class="string">&#x27;https://&#x27;</span>) != <span class="literal">false</span>)&#123;</span><br><span class="line">           <span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;ֻ֧�ֱ�վ���·����ַ&#x27;</span>);</span><br><span class="line">         &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">           <span class="variable">$link_logo</span> = <span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;link_logo&#x27;</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span></span><br><span class="line">    	&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">file_exists</span>(BLUE_ROOT.<span class="variable">$_POST</span>[<span class="string">&#x27;link_logo2&#x27;</span>]))&#123;</span><br><span class="line">			@<span class="title function_ invoke__">unlink</span>(BLUE_ROOT.<span class="variable">$_POST</span>[<span class="string">&#x27;link_logo2&#x27;</span>]);</span><br><span class="line">		&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>发生漏洞的代码主要在 <code>@unlink(BLUE_ROOT.$_POST[&#39;link_logo2&#39;]);</code>  这里调用了 unlike函数，但是 link_logo2参数是我们可控的，并且除了那个转义函数外，没有任何安全过滤，所以导致了漏洞的发生。我们本地验证一下：</p>
+<p><img src="https://i.loli.net/2021/05/07/rf6e4RObIG8NXPK.png" alt="hel.png"></p>
+<p>然后发现D盘的 <code>hello.txt</code> 文件被删除了。</p>
+<h3 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h3><p>还是seay扫到了 <code>/admin/tpl_manage.php</code>  可能存在任意文件读取，我们跟进看一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elseif</span>(<span class="variable">$act</span> == <span class="string">&#x27;edit&#x27;</span>)&#123;</span><br><span class="line"><span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;tpl_name&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(!<span class="variable">$handle</span> = @<span class="title function_ invoke__">fopen</span>(BLUE_ROOT.<span class="string">&#x27;templates/default/&#x27;</span>.<span class="variable">$file</span>, <span class="string">&#x27;rb&#x27;</span>))&#123;</span><br><span class="line">	<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;��Ŀ��ģ���ļ�ʧ��&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$tpl</span>[<span class="string">&#x27;content&#x27;</span>] = <span class="title function_ invoke__">fread</span>(<span class="variable">$handle</span>, <span class="title function_ invoke__">filesize</span>(BLUE_ROOT.<span class="string">&#x27;templates/default/&#x27;</span>.<span class="variable">$file</span>));</span><br><span class="line"><span class="variable">$tpl</span>[<span class="string">&#x27;content&#x27;</span>] = <span class="title function_ invoke__">htmlentities</span>(<span class="variable">$tpl</span>[<span class="string">&#x27;content&#x27;</span>], ENT_QUOTES, GB2312);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$handle</span>);</span><br><span class="line"><span class="variable">$tpl</span>[<span class="string">&#x27;name&#x27;</span>] = <span class="variable">$file</span>;</span><br><span class="line"><span class="title function_ invoke__">template_assign</span>(<span class="keyword">array</span>(<span class="string">&#x27;current_act&#x27;</span>, <span class="string">&#x27;tpl&#x27;</span>), <span class="keyword">array</span>(<span class="string">&#x27;�༭ģ��&#x27;</span>, <span class="variable">$tpl</span>));</span><br><span class="line"><span class="variable">$smarty</span>-&gt;<span class="title function_ invoke__">display</span>(<span class="string">&#x27;tpl_info.htm&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 这里的 <code>$file</code>  变量可控，然后又只有一个 <code>deep_addslashes</code> 函数 ，我们也可以通过 <code>../</code>  跳转目录来读取文件。</p>
+<p>本地测试一下：</p>
+<p><img src="https://i.loli.net/2021/05/07/2lzGhOLHuDWxbTn.png" alt="tpl.png"></p>
+<p>发现可行，此处存在任意文件读取漏洞。</p>
+<h3 id="写shell"><a href="#写shell" class="headerlink" title="写shell"></a>写shell</h3><p>还是<code>tpl_manage.php</code> 中：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elseif</span>(<span class="variable">$act</span> == <span class="string">&#x27;do_edit&#x27;</span>)&#123;</span><br><span class="line">	<span class="variable">$tpl_name</span> = !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;tpl_name&#x27;</span>]) ? <span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;tpl_name&#x27;</span>]) : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">	<span class="variable">$tpl_content</span> = !<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;tpl_content&#x27;</span>]) ? <span class="title function_ invoke__">deep_stripslashes</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;tpl_content&#x27;</span>]) : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$tpl_name</span>))&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="variable">$tpl</span> = BLUE_ROOT.<span class="string">&#x27;templates/default/&#x27;</span>.<span class="variable">$tpl_name</span>;</span><br><span class="line">	<span class="keyword">if</span>(!<span class="variable">$handle</span> = @<span class="title function_ invoke__">fopen</span>(<span class="variable">$tpl</span>, <span class="string">&#x27;wb&#x27;</span>))&#123;</span><br><span class="line">	<span class="title function_ invoke__">showmsg</span>(<span class="string">&quot;��Ŀ��ģ���ļ� <span class="subst">$tpl</span> ʧ��&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(<span class="title function_ invoke__">fwrite</span>(<span class="variable">$handle</span>, <span class="variable">$tpl_content</span>) === <span class="literal">false</span>)&#123;</span><br><span class="line">		<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;д��Ŀ�� $tpl ʧ��&#x27;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="title function_ invoke__">fclose</span>(<span class="variable">$handle</span>);</span><br><span class="line">	<span class="title function_ invoke__">showmsg</span>(<span class="string">&#x27;�༭ģ��ɹ�&#x27;</span>, <span class="string">&#x27;tpl_manage.php&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>$tpl_name</code>  和 <code>$tpl_content</code> 都是可控的，我们直接写🐎</p>
+<p><img src="https://i.loli.net/2021/05/07/GN3h6KIoy5kCl2U.png" alt="233.png"></p>
+<p>然后尝试访问一下</p>
+<p><img src="https://i.loli.net/2021/05/07/Bpt2dFZQnSOqwlf.png" alt="234.png"></p>
+<p>成功拿到shell</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>漏洞不止这些，基本上出问题的原因一样，参数过滤不完善，参数可控。</p>
+<p>找用户输入的地方，找功能点，黑盒白盒结合着审计。</p>
+<p>一些自动化审计软件比如seay有时候能给一个大致的审计方向。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag"># 代码审计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/03/XDCMS3-0-1/" rel="prev" title="XDCMS3.0.1">
+                  <i class="fa fa-angle-left"></i> XDCMS3.0.1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/21/KYXSCMS1-3-2%E5%AE%A1%E8%AE%A1/" rel="next" title="KYXSCMS1.3.2审计">
+                  KYXSCMS1.3.2审计 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
