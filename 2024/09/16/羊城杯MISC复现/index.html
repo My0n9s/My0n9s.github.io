@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="并没有参加羊城杯，但是题目听说质量很高，对着WP复现一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="羊城杯MISC复现">
+<meta property="og:url" content="http://example.com/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="并没有参加羊城杯，但是题目听说质量很高，对着WP复现一下。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e7c62580af7.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e7c6c781486.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e7eeddf277e.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e7f3c3e71fa.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e7f43d6a8cf.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e842592f1ef.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e8432f595aa.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/16/66e844280b460.jpg">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/17/66e8f97dab2e4.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/17/66e8fba8d8413.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/17/66e8fb0cf0952.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/17/66e96e0eb82b8.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/17/66e970669c7ba.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/17/66e982455b460.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/17/66e987ba2f4b3.png">
+<meta property="article:published_time" content="2024-09-16T04:00:22.000Z">
+<meta property="article:modified_time" content="2024-09-17T14:03:03.954Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="misc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picui.cn/free/2024/09/16/66e7c62580af7.png">
+
+
+<link rel="canonical" href="http://example.com/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/","path":"2024/09/16/羊城杯MISC复现/","title":"羊城杯MISC复现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>羊城杯MISC复现 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hidden"><span class="nav-number">1.</span> <span class="nav-text">hidden</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8D%E4%B8%80%E6%A0%B7%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%932"><span class="nav-number">2.</span> <span class="nav-text">不一样的数据库2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#miaoro"><span class="nav-number">3.</span> <span class="nav-text">miaoro</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#checkin"><span class="nav-number">4.</span> <span class="nav-text">checkin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#so-much"><span class="nav-number">5.</span> <span class="nav-text">so much</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1z-misc"><span class="nav-number">6.</span> <span class="nav-text">1z_misc</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="羊城杯MISC复现 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          羊城杯MISC复现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-09-16 12:00:22" itemprop="dateCreated datePublished" datetime="2024-09-16T12:00:22+08:00">2024-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-17 22:03:03" itemprop="dateModified" datetime="2024-09-17T22:03:03+08:00">2024-09-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/misc/" itemprop="url" rel="index"><span itemprop="name">misc</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>并没有参加羊城杯，但是题目听说质量很高，对着WP复现一下。</p>
+<span id="more"></span>
+
+<h1 id="hidden"><a href="#hidden" class="headerlink" title="hidden"></a>hidden</h1><p>这个题目附件下下来，有一个txt，再就是一个wav 。txt 这里给了提示是 <code>60=()+()</code>，可以想到rot13和rot47。这里我一开始是先rot13然后rot47发现解出来还是没什么用。所以就得换个方式，<strong>先rot47</strong>解码一下，然后<strong>再rot13</strong>解码一下。最后得到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> wave </span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;flag.txt&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    txt_data = f.read()</span><br><span class="line">    file_len = <span class="built_in">len</span>(txt_data)</span><br><span class="line">    txt_data = file_len.to_bytes(<span class="number">3</span>, byteorder = <span class="string">&#x27;little&#x27;</span>) + txt_data</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> wave.<span class="built_in">open</span>(<span class="string">&quot;test.wav&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    attrib = f.getparams()    </span><br><span class="line">    wav_data = <span class="built_in">bytearray</span>( f.readframes(-<span class="number">1</span>) )</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(txt_data)):</span><br><span class="line">    wav_data[index * <span class="number">4</span>] = txt_data[index]</span><br><span class="line">    </span><br><span class="line"><span class="keyword">with</span> wave.<span class="built_in">open</span>(<span class="string">&quot;hiden.wav&quot;</span>, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.setparams(attrib) </span><br><span class="line">    f.writeframes(wav_data)</span><br></pre></td></tr></table></figure>
+
+<p>其实就是要根据这段代码来进行逆向：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> wave</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> wave.<span class="built_in">open</span>(<span class="string">&quot;hiden.wav&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> wav_file:</span><br><span class="line">    wav_data = <span class="built_in">bytearray</span>(wav_file.readframes(-<span class="number">1</span>))  <span class="comment"># Read all audio frames</span></span><br><span class="line">length_bytes = <span class="built_in">bytearray</span>([wav_data[i * <span class="number">4</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>)])</span><br><span class="line">data_length = <span class="built_in">int</span>.from_bytes(length_bytes, <span class="string">&#x27;little&#x27;</span>)</span><br><span class="line">extracted_data = <span class="built_in">bytearray</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(data_length):</span><br><span class="line">    extracted_data.append(wav_data[(i + <span class="number">3</span>) * <span class="number">4</span>])</span><br><span class="line">extracted_text = extracted_data.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Content:\n&quot;</span>, extracted_text)</span><br></pre></td></tr></table></figure>
+
+<h1 id="不一样的数据库2"><a href="#不一样的数据库2" class="headerlink" title="不一样的数据库2"></a>不一样的数据库2</h1><p>给了一个压缩包，里面是一个png和kdbx文件，不过都是加密了的。用winzip打开发现也是需要密码，可以排除掉伪加密。备注信息也没有啥东西，放到010去看一下，在末尾处发现：<code>this is the 6 number</code>，猜想可以用ARCHPR去爆破，爆破出来的密码是<code>753951</code>。然后就得到了一张残缺的二维码和一个kdbx文件。残缺的二维码可以直接PS补全。QR扫码之后得到：</p>
+<p><code>NRF@WQUKTQ12345&amp;WWWF@WWWFX#WWQXNWXNU</code>，但是这个不是kdbx的密码。而是<strong>得先rot13</strong>解密一下，得到：<code>AES@JDHXGD12345&amp;JJJS@JJJSK#JJDKAJKAH</code> ，这个密码才是kdbx文件的密码（其实这里照片的名字13也是一个提示，</p>
+<p>进去之后可以看到：</p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e7c62580af7.png" alt="misc7.png"></p>
+<p>给了提示:<strong>passisDASCTF</strong></p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e7c6c781486.png" alt="misc8.png"></p>
+<p>右击编辑记录，然后从历史里面找到第四条记录，高级选项里面编辑字符串，可以看到AES密文，然后联想前面的passisDASCTF。可以猜到密钥就是<code>DASCTF</code>。解密即可。</p>
+<p>注：这个AES找个在线的解密网站，输入密文和KEY，解密就行了。不知道为啥用工具会解密不出来。</p>
+<h1 id="miaoro"><a href="#miaoro" class="headerlink" title="miaoro"></a>miaoro</h1><p>题目附件给的是一个流量包，wireshark打开，然后去追踪TCP流量，一个一个流去看，看到第6个流的时候，cookie那里可以看到有一大串编码的字符串。这里可以联想到shiro。这里用到ABC_123大佬的工具去解密。流6一共有三段cookie数据，这里一个一个去试，去解码，可以在第三段cookie解密后看到：</p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e7eeddf277e.png" alt="misc9.png"></p>
+<p>可以发现一半的flag。这里继续往后面翻流。一个一个去看。从流7开始多了一个首部字段：GWHT，并且还是base64编码的，从流7开始解码，可以发现是在执行命令，whoami。翻到流10的时候，base64解码一下发现是：<code>echo Th15_11111111s_pP@sssssw000rd!!!&gt;pass.txt</code></p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e7f3c3e71fa.png" alt="misc10.png">其实到这里我会想着去分离一下，看有没有有用的数据。然而并没有分离出啥有用信息，于是继续翻。流13执行的命令解码后是:</p>
+<p><code>certutil -urlcache -f &quot;http://192.168.1.3:801/secret.txt&quot;</code>，感觉是有用的信息，也看到返回了一大串字符串，base64解码看一下：</p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e7f43d6a8cf.png" alt="misc11.png"></p>
+<p>可以看到结尾其实是压缩包的开头，倒叙一下就行了。这里全过程都可以通过cyberchef来实现。不过这里有个问题，直接在cyberchef去复制我画框的右半部分不行，这里是先把所有内容复制到vscode，然后按住鼠标中键滑轮进行选中，把我们需要的那个部分提取出来。</p>
+<p>提取出来之后，注意有换行，然后需要逆序，然后还需要转16进制，这些都可以通过cyberchef一步到位：</p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e842592f1ef.png" alt="misc12.png"></p>
+<p>保存为zip文件，密码就是我们之前从流量分析中提取到的那个。解压缩之后是一张图片。名字叫flag2。打开之后发现有些内容没显示出来，这里很明显是宽高问题，我直接跑之前存的那个修改宽高的脚本不太行。所以放到010去改，模板不知道为啥显示的有问题，直接通过模板去找宽高不太行，直接手动找吧。宽高的位置在：00A0 H 这里：</p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e8432f595aa.png" alt="misc13.png"></p>
+<p>FF C0 00 11 08 后面跟着的就是宽高数据，我这里把宽高改成了一样，都是 <code>05 7C</code> ，改完之后就可以看到完整的图片了，后面就是一个设计好的密码体系了：</p>
+<p><img src="https://img.picui.cn/free/2024/09/16/66e844280b460.jpg" alt="flag2.jpg"></p>
+<p>翻译过来就是，EBOFDELQDIAA} 。和之前的拼接在一起就是：DASCTF{B916CFEB-C40F-45D6-A7BC-EBOFDELQDIAA}</p>
+<h1 id="checkin"><a href="#checkin" class="headerlink" title="checkin"></a>checkin</h1><p>这个题目附件解压缩之后是一个flag.txt文件，里面是16进制，压缩包备注信息也给了一段base的编码。看到16进制自然而然的想到去转成文件，放到cyberchef里面去看看，不过这里要注意会有一些空格啥的，用cyberchef自带的<code>remove whitespace</code>功能去消除一下即可。可以看到有wireshark字样，所以导出来文件把后缀改成<code>.pcap</code> 。这个压缩包打开发现有很多TLS流量，这里会想着去给他解密，但是那个base编码格式不对，所以得再去找信息。这里是用到了<code>wbStego4open</code> 来对txt文件进行的隐写。猜测密码就是那个base解码后的。</p>
+<p>这个base用的是base58 。所以还是可以下载一个爆破常见加密方式的，可以避免比赛的时候去一个一个试。这里随波逐流工具箱就可以实现。base58解码出来是<code>Welcome2GZ</code> 。用wbsteg4 decode出来是一个log文件，可以想到这个是tls的，导入到wireshark 。之前做的一个题目是导入私钥，这里是log。其实大差不差：编辑-&gt;首选项-&gt;protocol-&gt;TLS-&gt;导入log</p>
+<p><img src="https://img.picui.cn/free/2024/09/17/66e8f97dab2e4.png" alt="misc14.png"></p>
+<p>TLS解密之后，很多HTTP流量就可以看了，我们可以一个一个去追踪HTTP流去翻，翻到流33的时候可以看到有个flag.gif，可以怀疑这里就是有用的信息，发现对应的分组是2016，于是我去导出HTTP对象，找到2016，把他进行导出。导出的是一个php文件，但是内容里面很明显的GIF信息，于是想着去分离，这里我一开始是扔到kali里面，foremost分离，发现分离出来一半的gif，是有点问题的。于是换了一个，用binwalk去分离，发现好用一些： <code>binwalk -D=gif upload.php</code> 分离出来的gif是正常的。</p>
+<p>附binwalk常见命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">binwalk -e firmware.bin   这个功能也是一个常用的功能，在CTF中很多文件分解的misc题都可以使用binwalk提高效率相对于使用winhex这类工具。可以使用-e选项提取它在固件映像中找到的任何文件。</span><br><span class="line"></span><br><span class="line">binwalk -D=xx  firmware.bin 指定分离的文件类型</span><br></pre></td></tr></table></figure>
+
+<p>最后一步就是gif时间间隔隐写，这里可以用脚本，也可以直接用kali自带的一个神器：identify </p>
+<p><img src="https://img.picui.cn/free/2024/09/17/66e8fba8d8413.png" alt="misc16.png"></p>
+<p><code>identify -format &quot;%T &quot; flag</code>  ，可以得到时间间隔， 3 换成 0 ,   23换成 1，然后 01去转ascii即可。</p>
+<p><img src="https://img.picui.cn/free/2024/09/17/66e8fb0cf0952.png" alt="misc15.png"></p>
+<p>最终output得到flag</p>
+<h1 id="so-much"><a href="#so-much" class="headerlink" title="so much"></a>so much</h1><p>这个题目给的附件是一个.ad格式，首先这个名字看上去就像是被编码过的，拿过去base64解码一下发现：<code>shift!</code></p>
+<p>然后ad这种后缀的文件需要用到FTK来进行挂载，这里用的工具是：<code>FTK Imager4.7.1.4_x64</code></p>
+<p><img src="https://img.picui.cn/free/2024/09/17/66e96e0eb82b8.png" alt="misc17.png"></p>
+<p>File -&gt; image mounting -&gt; image file 选择我们要挂在的文件，发现需要password 。这里其实可以联想到一开始翻译出来的<code>shift!</code>，但是很遗憾是错的，这里把文件放到010去看，发现结尾处有一段提示：<code>key is : 1234567  really ？</code> 这里就是脑洞了。真实的密码有shift+数字 来得到：<code>!@#$%^&amp;</code> </p>
+<p>mount之后会产生一个新的磁盘，我这里是F盘：</p>
+<p><img src="https://img.picui.cn/free/2024/09/17/66e970669c7ba.png" alt="misc18.png"></p>
+<p>可以发现时间上是存在规律的，从0.crypto文件开始，提取它的时间戳，提取19为0 ， 20为1 ，脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">flag=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">344</span>):</span><br><span class="line">    tmp_1=os.path.getmtime(<span class="built_in">str</span>(i)+<span class="string">&quot;.crypto&quot;</span>) <span class="comment">#os.path.getmtime()Python中的方法用于获取指定路径的最后修改时间。此方法返回一个浮点值，该值表示自纪元以来的秒数。如果文件不存在或无法访问，则此方法引发OSError。</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;73009&quot;</span> <span class="keyword">in</span> <span class="built_in">str</span>(tmp_1):</span><br><span class="line">        flag+=<span class="string">&quot;0&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag+=<span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="built_in">print</span>(flag+<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">tmp=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(flag)):</span><br><span class="line">    tmp+=flag[j]</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(tmp) == <span class="number">8</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">chr</span>(<span class="built_in">int</span>(tmp,<span class="number">2</span>)),end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        tmp=<span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以得到：<code>the_key_is_700229c053b4ebbcf1a3cc37c389c4fa</code></p>
+<p>所以就只剩下最后一层了，文件是<code>crypto</code>后缀，这种是<code>encrypto for win </code>这款软件加密生成的。所以我们用这个软件解密即可，密码是<strong>700229c053b4ebbcf1a3cc37c389c4fa</strong>  ，然后依次解开 <code>0.crypto</code> 和 <code>1.crypto</code> ，对应内容拼接即可<code>DASCTF&#123;85235bd803c2a0662b771396bce9968f&#125;</code>。注意这里的密码好像只能手输。。。</p>
+<h1 id="1z-misc"><a href="#1z-misc" class="headerlink" title="1z_misc"></a>1z_misc</h1><p>脑洞题，题目给了一个加密的压缩包和txt文件。</p>
+<p>内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">天地玄黄，宇宙洪荒；日月盈昃，辰宿列张；万物芸芸，息息相关；是以十二岁而行二十八宿，其间奥妙，待探寻，显真章。</span><br><span class="line">若女可为11，可为1124......觜可为91，亦可为725......如此往复，周而复始。</span><br><span class="line">祈解其秘：[43,101,55,16,16,1017,28,812,824,43,55,226,101,55,55,415,1017,1027,28,28,617,824,28,812,1027,16,101,16,55,1027,1017,28,16]</span><br></pre></td></tr></table></figure>
+
+<p>可以猜想这个解出来就是加密压缩包的密码。给了一个hint.jpg:</p>
+<p><img src="https://img.picui.cn/free/2024/09/17/66e982455b460.png" alt="misc19.png"></p>
+<p>这个题目的规律就是，里面一圈，即12个时辰，是顺时针顺序，子对应 1，丑对应 2 ，寅对应3 ，依次类推，最外面二十八星宿对应的是逆时针。若女可为11，可为1124……觜可为91，亦可为725……如此往复，周而复始。 即(1,1) 和 (11,24) 都对应女，这里也可以对上，1代表子，然后1代表最外圈逆时针开始也是女，11对应戌，24即从奎开始逆时针数24下，也可以到女。所以规律就清晰了，对[43,101,55,16,16,1017,28,812,824,43,55,226,101,55,55,415,1017,1027,28,28,617,824,28,812,1027,16,101,16,55,1027,1017,28,16] 进行一下编号即可：</p>
+<p>(4,3) (10,1) (5,5) (1,6) (10,17) (2,8) (8,12),(8,24)(4,3)(5,5)(2,26)(10,1)(5,5)(5,5)(4,15)(10,17)(10,27)(2,8)(2,8)(6,17)(8,24)(2,8)(8,12)(10,27)(1,6)(10,1)(1,6)(5,5)(10,27)(2,8)(1,6)</p>
+<p>翻译过来就是 <code>心,胃,心,奎,奎,心,奎,心,胃,心,心,心,胃,心,心,胃,心,奎,奎,奎,奎,胃,奎,心,奎,奎,胃,奎,心,奎,心,奎,奎 </code></p>
+<p>对应三个元素，（ .  -  分隔符）可以想到摩斯密码，用到cyberchef的split模块</p>
+<p><img src="https://img.picui.cn/free/2024/09/17/66e987ba2f4b3.png" alt="misc20.png"></p>
+<p><strong>这里心对应.还是胃对应.还是奎对应.，这个得通过一个一个去尝试来看</strong>，得到的<code>E@SI1Y!</code> 拿过来解密：</p>
+<p>图片是一个天琴座的图片，flag用010打开没看到什么有用信息。要用到一个叫lyra的工具，将flag后最改成<code>.lyra</code>，然后用lyra工具解码出.wav文件。网上语音转文字一下。最后是社会注意核心价值观编码。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/misc/" rel="tag"># misc</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/09/01/%E6%9D%82%E8%B0%882/" rel="prev" title="杂谈2">
+                  <i class="fa fa-angle-left"></i> 杂谈2
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
