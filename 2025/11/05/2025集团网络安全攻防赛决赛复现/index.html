@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="image_upload题目描述： 这是一道100%需要admin的image_upload，除了这个你还能看到什么呢？ 1234567Image Gallery CTF ChallengeWelcome to Image Gallery CTF ChallengeAvailable Endpoints:login: &#x2F;login (POST: username, password)profi">
+    <meta name="description" content="前言2025年集团网络攻防决赛部分赛题复现">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2025集团网络安全攻防赛决赛复现">
 <meta property="og:url" content="http://example.com/2025/11/05/2025%E9%9B%86%E5%9B%A2%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%B5%9B%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%8E%B0/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
-<meta property="og:description" content="image_upload题目描述： 这是一道100%需要admin的image_upload，除了这个你还能看到什么呢？ 1234567Image Gallery CTF ChallengeWelcome to Image Gallery CTF ChallengeAvailable Endpoints:login: &#x2F;login (POST: username, password)profi">
+<meta property="og:description" content="前言2025年集团网络攻防决赛部分赛题复现">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://youke1.picui.cn/s1/2025/11/05/690b0d6290aca.png">
 <meta property="og:image" content="https://youke1.picui.cn/s1/2025/11/05/690b0d628fab9.png">
@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://youke1.picui.cn/s1/2025/11/05/690b214cc85a0.png">
 <meta property="og:image" content="https://youke1.picui.cn/s1/2025/11/05/690b214ce5ffa.png">
 <meta property="article:published_time" content="2025-11-05T08:27:49.000Z">
-<meta property="article:modified_time" content="2025-11-05T10:08:20.024Z">
+<meta property="article:modified_time" content="2025-11-05T10:10:55.254Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -122,7 +122,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#image-upload"><span class="nav-number">1.</span> <span class="nav-text">image_upload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SafeTalk"><span class="nav-number">2.</span> <span class="nav-text">SafeTalk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80"><span class="nav-number">2.1.</span> <span class="nav-text">方式一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="nav-number">2.2.</span> <span class="nav-text">方式二</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#image-upload"><span class="nav-number">1.1.</span> <span class="nav-text">image_upload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SafeTalk"><span class="nav-number">1.2.</span> <span class="nav-text">SafeTalk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80"><span class="nav-number">1.2.1.</span> <span class="nav-text">方式一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="nav-number">1.2.2.</span> <span class="nav-text">方式二</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -205,7 +205,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2025-11-05 16:27:49 / Modified: 18:08:20" itemprop="dateCreated datePublished" datetime="2025-11-05T16:27:49+08:00">2025-11-05</time>
+      <time title="Created: 2025-11-05 16:27:49 / Modified: 18:10:55" itemprop="dateCreated datePublished" datetime="2025-11-05T16:27:49+08:00">2025-11-05</time>
     </span>
 
   
@@ -217,7 +217,10 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><span id="more"></span>
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>2025年集团网络攻防决赛部分赛题复现</p>
+<span id="more"></span>
+
+
 
 <h2 id="image-upload"><a href="#image-upload" class="headerlink" title="image_upload"></a>image_upload</h2><p>题目描述：</p>
 <p>这是一道100%需要admin的image_upload，除了这个你还能看到什么呢？</p>
