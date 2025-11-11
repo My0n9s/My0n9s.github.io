@@ -26,11 +26,13 @@
 <meta property="og:site_name" content="My0n9s&#39;blog">
 <meta property="og:description" content="前言每次比完赛之后都说要开始学JAVA，结果都是下次一定。其实大学的时候接触过一段时间的java，但也只是停留在基本的一些语法和用法。工作之后花在安全上的时间越来越少。再此，专门开个贴，重新学习和认识JAVA。来陪我一起度过在区县交流的日子。那之前都是会有一个计划，比如一天学多少，看多少章节的书，看多少小时的视频。这次我想更没规律一点，用兴趣和精力来驱动。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://youke1.picui.cn/s1/2025/11/09/691091a76045a.png">
 <meta property="article:published_time" content="2025-11-04T11:41:23.000Z">
-<meta property="article:modified_time" content="2025-11-05T08:32:01.046Z">
+<meta property="article:modified_time" content="2025-11-09T13:07:22.103Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="JAVA学习">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://youke1.picui.cn/s1/2025/11/09/691091a76045a.png">
 
 
 <link rel="canonical" href="http://example.com/2025/11/04/JAVA/">
@@ -112,7 +114,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5"><span class="nav-number">2.</span> <span class="nav-text">第一阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA-SE-%E3%80%81JAVA-EE%E3%80%81JDK%E3%80%81JRE%E3%80%81JVM%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">JAVA SE 、JAVA EE、JDK、JRE、JVM相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.2.</span> <span class="nav-text">JAVA开发注意事项</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5"><span class="nav-number">2.</span> <span class="nav-text">第一阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA-SE-%E3%80%81JAVA-EE%E3%80%81JDK%E3%80%81JRE%E3%80%81JVM%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">JAVA SE 、JAVA EE、JDK、JRE、JVM相关概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.2.</span> <span class="nav-text">JAVA开发注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86%E8%BD%AC%E4%B9%89"><span class="nav-number">2.3.</span> <span class="nav-text">重新认识转义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">2.4.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.5.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E7%B1%BB%E7%9A%84%E7%BB%84%E7%BB%87%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.6.</span> <span class="nav-text">java类的组织形式</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -201,7 +203,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-11-05 16:32:01" itemprop="dateModified" datetime="2025-11-05T16:32:01+08:00">2025-11-05</time>
+      <time title="Modified: 2025-11-09 21:07:22" itemprop="dateModified" datetime="2025-11-09T21:07:22+08:00">2025-11-09</time>
     </span>
 
   
@@ -227,6 +229,14 @@
 <p>3.一个源文件中最多只能有一个public类。其他类的个数不限。</p>
 <p>4.如果源文件包含一个public类，则文件名必须按该类名命名！</p>
 <p>5.一个源文件中最多只能有一个public类。其他类的个数不限。也可以将main方法写在非public类中，然后指定运行非public类，这样入口方法就是非public的main方法。</p>
+<h2 id="重新认识转义"><a href="#重新认识转义" class="headerlink" title="重新认识转义"></a>重新认识转义</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">\t 制表符： 像表格一样字段间搞出一些空隙， 比如 上海\t北京  ， 输出就是  上海      北京 </span><br><span class="line">\r ：就是把光标移到最前面,比如 上海\r是个大城市北京天津，输出就是  是个大城市北京天津</span><br><span class="line">\n 换行：光标移动到下一行同一位置。</span><br><span class="line">测试发现\r\n 和 \n 在输出控制台的效果是一样的。</span><br><span class="line">原因：现代终端（包括命令行、IDE终端、网页中的控制台等）为了用户体验，会自动将 \n 解释为 \r\n 的功能。</span><br></pre></td></tr></table></figure>
+
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// : 单行注释</span><br><span class="line"></span><br><span class="line">/*  */ :多行注释</span><br><span class="line"></span><br><span class="line">文档注释：</span><br><span class="line">/**</span><br><span class="line">*@author</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">javadoc -d d:\\temp  -author  -version  comment2.java </span><br><span class="line">javadoc -d  目录  -xx  -yy  zz.java</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">基本数据类型：</span><br><span class="line">1.数值型：</span><br><span class="line">    整数类型，存放整数，byte:1字节  short:2字节 int:4字节 long:8字节</span><br><span class="line">    浮点类型：float:4字节 double:8字节</span><br><span class="line">2.字符型：char:2字节，单引号包裹</span><br><span class="line">3.布尔型：bool:1字节</span><br><span class="line"></span><br><span class="line">String  //多个字符，注意S是大写，双引号包裹</span><br><span class="line"></span><br><span class="line">引用数据类型:</span><br><span class="line">类(class)</span><br><span class="line">接口(interface)</span><br><span class="line">数组([])</span><br><span class="line"></span><br><span class="line">+号的使用：</span><br><span class="line">如果两边都是数值，输出为和.</span><br><span class="line">如果一边为字符串，那就是拼接.</span><br><span class="line">运算顺序是从左往右的.</span><br><span class="line">eg:</span><br><span class="line">System.out.println(100+3) //输出为103</span><br><span class="line">System.out.println(&quot;hello&quot;+100) //输出为hello100</span><br><span class="line">System.out.println(100+3+&quot;hello&quot;)//输出为103hello</span><br><span class="line">System.out.println(&quot;hello&quot;+100+3)//输出为hello1003</span><br></pre></td></tr></table></figure>
+
+<h2 id="java类的组织形式"><a href="#java类的组织形式" class="headerlink" title="java类的组织形式"></a>java类的组织形式</h2><p><img src="https://youke1.picui.cn/s1/2025/11/09/691091a76045a.png" alt="java类组织形式.png"></p>
+<p>一个在线看java api文档的网站<code>matools</code> 可以按照这个结构来检索我们想要查找的类以及对应的一些说明。</p>
 
     </div>
 
