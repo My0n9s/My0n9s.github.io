@@ -19,15 +19,37 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="article">
+    <meta name="description" content="前言这篇文章用来记录java web的学习，想到哪记录到哪。主要参考韩顺平老师的讲义。 每次记录是当下的理解，可能存在有误差的地方，随着深入可能会不停的增加或修改。如果错误，欢迎批评指正。">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Java Web">
 <meta property="og:url" content="http://example.com/2026/01/02/Java-Web/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言这篇文章用来记录java web的学习，想到哪记录到哪。主要参考韩顺平老师的讲义。 每次记录是当下的理解，可能存在有误差的地方，随着深入可能会不停的增加或修改。如果错误，欢迎批评指正。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazSJJ.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/2fd72986abb56ac5c3c4e6978a0ee9c7.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazeFe.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazQyt.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazlOP.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazaSs.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZaz6kF.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazcY4.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazRp9.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazf61.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZazjXt.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/ff52921de70220cd01860fab1e537263.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/801d4193e3622e03372da31c17ddff57.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/6eda790fcb0f8407874412ec60b920d3.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/ff248b926c22f700f052117ab1fa84c1.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/d3541a8de18404e64319e75a2a7275f2.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/7019cd24e0fff0167f402f3675c097e5.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260105/c45a0ef1bc1a7945ddd43d1061c3f389.png">
 <meta property="article:published_time" content="2026-01-02T06:02:56.000Z">
-<meta property="article:modified_time" content="2026-01-02T06:02:56.396Z">
+<meta property="article:modified_time" content="2026-01-05T11:14:13.818Z">
 <meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="Java Web">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s41.ax1x.com/2026/01/05/pZazSJJ.png">
 
 
 <link rel="canonical" href="http://example.com/2026/01/02/Java-Web/">
@@ -96,7 +118,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -109,6 +131,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84tomcat-demo"><span class="nav-number">1.1.</span> <span class="nav-text">简单的tomcat demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Servlet"><span class="nav-number">1.2.</span> <span class="nav-text">Servlet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#idea%E9%83%A8%E7%BD%B2web%E5%BA%94%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">idea部署web应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#idea-web%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E"><span class="nav-number">1.4.</span> <span class="nav-text">idea web工程目录说明</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -134,7 +157,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -192,6 +215,13 @@
 
       <time title="Created: 2026-01-02 14:02:56" itemprop="dateCreated datePublished" datetime="2026-01-02T14:02:56+08:00">2026-01-02</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-01-05 19:14:13" itemprop="dateModified" datetime="2026-01-05T19:14:13+08:00">2026-01-05</time>
+    </span>
 
   
 </div>
@@ -202,7 +232,63 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这篇文章用来记录<code>java web</code>的学习，想到哪记录到哪。主要参考韩顺平老师的讲义。</p>
+<p>每次记录是当下的理解，可能存在有误差的地方，随着深入可能会不停的增加或修改。如果错误，欢迎批评指正。</p>
+<span id="more"></span>
+
+<p>这部分学习用的<code>idea2024</code>加上<code>tomcat8</code> 整个浏览器与后端交互的过程参考下图：</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazSJJ"><img src="https://s41.ax1x.com/2026/01/05/pZazSJJ.png" alt="pZazSJJ.png"></a></p>
+<p>这里的Tomcat是web中间件，本质上也是<strong>JAVA程序代码</strong>，作为浏览器与容器之间的“中间人”，Tomcat处理浏览器的http请求，从而去调用容器里面相应的java程序和Servlet。结果再通过Tomcat返回给浏览器。</p>
+<h2 id="简单的tomcat-demo"><a href="#简单的tomcat-demo" class="headerlink" title="简单的tomcat demo"></a>简单的tomcat demo</h2><p>tomcat的目录说明：</p>
+<p><img src="https://yk.jsdu.cn/20260105/2fd72986abb56ac5c3c4e6978a0ee9c7.png" alt="javaweb17"></p>
+<p>以下是韩老师讲义中关于tomcat的一个demo，这里它通过监听9999端口，并且将<code>src/hello.html</code>的内容进行读取并返回。这是一个非常非常简单的demo，实际的tomcat的程序代码要比这个复杂的多，但是从中可以知道tomcat其实并没有那么神秘，无非是做了容器与浏览器之间的一个桥梁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.FileReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;</span><br><span class="line"><span class="keyword">import</span> java.net.ServerSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 这是我们自己写的一个web服务, 可以返回hello.html给浏览器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyTomcat</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">//1.在9999端口监听</span></span><br><span class="line">        <span class="type">ServerSocket</span> <span class="variable">serverSocket</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ServerSocket</span>(<span class="number">9999</span>);</span><br><span class="line">        <span class="comment">//如果serverSocket 没有关闭，就等待连接, 不停的等待</span></span><br><span class="line">        <span class="keyword">while</span> (!serverSocket.isClosed()) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;=====我的web服务在 9999端口监听=====&quot;</span>);</span><br><span class="line">            <span class="comment">//2. 等待浏览器/客户端连接, 得到socket</span></span><br><span class="line">            <span class="comment">//   该socket用于通信</span></span><br><span class="line">            <span class="type">Socket</span> <span class="variable">socket</span> <span class="operator">=</span> serverSocket.accept();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//3. 通过socket 得到 输出流，[]</span></span><br><span class="line">            <span class="type">OutputStream</span> <span class="variable">outputStream</span> <span class="operator">=</span> socket.getOutputStream();</span><br><span class="line">            <span class="comment">//   返回给浏览器/客户端</span></span><br><span class="line">            <span class="comment">//4. 读取 hello.html 文件返回即可=&gt; 如何读取文件内容</span></span><br><span class="line">            <span class="comment">//   得到文件输入流(字符输入流), 和 src/hello.html</span></span><br><span class="line">            <span class="type">BufferedReader</span> <span class="variable">bufferedReader</span> <span class="operator">=</span></span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">FileReader</span>(<span class="string">&quot;src/hello.html&quot;</span>));</span><br><span class="line">            <span class="type">String</span> <span class="variable">buf</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">            <span class="comment">//   循环读取hello.html</span></span><br><span class="line">            <span class="keyword">while</span> ((buf = bufferedReader.readLine()) != <span class="literal">null</span>) &#123;</span><br><span class="line">                outputStream.write(buf.getBytes());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            outputStream.close();</span><br><span class="line">            socket.close();</span><br><span class="line">        &#125;</span><br><span class="line">        serverSocket.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h2><p>Servlet本质上也是一段段封装好的java代码，封装，也就是功能集成，比如它的http板块，就可以直接拿来用。拿来处理http请求。有点类似于python里面的那些库。当然只能说是类比，java里面包的概念和python不是一回事。</p>
+<h2 id="idea部署web应用"><a href="#idea部署web应用" class="headerlink" title="idea部署web应用"></a>idea部署web应用</h2><p>这里包括tomcat以及servlet</p>
+<p>简单来看的话，分三步，第一步是添加web工件(<code>add web framework</code> )，第二步就是配置tomcat ，第三步引入<code>servlet</code>。这里还是记录一下：</p>
+<p>1.文件 -&gt; 新建 -&gt; 项目</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazeFe"><img src="https://s41.ax1x.com/2026/01/05/pZazeFe.png" alt="pZazeFe.png"></a></p>
+<p>2.添加web框架</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazQyt"><img src="https://s41.ax1x.com/2026/01/05/pZazQyt.png" alt="pZazQyt.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazlOP"><img src="https://s41.ax1x.com/2026/01/05/pZazlOP.png" alt="pZazlOP.png"></a></p>
+<p>3.配置tomcat</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazaSs"><img src="https://s41.ax1x.com/2026/01/05/pZazaSs.png" alt="pZazaSs.png"></a></p>
+<p>接下来对tomcat进行详细配置，注意底下有个修复，我们可以修复下：</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZaz6kF"><img src="https://s41.ax1x.com/2026/01/05/pZaz6kF.png" alt="pZaz6kF.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazcY4"><img src="https://s41.ax1x.com/2026/01/05/pZazcY4.png" alt="pZazcY4.png"></a></p>
+<p>改完之后先点击应用，然后再点击确定。</p>
+<p>到这里我们可以试着运行一下，看tomcat有没有配置成功，毕竟别忘了我们web目录下面是有一个<code>index.jsp</code>的</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--</span><br><span class="line">  Created by IntelliJ IDEA.</span><br><span class="line">  User: <span class="number">51261</span></span><br><span class="line">  Date: <span class="number">2026</span>/<span class="number">1</span>/<span class="number">5</span></span><br><span class="line">  Time: 下午<span class="number">6</span>:<span class="number">28</span></span><br><span class="line">  To change <span class="built_in">this</span> template use File | Settings | File Templates.</span><br><span class="line">--%&gt;</span><br><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="string">&quot;java&quot;</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;title&gt;$Title$&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">  $END$</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们在idea里面运行一下，然后访问可以发现成功了：</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazRp9"><img src="https://s41.ax1x.com/2026/01/05/pZazRp9.png" alt="pZazRp9.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazf61"><img src="https://s41.ax1x.com/2026/01/05/pZazf61.png" alt="pZazf61.png"></a></p>
+<p>接下来就是配置Servlet，这里首先把Servlet的jar包导进来(Servlet的包在tomcat里面的lib下<code>E:\security\tomcat\apache-tomcat-8.5.100\lib\servlet-api.jar</code>)</p>
+<p>在web下的WEB-INF下新建一个lib，然后把servlet-api.jar包复制进去</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZazjXt"><img src="https://s41.ax1x.com/2026/01/05/pZazjXt.png" alt="pZazjXt.png"></a></p>
+<p>接着添加为库，导入进去</p>
+<p><img src="https://yk.jsdu.cn/20260105/ff52921de70220cd01860fab1e537263.png" alt="javaweb11"></p>
+<p>确定：</p>
+<p><img src="https://yk.jsdu.cn/20260105/801d4193e3622e03372da31c17ddff57.png" alt="javaweb12"></p>
+<p>可以发现成功导入：</p>
+<p><img src="https://yk.jsdu.cn/20260105/6eda790fcb0f8407874412ec60b920d3.png" alt="javaweb13"></p>
+<p>接下来就是继承<code>Servlet</code>类，对五个主要方法进行重写，我们可以在src目录下新建一个com，然后再新建一个<code>HelloServlet.java</code>文件。</p>
+<p> <img src="https://yk.jsdu.cn/20260105/ff248b926c22f700f052117ab1fa84c1.png" alt="javaweb14"></p>
+<p><img src="https://yk.jsdu.cn/20260105/d3541a8de18404e64319e75a2a7275f2.png" alt="javaweb15"></p>
+<p>接着对方法进行重写，这里简单重写做测试用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.*;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloServlet</span> <span class="keyword">implements</span> <span class="title class_">Servlet</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;init() is called!&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ServletConfig <span class="title function_">getServletConfig</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello!Service!&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getServletInfo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>重写方法完之后还是不能访问，需要在<code>web.xml</code>做配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">version</span>=<span class="string">&quot;4.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span>&gt;         //和底下<span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span>里面的<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>保持一致</span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.HelloServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span>    //HelloServlet类所在路径</span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/helloServlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span>           //访问路由</span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>到此，我们就可以正常访问了，并且能在<code>console</code>里面看到输出结果:</p>
+<p><img src="https://yk.jsdu.cn/20260105/7019cd24e0fff0167f402f3675c097e5.png" alt="javaweb16"></p>
+<h2 id="idea-web工程目录说明"><a href="#idea-web工程目录说明" class="headerlink" title="idea web工程目录说明"></a>idea web工程目录说明</h2><p><img src="https://yk.jsdu.cn/20260105/c45a0ef1bc1a7945ddd43d1061c3f389.png" alt="javaweb18"></p>
+<p>out目录：会在tomcat运行的时候生成，这个才是展示给外界去访问的工作目录。</p>
+<p>src目录：存放java文件</p>
+<p>web目录：里面的web-inf一般放第三方lib比如之前提到的servlet-api.jar ； 里面的web.xml 用作配置信息，比如上面提到的给servlet做配置</p>
+
     </div>
 
     
@@ -210,6 +296,9 @@
     
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java-Web/" rel="tag"># Java Web</a>
+          </div>
 
         
 
@@ -220,7 +309,7 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2026/01/05/1229-1011/" rel="next" title="1229-1011">
+                <a href="/2026/01/05/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%831229-1011/" rel="next" title="1229-1011">
                   1229-1011 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
