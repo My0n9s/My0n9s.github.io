@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言之前的练习题也出现过sprintf函数，一直没有抽时间出来学习一下这个函数的漏洞，今天抽空来整理一下； 基本使用学习这个函数的漏洞，首先我们可以去php官方手册看一下这个函数的基本使用。[PHP: sprintf - Manual](https:&#x2F;&#x2F;www.php.net&#x2F;manual&#x2F;zh&#x2F;function.sprintf.php) sprintf(string $format , mixe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP sprintf函数漏洞解析">
+<meta property="og:url" content="http://example.com/2026/01/06/PHP-sprintf%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="前言之前的练习题也出现过sprintf函数，一直没有抽时间出来学习一下这个函数的漏洞，今天抽空来整理一下； 基本使用学习这个函数的漏洞，首先我们可以去php官方手册看一下这个函数的基本使用。[PHP: sprintf - Manual](https:&#x2F;&#x2F;www.php.net&#x2F;manual&#x2F;zh&#x2F;function.sprintf.php) sprintf(string $format , mixe">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-01-06T02:58:01.000Z">
+<meta property="article:modified_time" content="2026-01-06T09:28:18.703Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="函数漏洞">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/01/06/PHP-sprintf%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2026/01/06/PHP-sprintf%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90/","path":"2026/01/06/PHP-sprintf函数漏洞解析/","title":"PHP sprintf函数漏洞解析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PHP sprintf函数漏洞解析 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BA%A7%E7%94%9F"><span class="nav-number">1.2.</span> <span class="nav-text">漏洞产生</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/06/PHP-sprintf%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PHP sprintf函数漏洞解析 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PHP sprintf函数漏洞解析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2026-01-06 10:58:01 / Modified: 17:28:18" itemprop="dateCreated datePublished" datetime="2026-01-06T10:58:01+08:00">2026-01-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前的练习题也出现过<code>sprintf</code>函数，一直没有抽时间出来学习一下这个函数的漏洞，今天抽空来整理一下；</p>
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><p>学习这个函数的漏洞，首先我们可以去<code>php官方手册</code>看一下这个函数的基本使用。<code>[PHP: sprintf - Manual](https://www.php.net/manual/zh/function.sprintf.php)</code></p>
+<p><code>sprintf(string $format , mixed $arg1,mixed $arg2, ....)：String</code></p>
+<p>我们可以看看<code>sprintf()</code>底层实现代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (format[inpos]) &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;s&#x27;</span>: &#123;</span><br><span class="line">zend_string *t;</span><br><span class="line">zend_string *str = <span class="title function_ invoke__">zval_get_tmp_string</span>(tmp, &amp;t);</span><br><span class="line"><span class="title function_ invoke__">php_sprintf_appendstring</span>(&amp;result, &amp;outpos,<span class="title function_ invoke__">ZSTR_VAL</span>(str),width, precision, padding,alignment,<span class="title function_ invoke__">ZSTR_LEN</span>(str),<span class="number">0</span>, expprec, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">zend_tmp_string_release</span>(t);</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;d&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_appendint</span>(&amp;result, &amp;outpos,</span><br><span class="line">                              <span class="title function_ invoke__">zval_get_long</span>(tmp),</span><br><span class="line">                              width, padding, alignment,</span><br><span class="line">                              always_sign);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;u&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_appenduint</span>(&amp;result, &amp;outpos,</span><br><span class="line">                              <span class="title function_ invoke__">zval_get_long</span>(tmp),</span><br><span class="line">                              width, padding, alignment);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;g&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;G&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;e&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;E&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;f&#x27;</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;F&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_appenddouble</span>(&amp;result, &amp;outpos,</span><br><span class="line">                                 <span class="title function_ invoke__">zval_get_double</span>(tmp),</span><br><span class="line">                                 width, padding, alignment,</span><br><span class="line">                                 precision, adjusting,</span><br><span class="line">                                 format[inpos], always_sign</span><br><span class="line">                                );</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;c&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_appendchar</span>(&amp;result, &amp;outpos,</span><br><span class="line">                            (char) <span class="title function_ invoke__">zval_get_long</span>(tmp));</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;o&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_append2n</span>(&amp;result, &amp;outpos,</span><br><span class="line">                             <span class="title function_ invoke__">zval_get_long</span>(tmp),</span><br><span class="line">                             width, padding, alignment, <span class="number">3</span>,</span><br><span class="line">                             hexchars, expprec);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;x&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_append2n</span>(&amp;result, &amp;outpos,</span><br><span class="line">                             <span class="title function_ invoke__">zval_get_long</span>(tmp),</span><br><span class="line">                             width, padding, alignment, <span class="number">4</span>,</span><br><span class="line">                             hexchars, expprec);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;X&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_append2n</span>(&amp;result, &amp;outpos,</span><br><span class="line">                             <span class="title function_ invoke__">zval_get_long</span>(tmp),</span><br><span class="line">                             width, padding, alignment, <span class="number">4</span>,</span><br><span class="line">                             HEXCHARS, expprec);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;b&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_append2n</span>(&amp;result, &amp;outpos,</span><br><span class="line">                             <span class="title function_ invoke__">zval_get_long</span>(tmp),</span><br><span class="line">                             width, padding, alignment, <span class="number">1</span>,</span><br><span class="line">                             hexchars, expprec);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;%&#x27;</span>:</span><br><span class="line">        <span class="title function_ invoke__">php_sprintf_appendchar</span>(&amp;result, &amp;outpos, <span class="string">&#x27;%&#x27;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>format</code>它实际上只会对<code>s、d、u、g、G、e、E、f、F、c、o、x、X、b、%</code> 这15种模式进行匹配。</p>
+<p>我们来看几个简单的例子：</p>
+<p>demo1:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&#x27;helloworld %s&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;  <span class="comment">//输出 helloworld hello</span></span><br></pre></td></tr></table></figure>
+
+<p>demo1.1：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&quot;helloworld &#x27;%s&#x27;&quot;</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;   <span class="comment">//输出helloworld &#x27;hello&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>demo2:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&#x27;helloworld %s&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;world&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;  <span class="comment">//输出helloworld hello</span></span><br></pre></td></tr></table></figure>
+
+<p>demo2.1:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&#x27;helloworld %s %s&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;world&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;    <span class="comment">//输出helloworld hello world</span></span><br></pre></td></tr></table></figure>
+
+<p>demo2.2:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&#x27;helloworld %s %s %s&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;world&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;   <span class="comment">//没有输出，并产生报错：Warning: sprintf(): Too few arguments in D:\phpstudy_pro\WWW\test2.php on line 3</span></span><br><span class="line"><span class="comment">//注：当% 数 &gt; arg 数 时， 要使用 %1$s 这样的占位符(数字+$+类型符)，否则会报错，如果是双引号包裹，要用\转义，即 %1\$s 这样。</span></span><br></pre></td></tr></table></figure>
+
+<p>demo2.3:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&#x27;helloworld %1$s %1$s %2$s&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;world&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;  <span class="comment">//输出helloworld hello hello world</span></span><br><span class="line"><span class="comment">//这里如果是&quot;&quot;双引号来闭合，就需要转义一下。</span></span><br><span class="line"><span class="variable">$test2</span>=<span class="string">&quot;helloworld %1\$s %1\$s %2\$s&quot;</span>;</span><br><span class="line"><span class="variable">$d</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test2</span>,<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;world&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$d</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="漏洞产生"><a href="#漏洞产生" class="headerlink" title="漏洞产生"></a>漏洞产生</h2><p>上面说了只匹配15种类型，15个以外的类型会返回空。</p>
+<p>demo3:</p>
+<p>可以看到前面的<code>%l</code> 并未匹配到字符串，这里直接输出为空。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&#x27;helloworld %l %2$s %2$s&#x27;</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;world&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;  <span class="comment">//输出helloworld world world</span></span><br></pre></td></tr></table></figure>
+
+<p>demo4:</p>
+<p>不使用占位符：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;select * from user where username = &#x27;%\&#x27; and 1=1#&#x27;;&quot;</span> ;</span><br><span class="line"><span class="variable">$args</span> = <span class="string">&quot;admin&quot;</span> ;</span><br><span class="line"><span class="keyword">echo</span>  <span class="title function_ invoke__">sprintf</span> ( <span class="variable">$sql</span> , <span class="variable">$args</span> ) ; <span class="comment">//输出select * from user where username = &#x27;&#x27; and 1=1#&#x27;;</span></span><br></pre></td></tr></table></figure>
+
+<p>demo5:</p>
+<p>使用占位符：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$input</span> = <span class="title function_ invoke__">addslashes</span> (<span class="string">&quot;%1$&#x27; and 1=1#&quot;</span> );</span><br><span class="line"><span class="variable">$b</span> = <span class="title function_ invoke__">sprintf</span> (<span class="string">&quot;AND b=&#x27;%s&#x27;&quot;</span>, <span class="variable">$input</span> );</span><br><span class="line"><span class="variable">$sql</span> = <span class="title function_ invoke__">sprintf</span> (<span class="string">&quot;SELECT * FROM t WHERE a=&#x27;%s&#x27; <span class="subst">$b</span> &quot;</span>, <span class="string">&#x27;admin&#x27;</span> );</span><br><span class="line"><span class="keyword">echo</span>  <span class="variable">$sql</span> ;</span><br><span class="line"><span class="comment">//$input=&quot;%1$\&#x27; and 1=1#&quot;</span></span><br><span class="line"><span class="comment">//$b=&quot;AND b=&#x27;%1$\&#x27; and 1=1#&#x27;&quot;</span></span><br><span class="line"><span class="comment">//$sql=sprintf(&quot;select * from t where a=&#x27;%s&#x27; AND b=&#x27;%1$\&#x27; and 1=1#&#x27;&quot;,&#x27;admin&#x27;);</span></span><br><span class="line"><span class="comment">//处理之后得到的sql=&quot;select * from t where a=&#x27;admin&#x27; AND b=&#x27;&#x27; and 1=1#&#x27;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>demo6:</p>
+<p>对<code>%c</code>进行利用</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$test</span>=<span class="string">&#x27;helloworld %1$c %s&#x27;</span>;</span><br><span class="line"><span class="variable">$input</span>=<span class="number">39</span>;</span><br><span class="line"><span class="variable">$b</span>=<span class="title function_ invoke__">sprintf</span>(<span class="variable">$test</span>,<span class="variable">$input</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>;   <span class="comment">//输出为helloworld &#x27; 39</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?</span> php</span><br><span class="line"><span class="variable">$input1</span> = <span class="string">&#x27;%1$c) OR 1 = 1 /*&#x27;</span> ;</span><br><span class="line"><span class="variable">$input2</span> = <span class="number">39</span> ; <span class="comment">//对应的ASCII是&#x27;</span></span><br><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;SELECT * FROM foo WHERE bar IN (&#x27; <span class="subst">$input1</span> &#x27;) AND baz = %s&quot;</span> ;</span><br><span class="line"><span class="comment">//select * from foo where bar in (&#x27;%1$c) OR 1 = 1 /*&#x27;) AND baz=%s</span></span><br><span class="line"><span class="variable">$sql</span> = <span class="title function_ invoke__">sprintf</span> ( <span class="variable">$sql</span> , <span class="variable">$input2</span> );</span><br><span class="line"><span class="comment">//此时的sql：select * from foo where bar in (&#x27;&#x27;) OR 1 = 1 /*&#x27;) AND baz=39</span></span><br><span class="line"><span class="keyword">echo</span>  <span class="variable">$sql</span> ;</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E/" rel="tag"># 函数漏洞</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/05/%E5%86%85%E9%83%A8%E9%9D%B6%E5%9C%BA%E8%AE%AD%E7%BB%831229-1011/" rel="prev" title="内部靶场训练1229-1011">
+                  <i class="fa fa-angle-left"></i> 内部靶场训练1229-1011
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
