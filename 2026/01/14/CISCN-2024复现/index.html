@@ -19,19 +19,19 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言内部靶场暂时用不了了，找些近几年比赛的题目看看。 simple_php1234567891011121314&lt;?phpini_set(&#x27;open_basedir&#x27;, &#x27;&#x2F;var&#x2F;www&#x2F;html&#x2F;&#x27;);error_reporting(0);if(isset($_POST[&#x27;cmd&#x27;]))&#123;    $cmd &#x3D; esca">
+    <meta name="description" content="前言内部靶场暂时用不了了，找些近几年比赛的题目看看。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CISCN 2024复现">
 <meta property="og:url" content="http://example.com/2026/01/14/CISCN-2024%E5%A4%8D%E7%8E%B0/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
-<meta property="og:description" content="前言内部靶场暂时用不了了，找些近几年比赛的题目看看。 simple_php1234567891011121314&lt;?phpini_set(&#x27;open_basedir&#x27;, &#x27;&#x2F;var&#x2F;www&#x2F;html&#x2F;&#x27;);error_reporting(0);if(isset($_POST[&#x27;cmd&#x27;]))&#123;    $cmd &#x3D; esca">
+<meta property="og:description" content="前言内部靶场暂时用不了了，找些近几年比赛的题目看看。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://yk.jsdu.cn/20260114/acbc3e821098257b38dd8ca21075b5b4.png">
 <meta property="og:image" content="c:\Users\51261\AppData\Roaming\Typora\typora-user-images\image-20260114181701579.png">
 <meta property="og:image" content="https://yk.jsdu.cn/20260114/ffdab056fb57b6550edfc3c748a3bed6.png">
 <meta property="og:image" content="https://yk.jsdu.cn/20260114/cede48bf63bc4d485d69e3be666b1ebf.png">
 <meta property="article:published_time" content="2026-01-14T09:40:31.000Z">
-<meta property="article:modified_time" content="2026-01-14T12:00:54.395Z">
+<meta property="article:modified_time" content="2026-01-15T04:43:01.514Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -198,9 +198,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2026-01-14 17:40:31 / Modified: 20:00:54" itemprop="dateCreated datePublished" datetime="2026-01-14T17:40:31+08:00">2026-01-14</time>
+      <time title="Created: 2026-01-14 17:40:31" itemprop="dateCreated datePublished" datetime="2026-01-14T17:40:31+08:00">2026-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-01-15 12:43:01" itemprop="dateModified" datetime="2026-01-15T12:43:01+08:00">2026-01-15</time>
     </span>
 
   
@@ -213,6 +219,8 @@
     
     
     <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>内部靶场暂时用不了了，找些近几年比赛的题目看看。</p>
+<span id="more"></span>
+
 <h2 id="simple-php"><a href="#simple-php" class="headerlink" title="simple_php"></a>simple_php</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;open_basedir&#x27;</span>, <span class="string">&#x27;/var/www/html/&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$cmd</span> = <span class="title function_ invoke__">escapeshellcmd</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]); </span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/ls|dir|nl|nc|cat|tail|more|flag|sh|cut|awk|strings|od|curl|ping|\*|sort|ch|zip|mod|sl|find|sed|cp|mv|ty|grep|fd|df|sudo|more|cc|tac|less|head|\.|&#123;|&#125;|tar|zip|gcc|uniq|vi|vim|file|xxd|base64|date|bash|env|\?|wget|\&#x27;|\&quot;|id|whoami/i&#x27;</span>, <span class="variable">$cmd</span>)) &#123;</span><br><span class="line">         <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>代码审计，咋一看全部过滤了，而且还有个<code>escapeshellcmd：</code></p>
