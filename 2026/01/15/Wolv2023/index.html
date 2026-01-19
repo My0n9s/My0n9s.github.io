@@ -19,28 +19,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="前言闲来无事，于是去了解了一下CTF中web题是怎么部署的，再次记录一下。其实还涉及到动态的，要麻烦的多，暂时还没有接触到，docker也是自己后期要学一遍的（不知道会鸽多久">
+    <meta name="description" content="前言不知道是个啥比赛，记录一下">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker部署web">
-<meta property="og:url" content="http://example.com/2020/10/14/Docker%E9%83%A8%E7%BD%B2web/index.html">
+<meta property="og:title" content="Wolv2023">
+<meta property="og:url" content="http://example.com/2026/01/15/Wolv2023/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
-<meta property="og:description" content="前言闲来无事，于是去了解了一下CTF中web题是怎么部署的，再次记录一下。其实还涉及到动态的，要麻烦的多，暂时还没有接触到，docker也是自己后期要学一遍的（不知道会鸽多久">
+<meta property="og:description" content="前言不知道是个啥比赛，记录一下">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-14T04:27:10.000Z">
-<meta property="article:modified_time" content="2020-12-14T00:51:00.000Z">
+<meta property="article:published_time" content="2026-01-15T05:25:31.000Z">
+<meta property="article:modified_time" content="2026-01-19T01:45:58.199Z">
 <meta property="article:author" content="My0n9s">
-<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2020/10/14/Docker%E9%83%A8%E7%BD%B2web/">
+<link rel="canonical" href="http://example.com/2026/01/15/Wolv2023/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2020/10/14/Docker%E9%83%A8%E7%BD%B2web/","path":"2020/10/14/Docker部署web/","title":"Docker部署web"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2026/01/15/Wolv2023/","path":"2026/01/15/Wolv2023/","title":"Wolv2023"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Docker部署web | My0n9s'blog</title>
+<title>Wolv2023 | My0n9s'blog</title>
   
 
 
@@ -112,7 +112,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">常用命令</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#filter-madness"><span class="nav-number">1.1.</span> <span class="nav-text">filter-madness</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,7 +165,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/14/Docker%E9%83%A8%E7%BD%B2web/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/15/Wolv2023/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/touxiang.jpeg">
@@ -178,12 +178,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Docker部署web | My0n9s'blog">
+      <meta itemprop="name" content="Wolv2023 | My0n9s'blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Docker部署web
+          Wolv2023
         </h1>
 
         <div class="post-meta-container">
@@ -194,23 +194,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2020-10-14 12:27:10" itemprop="dateCreated datePublished" datetime="2020-10-14T12:27:10+08:00">2020-10-14</time>
+      <time title="Created: 2026-01-15 13:25:31" itemprop="dateCreated datePublished" datetime="2026-01-15T13:25:31+08:00">2026-01-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2020-12-14 08:51:00" itemprop="dateModified" datetime="2020-12-14T08:51:00+08:00">2020-12-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Docker%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Docker学习</span></a>
-        </span>
+      <time title="Modified: 2026-01-19 09:45:58" itemprop="dateModified" datetime="2026-01-19T09:45:58+08:00">2026-01-19</time>
     </span>
 
   
@@ -222,32 +213,16 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>闲来无事，于是去了解了一下CTF中web题是怎么部署的，再次记录一下。其实还涉及到动态的，要麻烦的多，暂时还没有接触到，docker也是自己后期要学一遍的（不知道会鸽多久</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不知道是个啥比赛，记录一下</p>
 <span id="more"></span>
 
-<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ul>
-<li><p>安装docker</p>
-<p><code>sudo apt install docker.io</code> （非root下）</p>
-</li>
-<li><p>从镜像仓库中拉取镜像</p>
-<p> 这里部署web，用的lamp环境，我们先搜索一下 <code>docker search lamp</code></p>
-<p> 可以找到 tutum&#x2F;lamp ，这里使用的是这个镜像</p>
-<p>命令 <code>docker pull tutum/lamp</code></p>
-</li>
-<li><p>新建一个docker容器</p>
-<p> <code>docker run -d -p 2333:80 -p 3308:3306 tutum/lamp</code>  端口映射</p>
-<p>  创建容器之后，可以访问 服务器ip:2333 来检查一下有没有成功</p>
-</li>
-<li><p>把本地（服务器）文件部署到docker中</p>
-<p><code>docker cp 本地路径 容器id:容器路径</code></p>
-<p>eg: docker cp &#x2F;var&#x2F;www&#x2F;html&#x2F;index.php 7ebfdefg:&#x2F;var&#x2F;www&#x2F;html</p>
-<p>把本地服务器 的index.php文件部署到了 docker容器里的目录下</p>
-</li>
-<li><p>到这里就搭好了</p>
-</li>
-</ul>
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker pull 镜像名 -- 拉镜像</span><br><span class="line">docker images  --查看当前镜像</span><br><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -d -p [hostport]:[dockerport] 镜像名 --新建容器</span></span><br><span class="line">docker ps -a 查看容器</span><br><span class="line">docker cp 文件路径 [容器id]：docker路径  --拷贝文件</span><br><span class="line">docker exec -it [容器id] /bin/bash --进入容器</span><br><span class="line">docker start [容器id] --启动容器</span><br><span class="line">docker stop [容器id] --停止容器</span><br><span class="line">docker rm [容器id] --删除容器 //只有停止后才能删除</span><br><span class="line">docker rmi [imageid] --删除镜像 //只有删除镜像对应的容器才能进行这一步操作</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+<h2 id="filter-madness"><a href="#filter-madness" class="headerlink" title="filter-madness"></a>filter-madness</h2><p>题目打开有个提交框，尝试输入123，发现返回如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Warning: file_get_contents(): Unable to locate filter &quot;123&quot; in /var/www/html/index.php on line 11</span><br><span class="line"></span><br><span class="line">Warning: file_get_contents(): Unable to create filter (123) in /var/www/html/index.php on line 11</span><br><span class="line">Can you submit some madness that will return the flag?</span><br><span class="line"></span><br><span class="line">Your filter madness: php://filter/123/resource=/etc/passwd</span><br><span class="line">Your filter madness length: 37</span><br><span class="line">Your filter madness results: root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:x:13:13:proxy:/bin:/usr/sbin/nologin www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin backup:x:34:34:backup:/var/backups:/usr/sbin/nologin list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin _apt:x:100:65534::/nonexistent:/usr/sbin/nologin</span><br></pre></td></tr></table></figure>
 
+<p>如果是输入<code>convert.base64-encode</code>，返回的&#x2F;etc&#x2F;passwd编码后的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Can you submit some madness that will return the flag?</span><br><span class="line"></span><br><span class="line">Your filter madness: php://filter/convert.base64-encode/resource=/etc/passwd</span><br><span class="line">Your filter madness length: 55</span><br><span class="line">Your filter madness results: cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2Jpb</span><br></pre></td></tr></table></figure>
+
+<p>咋一看考察的是<code>php://filer</code>协议，但是这里的resource访问的资源被写死成&#x2F;etc&#x2F;passwd了。经过测试 <code>/</code> 啥的也被ban了，试了很多方式都行不通，但是这里给了一个info，点进去发现是个phpinfo，尝试全局搜索了一下flag，还真有？？？不知道考点是啥。</p>
 
     </div>
 
@@ -257,21 +232,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/10/11/%E8%A5%BF%E6%B9%96%E7%9A%84%E4%B8%A4%E4%B8%AAWeb%E6%95%B4%E7%90%86/" rel="prev" title="西湖的两个Web整理">
-                  <i class="fa fa-angle-left"></i> 西湖的两个Web整理
+                <a href="/2026/01/14/CISCN-2024%E5%A4%8D%E7%8E%B0/" rel="prev" title="CISCN 2024复现">
+                  <i class="fa fa-angle-left"></i> CISCN 2024复现
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/15/php%E4%B8%AD%E7%BB%95%E8%BF%87open_basedir%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%B7%AF/" rel="next" title="php中绕过open_basedir的一些思路">
-                  php中绕过open_basedir的一些思路 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
