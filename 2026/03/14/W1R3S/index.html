@@ -19,18 +19,18 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="第五个靶机 信息收集前期依然是找到靶机IP以及开放的端口，这里的手法和之前类似，利用nmap -sn 192.168.4.0&#x2F;24 或者arp-scan -l 找到目标的靶机IP 192.168.4.135 接着收集端口信息：nmap -p- -sS -sV -A -T5 192.168.4.135  发现开放了21端口、22端口、80端口、3306端口。并且ftp可以未授权登录。直接 ftp 1">
+    <meta name="description" content="第五个靶机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="W1R3S">
 <meta property="og:url" content="http://example.com/2026/03/14/W1R3S/index.html">
 <meta property="og:site_name" content="My0n9s&#39;blog">
-<meta property="og:description" content="第五个靶机 信息收集前期依然是找到靶机IP以及开放的端口，这里的手法和之前类似，利用nmap -sn 192.168.4.0&#x2F;24 或者arp-scan -l 找到目标的靶机IP 192.168.4.135 接着收集端口信息：nmap -p- -sS -sV -A -T5 192.168.4.135  发现开放了21端口、22端口、80端口、3306端口。并且ftp可以未授权登录。直接 ftp 1">
+<meta property="og:description" content="第五个靶机">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://yk.jsdu.cn/20260314/62dc67895f149476a2daa78f197270a0.png">
 <meta property="og:image" content="https://yk.jsdu.cn/20260314/f85f90a7b2fa6a8206f55ebed5c2e6cd.png">
 <meta property="og:image" content="https://origin.picgo.net/2026/03/14/W1R3S-38786d9867d4987b8.png">
 <meta property="article:published_time" content="2026-03-14T10:46:55.000Z">
-<meta property="article:modified_time" content="2026-03-14T11:42:46.357Z">
+<meta property="article:modified_time" content="2026-03-14T11:47:00.909Z">
 <meta property="article:author" content="My0n9s">
 <meta property="article:tag" content="渗透测试">
 <meta name="twitter:card" content="summary">
@@ -199,7 +199,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2026-03-14 18:46:55 / Modified: 19:42:46" itemprop="dateCreated datePublished" datetime="2026-03-14T18:46:55+08:00">2026-03-14</time>
+      <time title="Created: 2026-03-14 18:46:55 / Modified: 19:47:00" itemprop="dateCreated datePublished" datetime="2026-03-14T18:46:55+08:00">2026-03-14</time>
     </span>
 
   
@@ -212,6 +212,8 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>第五个靶机</p>
+<span id="more"></span>
+
 <h1 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1><p>前期依然是找到靶机IP以及开放的端口，这里的手法和之前类似，利用<code>nmap -sn 192.168.4.0/24</code> 或者<code>arp-scan -l</code> 找到目标的靶机IP <code>192.168.4.135</code></p>
 <p>接着收集端口信息：<code>nmap -p- -sS -sV -A -T5 192.168.4.135</code>  发现开放了21端口、22端口、80端口、3306端口。并且ftp可以未授权登录。直接 <code>ftp 192.168.4.135</code>  用户名为ftp，密码为空，就可以登录进去了。登录进去之后可以发现有三个文件夹，有一个txt 给了用户名信息，另外一个txt 给了一段base64编码及md5，放到<code>https://www.somd5.com/</code> 上面解密发现是<code>This is not a password</code> ，base64解码也是一段无用信息。。</p>
 <p>接着看80端口，先是尝试<code>dirsearch</code>扫描了一下，发现存在<code>wordpress</code>，然后又用<code>dirb</code>扫描，这里我又陷入到了<code>wordpress</code>的漏洞利用里面。。这里的<code>wordpress</code>感觉不能利用，因为不管你输入什么，都会跳转到<code>localhost/xxxx</code> ，这样的话很多漏洞利用不了。</p>
